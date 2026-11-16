@@ -1,0 +1,16 @@
+# build
+backend/target/
+frontend/node_modules/
+frontend/dist/
+# database lokal
+data/
+*.db
+*.db-shm
+*.db-wal
+# rahasia
+.env
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

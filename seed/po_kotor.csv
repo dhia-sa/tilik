@@ -1,0 +1,51 @@
+po_no,po_date,vendor,category,item,commodity,qty,unit,unit_price,delivered_date,promised_date
+PO-KTR-E01,2026-13-05,PT Manis Lestari Abadi,Bahan Baku,Gula Pasir Kristal Putih,Gula Pasir,40,sak 50 kg,742000,,2026-11-14
+PO-KTR-E02,31/11/2026,PT Manis Lestari Abadi,Bahan Baku,Gula Pasir Kristal Putih,Gula Pasir,40,sak 50 kg,742000,,2026-11-14
+PO-KTR-E03,kemarin,PT Manis Lestari Abadi,Bahan Baku,Gula Pasir Kristal Putih,Gula Pasir,40,sak 50 kg,742000,,2026-11-14
+PO-KTR-001,2026-11-10,PT Manis Lestari Abadi,Bahan Baku,Gula Pasir Kristal Putih,Gula Pasir,61,sak 50 kg,725000,,2026-11-14
+PO-KTR-E04,2026-02-30,PT Gandum Emas Raya,Bahan Baku,Tepung Terigu Protein Tinggi,Tepung Terigu,120,sak 25 kg,245000,,2026-03-03
+PO-KTR-E05,,PT Gandum Emas Raya,Bahan Baku,Tepung Terigu Protein Tinggi,Tepung Terigu,120,sak 25 kg,245000,,2026-11-14
+PO-KTR-E06,2026-11-11,PT Manis Lestari Abadi,Bahan Baku,Gula Pasir Kristal Putih,Gula Pasir,"1.234,50",kg,14840,,2026-11-14
+PO-KTR-002,2026-11-11,PT Tepung Mulia Sentosa,Bahan Baku,Tepung Terigu Protein Sedang,Tepung Terigu,117,sak 25 kg,240000,,2026-11-15
+PO-KTR-E07,2026-11-11,PT Manis Lestari Abadi,Bahan Baku,Gula Pasir Kristal Putih,Gula Pasir,40,sak 50 kg,"742.000,00",,2026-11-14
+PO-KTR-E08,2026-11-11,PT Sawit Cahaya Pangan,Bahan Baku,Minyak Goreng Sawit,Minyak Nabati,2.500,liter,17500,,2026-11-14
+PO-KTR-E09,2026-11-11,PT Sawit Cahaya Pangan,Bahan Baku,Minyak Goreng Sawit,Minyak Nabati,50,jerigen 18 L,Rp 315.000,,2026-11-14
+PO-KTR-003,2026-11-12,PT Susu Segar Prima,Bahan Baku,Susu Bubuk Full Cream,Susu Bubuk,22,sak 25 kg,1450000,,2026-11-16
+PO-KTR-E10,2026-11-11,PT Susu Segar Prima,Bahan Baku,Susu Bubuk Full Cream,Susu Bubuk,abc,sak 25 kg,1450000,,2026-11-14
+PO-KTR-E11,2026-11-11,,Bahan Baku,Gula Pasir Kristal Putih,Gula Pasir,40,sak 50 kg,742000,,2026-11-14
+PO-KTR-E12,2026-11-11,   ,Kemasan,Box Kue Karton,,30,karton,250000,,2026-11-18
+PO-KTR-004,2026-11-13,CV Peternakan Telur Makmur,Bahan Baku,Telur Ayam Negeri,Telur Ayam,940,kg,28000,,2026-11-17
+PO-KTR-E13,2026-11-11,,Bahan Baku,Telur Ayam Negeri,Telur Ayam,500,kg,28000,,2026-11-13
+PO-KTR-E14,2026-11-11,PT Manis Lestari Abadi,Bahan Baku,Gula Pasir Kristal Putih,Gula Pasir,4,drum,742000,,2026-11-14
+PO-KTR-E15,2026-11-11,PT Sawit Cahaya Pangan,Bahan Baku,Minyak Goreng Sawit,Minyak Nabati,10,bal,17500,,2026-11-14
+PO-KTR-005,2026-11-14,CV Aroma Bahan Kue,Bahan Baku,Baking Powder,,55,kg,45000,,2026-11-18
+PO-KTR-E16,2026-11-11,PT Karton Indah Perkasa,Kemasan,Lakban Bening,,5,lusin,12000,,2026-11-18
+PO-KTR-E17,2026-11-11,PT Kakao Lestari Jaya,Bahan Baku,Cokelat Bubuk,Cokelat Bubuk,100,ton,85000,,2026-11-14
+PO-KTR-E18,2026-11-11,PT Teknik Mesin Andalan,Sparepart,Bearing 6205,,4,kg,85000,,2026-11-20
+PO-KTR-006,2026-11-10,CV Aroma Bahan Kue,Bahan Baku,Selai Stroberi,,380,kg,41000,,2026-11-14
+PO-KTR-E19,2026-11-11,PT Manis Lestari Abadi,Bahan Baku,Gula Pasir Kristal Putih,Gula Pasir,-10,sak 50 kg,742000,,2026-11-14
+PO-KTR-E20,2026-11-11,PT Manis Lestari Abadi,Bahan Baku,Gula Pasir Kristal Putih,Gula Pasir,0,sak 50 kg,742000,,2026-11-14
+PO-KTR-E21,2026-11-11,PT Manis Lestari Abadi,Bahan Baku,Gula Pasir Kristal Putih,Gula Pasir,40,sak 50 kg,-5000,,2026-11-14
+PO-KTR-007,2026-11-11,CV Kemas Prima Plastik,Kemasan,Plastik Kemasan Roti,,40,karton,350000,,2026-11-15
+PO-KTR-E22,2026-11-11,PT Manis Lestari Abadi,Bahan Baku,Gula Pasir Kristal Putih,Gula Pasir,,sak 50 kg,742000,,2026-11-14
+PO-KTR-E23,2026-11-11,PT Manis Lestari Abadi,Bahan Bakar,Gula Pasir Kristal Putih,Gula Pasir,40,sak 50 kg,742000,,2026-11-14
+PO-KTR-E24,2026-11-11,PT Manis Lestari Abadi,,Gula Pasir Kristal Putih,Gula Pasir,40,sak 50 kg,742000,,2026-11-14
+PO-KTR-008,2026-11-12,CV Kemas Prima Plastik,Kemasan,Label Stiker Produk,,25803,pcs,55,,2026-11-16
+PO-KTR-E25,2026-11-11,PT Manis Lestari Abadi,Bahan Baku,,Gula Pasir,40,sak 50 kg,742000,,2026-11-14
+PO-KTR-E26,2026-11-11,PT Manis Lestari Abadi,Bahan Baku,Gula Pasir Kristal Putih,Gula Batu Merah,40,sak 50 kg,742000,,2026-11-14
+PO-KTR-E27,2026-11-11,PT Manis Lestari Abadi,Bahan Baku,Gula Pasir Kristal Putih,Gula Pasir,40,sak 50 kg,742000,2026-11-31,2026-11-14
+PO-KTR-009,2026-11-13,PT Karton Indah Perkasa,Kemasan,Lakban Bening,,222,pcs,12000,,2026-11-17
+PO-KTR-E28,2026-11-11,PT Manis Lestari Abadi,Bahan Baku,Gula Pasir Kristal Putih,Gula Pasir,40,sak 50 kg,742000,,14-11-2026
+PO-KTR-E29,2026-11-11,PT Manis Lestari Abadi,Bahan Baku,Gula Pasir Kristal Putih,Gula Pasir,40,sak 50 kg,742000,,
+PO-KTR-E30,2026-11-11,PT Manis Lestari Abadi,Bahan Baku,Gula Pasir Kristal Putih,Gula Pasir,40,sak 50 kg,742000,2026-11-05,2026-11-14
+PO-KTR-010,2026-11-14,CV Kemas Prima Plastik,Kemasan,Plastik Vakum,,31,karton,400000,,2026-11-18
+PO-KTR-011,2026-11-10,PT Teknik Mesin Andalan,Sparepart,Bearing 6205,,18,pcs,85000,,2026-11-14
+PO-KTR-012,2026-11-11,PT Teknik Mesin Andalan,Sparepart,Heater Element Oven,,5,pcs,650000,,2026-11-15
+PO-KTR-013,2026-11-12,PT Teknik Mesin Andalan,Sparepart,Conveyor Belt,,1,pcs,3500000,,2026-11-16
+PO-KTR-014,2026-11-13,CV Sparepart Bakery Jaya,Sparepart,Nozzle Filling,,3,pcs,180000,,2026-11-17
+PO-KTR-015,2026-11-14,CV Bersih Higienis,Jasa,Pest Control Bulanan,,1,paket,4500000,,2026-11-18
+PO-KTR-016,2026-11-10,PT Solusi Servis Industri,Jasa,Uji Lab Produk,,3,paket,2000000,,2026-11-14
+PO-KTR-017,2026-11-11,PT Ekspedisi Cepat Lancar,Logistik,Pengiriman Dalam Kota,,6,trip,850000,,2026-11-15
+PO-KTR-018,2026-11-12,PT Ekspedisi Cepat Lancar,Logistik,Kurir Dokumen,,16,pcs,50000,,2026-11-16
+PO-KTR-019,2026-11-13,CV Sarana K3 Mandiri,Bahan Pendukung,Sarung Tangan Plastik,,5,karton,400000,,2026-11-17
+PO-KTR-020,2026-11-14,CV Sarana K3 Mandiri,Bahan Pendukung,Alkohol 70%,,3,jerigen 18 L,540000,,2026-11-18

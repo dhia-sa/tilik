@@ -1,0 +1,325 @@
+period,vendor,quality_score,reject_qty,total_qty,feedback
+2025-11,CV Aroma Bahan Kue,4.3,7,1329,Respon cepat saat ada komplain.
+2025-11,CV Bersih Higienis,3.9,3,201,Kemasan barang baik.
+2025-11,CV Butir Halus Mandiri,4.3,219,17368,"Pengiriman rapi, dokumen lengkap."
+2025-11,CV Kemas Prima Plastik,2.4,10374,76843,"Reject tinggi, sudah ditegur."
+2025-11,CV Kristal Tebu Jaya,4.3,139,10694,Kualitas konsisten.
+2025-11,CV Lumbung Susu,4.2,6,1600,Tidak ada kendala bulan ini.
+2025-11,CV Minyak Bening Sejati,4.8,44,4367,"Pengiriman rapi, dokumen lengkap."
+2025-11,CV Peternakan Telur Makmur,4.2,15,2692,Kualitas konsisten.
+2025-11,CV Sarana K3 Mandiri,4.7,319,31506,Kemasan barang baik.
+2025-11,CV Sparepart Bakery Jaya,4.7,0,12,Kualitas konsisten.
+2025-11,PT Armada Dingin Logistik,4.7,0,22,Respon cepat saat ada komplain.
+2025-11,PT Bahan Roti Sejahtera,4.5,45,2702,"Pengiriman rapi, dokumen lengkap."
+2025-11,PT Dairy Nusa Pratama,4.3,42,7567,Kemasan barang baik.
+2025-11,PT Ekspedisi Cepat Lancar,4.3,3,198,Kemasan barang baik.
+2025-11,PT Gandum Emas Raya,4.1,957,49225,"Pengiriman rapi, dokumen lengkap."
+2025-11,PT Gas Energi Abadi,4.4,1,103,Kemasan barang baik.
+2025-11,PT Gula Rasa Nusantara,4.1,132,9720,Pengiriman sering mundur 2-3 hari.
+2025-11,PT Kakao Lestari Jaya,3.9,5,455,Kemasan barang baik.
+2025-11,PT Karton Indah Perkasa,4.0,300,60139,Kemasan barang baik.
+2025-11,PT Manis Lestari Abadi,4.5,314,26420,Tidak ada kendala bulan ini.
+2025-11,PT Plastindo Kemas Utama,4.3,3442,211314,Tidak ada kendala bulan ini.
+2025-11,PT Sawit Cahaya Pangan,4.0,47,7283,Kualitas konsisten.
+2025-11,PT Solusi Servis Industri,4.4,0,2,Kemasan barang baik.
+2025-11,PT Susu Segar Prima,4.0,47,2626,"Pengiriman rapi, dokumen lengkap."
+2025-11,PT Teknik Mesin Andalan,4.6,1,59,Kualitas konsisten.
+2025-11,PT Tepung Mulia Sentosa,4.0,221,44175,"Pengiriman rapi, dokumen lengkap."
+2025-11,UD Telur Berkah,3.9,68,5389,Kualitas konsisten.
+2025-12,CV Aroma Bahan Kue,4.3,71,6328,Kualitas konsisten.
+2025-12,CV Bersih Higienis,4.0,14,1039,Kualitas konsisten.
+2025-12,CV Butir Halus Mandiri,4.0,294,68961,Kemasan barang baik.
+2025-12,CV Kemas Prima Plastik,2.9,182968,1657481,"Reject tinggi, sudah ditegur."
+2025-12,CV Kristal Tebu Jaya,4.2,1018,79751,Tidak ada kendala bulan ini.
+2025-12,CV Lumbung Susu,4.2,199,11527,"Pengiriman rapi, dokumen lengkap."
+2025-12,CV Minyak Bening Sejati,4.3,346,21129,Tidak ada kendala bulan ini.
+2025-12,CV Peternakan Telur Makmur,4.3,91,18244,Kemasan barang baik.
+2025-12,CV Sarana K3 Mandiri,4.6,1520,276099,Respon cepat saat ada komplain.
+2025-12,CV Sparepart Bakery Jaya,4.4,4,210,Kualitas konsisten.
+2025-12,PT Armada Dingin Logistik,4.0,1,64,Tidak ada kendala bulan ini.
+2025-12,PT Bahan Roti Sejahtera,3.8,60,6885,"Pengiriman rapi, dokumen lengkap."
+2025-12,PT Dairy Nusa Pratama,4.4,195,18424,Kemasan barang baik.
+2025-12,PT Ekspedisi Cepat Lancar,4.5,4,494,Kualitas konsisten.
+2025-12,PT Gandum Emas Raya,4.7,610,112575,Tidak ada kendala bulan ini.
+2025-12,PT Gas Energi Abadi,4.5,3,283,Respon cepat saat ada komplain.
+2025-12,PT Gula Rasa Nusantara,4.2,1050,67622,Kualitas oke tapi jadwal kirim tidak tepat.
+2025-12,PT Kakao Lestari Jaya,3.8,65,5915,Respon cepat saat ada komplain.
+2025-12,PT Karton Indah Perkasa,4.3,14508,1231000,Kemasan barang baik.
+2025-12,PT Manis Lestari Abadi,4.4,963,62781,"Pengiriman rapi, dokumen lengkap."
+2025-12,PT Plastindo Kemas Utama,4.8,6008,664244,Respon cepat saat ada komplain.
+2025-12,PT Sawit Cahaya Pangan,4.5,251,21940,Kemasan barang baik.
+2025-12,PT Solusi Servis Industri,4.5,0,13,Kualitas konsisten.
+2025-12,PT Susu Segar Prima,4.8,180,14480,Kemasan barang baik.
+2025-12,PT Teknik Mesin Andalan,4.7,5,281,Kemasan barang baik.
+2025-12,PT Tepung Mulia Sentosa,4.2,503,116200,Tidak ada kendala bulan ini.
+2025-12,UD Telur Berkah,4.3,298,15968,Kualitas konsisten.
+2026-01,CV Aroma Bahan Kue,4.3,43,9226,Kualitas konsisten.
+2026-01,CV Bersih Higienis,4.3,4,592,Respon cepat saat ada komplain.
+2026-01,CV Butir Halus Mandiri,3.9,1127,64379,Kualitas konsisten.
+2026-01,CV Kemas Prima Plastik,2.5,269497,2056509,"Banyak kemasan sobek, perlu retur."
+2026-01,CV Kristal Tebu Jaya,4.3,1057,86312,Kemasan barang baik.
+2026-01,CV Lumbung Susu,3.9,319,16232,Kemasan barang baik.
+2026-01,CV Minyak Bening Sejati,4.6,326,17885,Kualitas konsisten.
+2026-01,CV Peternakan Telur Makmur,4.5,161,14781,Kemasan barang baik.
+2026-01,CV Sarana K3 Mandiri,4.7,1315,191237,Respon cepat saat ada komplain.
+2026-01,CV Sparepart Bakery Jaya,4.3,1,192,Tidak ada kendala bulan ini.
+2026-01,PT Armada Dingin Logistik,4.5,1,56,Kemasan barang baik.
+2026-01,PT Bahan Roti Sejahtera,4.7,98,6060,Tidak ada kendala bulan ini.
+2026-01,PT Dairy Nusa Pratama,4.3,330,23336,Kemasan barang baik.
+2026-01,PT Ekspedisi Cepat Lancar,4.6,7,414,Kemasan barang baik.
+2026-01,PT Gandum Emas Raya,4.3,1307,123300,"Pengiriman rapi, dokumen lengkap."
+2026-01,PT Gas Energi Abadi,4.0,1,215,Respon cepat saat ada komplain.
+2026-01,PT Gula Rasa Nusantara,4.1,908,60888,"Barang datang terlambat, produksi tertunda."
+2026-01,PT Kakao Lestari Jaya,4.7,50,3754,"Pengiriman rapi, dokumen lengkap."
+2026-01,PT Karton Indah Perkasa,4.0,7393,678518,Tidak ada kendala bulan ini.
+2026-01,PT Manis Lestari Abadi,4.6,312,59880,Kualitas konsisten.
+2026-01,PT Plastindo Kemas Utama,4.4,15275,1073598,Kemasan barang baik.
+2026-01,PT Sawit Cahaya Pangan,4.2,171,16555,Respon cepat saat ada komplain.
+2026-01,PT Solusi Servis Industri,3.9,0,18,Kualitas konsisten.
+2026-01,PT Susu Segar Prima,4.4,240,13666,"Pengiriman rapi, dokumen lengkap."
+2026-01,PT Teknik Mesin Andalan,4.3,2,218,Tidak ada kendala bulan ini.
+2026-01,PT Tepung Mulia Sentosa,4.4,2595,153625,"Pengiriman rapi, dokumen lengkap."
+2026-01,UD Telur Berkah,4.5,146,16095,Tidak ada kendala bulan ini.
+2026-02,CV Aroma Bahan Kue,4.3,39,4297,Respon cepat saat ada komplain.
+2026-02,CV Bersih Higienis,4.3,10,703,Kualitas konsisten.
+2026-02,CV Butir Halus Mandiri,4.1,1854,108761,Kualitas konsisten.
+2026-02,CV Kemas Prima Plastik,3.0,255209,1608637,"Reject tinggi, sudah ditegur."
+2026-02,CV Kristal Tebu Jaya,4.7,171,51902,Kemasan barang baik.
+2026-02,CV Lumbung Susu,4.4,69,14200,Kemasan barang baik.
+2026-02,CV Minyak Bening Sejati,4.5,195,15879,Kualitas konsisten.
+2026-02,CV Peternakan Telur Makmur,4.6,67,12307,Kemasan barang baik.
+2026-02,CV Sarana K3 Mandiri,4.1,680,213500,Respon cepat saat ada komplain.
+2026-02,CV Sparepart Bakery Jaya,4.0,3,321,Respon cepat saat ada komplain.
+2026-02,PT Armada Dingin Logistik,4.4,2,86,Kemasan barang baik.
+2026-02,PT Bahan Roti Sejahtera,4.5,25,5880,Tidak ada kendala bulan ini.
+2026-02,PT Dairy Nusa Pratama,4.4,181,18517,Kualitas konsisten.
+2026-02,PT Ekspedisi Cepat Lancar,4.5,3,326,Kualitas konsisten.
+2026-02,PT Gandum Emas Raya,4.2,700,148250,Tidak ada kendala bulan ini.
+2026-02,PT Gas Energi Abadi,4.2,2,264,Tidak ada kendala bulan ini.
+2026-02,PT Gula Rasa Nusantara,4.3,312,49518,Kualitas oke tapi jadwal kirim tidak tepat.
+2026-02,PT Kakao Lestari Jaya,4.2,22,2770,Respon cepat saat ada komplain.
+2026-02,PT Karton Indah Perkasa,4.6,9396,699195,"Pengiriman rapi, dokumen lengkap."
+2026-02,PT Manis Lestari Abadi,4.9,724,52225,Respon cepat saat ada komplain.
+2026-02,PT Plastindo Kemas Utama,4.2,9849,1462629,Kualitas konsisten.
+2026-02,PT Sawit Cahaya Pangan,3.8,313,29448,Respon cepat saat ada komplain.
+2026-02,PT Solusi Servis Industri,4.3,0,14,Respon cepat saat ada komplain.
+2026-02,PT Susu Segar Prima,4.9,127,18387,Respon cepat saat ada komplain.
+2026-02,PT Teknik Mesin Andalan,4.3,2,108,Kemasan barang baik.
+2026-02,PT Tepung Mulia Sentosa,4.1,1758,105800,Kemasan barang baik.
+2026-02,UD Telur Berkah,4.0,252,16977,"Pengiriman rapi, dokumen lengkap."
+2026-03,CV Aroma Bahan Kue,4.0,89,5482,Respon cepat saat ada komplain.
+2026-03,CV Bersih Higienis,3.5,4,462,Respon cepat saat ada komplain.
+2026-03,CV Butir Halus Mandiri,4.4,582,93268,Kemasan barang baik.
+2026-03,CV Kemas Prima Plastik,2.6,193763,1609733,"Banyak kemasan sobek, perlu retur."
+2026-03,CV Kristal Tebu Jaya,4.6,283,40036,Respon cepat saat ada komplain.
+2026-03,CV Lumbung Susu,4.2,31,9722,Respon cepat saat ada komplain.
+2026-03,CV Minyak Bening Sejati,4.4,292,16962,Kemasan barang baik.
+2026-03,CV Peternakan Telur Makmur,4.1,69,10639,Kualitas konsisten.
+2026-03,CV Sarana K3 Mandiri,3.7,583,102850,Respon cepat saat ada komplain.
+2026-03,CV Sparepart Bakery Jaya,4.0,4,224,"Pengiriman rapi, dokumen lengkap."
+2026-03,PT Armada Dingin Logistik,4.5,0,53,"Pengiriman rapi, dokumen lengkap."
+2026-03,PT Bahan Roti Sejahtera,4.2,61,5446,Kualitas konsisten.
+2026-03,PT Dairy Nusa Pratama,4.5,151,14697,Respon cepat saat ada komplain.
+2026-03,PT Ekspedisi Cepat Lancar,4.5,6,526,Kualitas konsisten.
+2026-03,PT Gandum Emas Raya,4.1,1071,74200,Kualitas konsisten.
+2026-03,PT Gas Energi Abadi,4.4,5,338,Tidak ada kendala bulan ini.
+2026-03,PT Gula Rasa Nusantara,4.7,1064,56917,Pengiriman sering mundur 2-3 hari.
+2026-03,PT Kakao Lestari Jaya,4.0,83,4342,Kemasan barang baik.
+2026-03,PT Karton Indah Perkasa,4.2,9431,547719,Tidak ada kendala bulan ini.
+2026-03,PT Manis Lestari Abadi,4.4,572,35210,"Pengiriman rapi, dokumen lengkap."
+2026-03,PT Plastindo Kemas Utama,4.7,7036,1297426,Respon cepat saat ada komplain.
+2026-03,PT Sawit Cahaya Pangan,4.1,112,17921,Kualitas konsisten.
+2026-03,PT Solusi Servis Industri,4.4,0,16,"Pengiriman rapi, dokumen lengkap."
+2026-03,PT Susu Segar Prima,4.4,41,10383,Kemasan barang baik.
+2026-03,PT Teknik Mesin Andalan,4.4,1,269,Respon cepat saat ada komplain.
+2026-03,PT Tepung Mulia Sentosa,4.4,624,111500,Respon cepat saat ada komplain.
+2026-03,UD Telur Berkah,3.9,49,10778,Tidak ada kendala bulan ini.
+2026-04,CV Aroma Bahan Kue,4.6,63,4730,Respon cepat saat ada komplain.
+2026-04,CV Bersih Higienis,4.5,6,715,Kualitas konsisten.
+2026-04,CV Butir Halus Mandiri,4.6,1064,64834,"Pengiriman rapi, dokumen lengkap."
+2026-04,CV Kemas Prima Plastik,2.3,97284,778959,Ketebalan plastik tidak sesuai spesifikasi.
+2026-04,CV Kristal Tebu Jaya,4.8,829,43208,Kemasan barang baik.
+2026-04,CV Lumbung Susu,4.3,156,10246,Kualitas konsisten.
+2026-04,CV Minyak Bening Sejati,4.3,203,13952,Kualitas konsisten.
+2026-04,CV Peternakan Telur Makmur,4.4,63,6049,Kualitas konsisten.
+2026-04,CV Sarana K3 Mandiri,3.9,695,198156,Kualitas konsisten.
+2026-04,CV Sparepart Bakery Jaya,4.0,4,199,Kemasan barang baik.
+2026-04,PT Armada Dingin Logistik,4.1,0,61,"Pengiriman rapi, dokumen lengkap."
+2026-04,PT Bahan Roti Sejahtera,4.6,128,6714,Tidak ada kendala bulan ini.
+2026-04,PT Dairy Nusa Pratama,4.9,231,13553,Respon cepat saat ada komplain.
+2026-04,PT Ekspedisi Cepat Lancar,4.7,8,459,Tidak ada kendala bulan ini.
+2026-04,PT Gandum Emas Raya,4.1,1031,108900,Tidak ada kendala bulan ini.
+2026-04,PT Gas Energi Abadi,4.7,1,269,Kemasan barang baik.
+2026-04,PT Gula Rasa Nusantara,4.4,140,35676,"Barang datang terlambat, produksi tertunda."
+2026-04,PT Kakao Lestari Jaya,4.3,25,1553,Respon cepat saat ada komplain.
+2026-04,PT Karton Indah Perkasa,4.1,7586,554265,Tidak ada kendala bulan ini.
+2026-04,PT Manis Lestari Abadi,4.4,96,20362,Kemasan barang baik.
+2026-04,PT Plastindo Kemas Utama,4.3,6147,799109,Kemasan barang baik.
+2026-04,PT Sawit Cahaya Pangan,4.6,125,8938,Respon cepat saat ada komplain.
+2026-04,PT Solusi Servis Industri,4.5,0,7,"Pengiriman rapi, dokumen lengkap."
+2026-04,PT Susu Segar Prima,4.2,120,7078,Kemasan barang baik.
+2026-04,PT Teknik Mesin Andalan,4.8,0,119,Respon cepat saat ada komplain.
+2026-04,PT Tepung Mulia Sentosa,4.7,1081,110100,Respon cepat saat ada komplain.
+2026-04,UD Telur Berkah,4.9,237,12361,"Pengiriman rapi, dokumen lengkap."
+2026-05,CV Aroma Bahan Kue,4.3,55,3511,Tidak ada kendala bulan ini.
+2026-05,CV Bersih Higienis,4.1,6,383,"Pengiriman rapi, dokumen lengkap."
+2026-05,CV Butir Halus Mandiri,4.3,554,64508,Kemasan barang baik.
+2026-05,CV Kemas Prima Plastik,2.6,157600,1374995,"Cetakan buram, sebagian ditolak QC."
+2026-05,CV Kristal Tebu Jaya,4.5,679,36618,Tidak ada kendala bulan ini.
+2026-05,CV Lumbung Susu,4.1,102,10323,Kemasan barang baik.
+2026-05,CV Minyak Bening Sejati,4.3,308,25153,Respon cepat saat ada komplain.
+2026-05,CV Peternakan Telur Makmur,3.8,140,9876,Kualitas konsisten.
+2026-05,CV Sarana K3 Mandiri,4.1,2890,197487,"Pengiriman rapi, dokumen lengkap."
+2026-05,CV Sparepart Bakery Jaya,4.0,2,271,"Pengiriman rapi, dokumen lengkap."
+2026-05,PT Armada Dingin Logistik,4.3,1,48,Respon cepat saat ada komplain.
+2026-05,PT Bahan Roti Sejahtera,4.4,43,6361,Kualitas konsisten.
+2026-05,PT Dairy Nusa Pratama,4.0,190,11708,Kemasan barang baik.
+2026-05,PT Ekspedisi Cepat Lancar,4.2,3,378,"Pengiriman rapi, dokumen lengkap."
+2026-05,PT Gandum Emas Raya,4.4,2073,109200,Respon cepat saat ada komplain.
+2026-05,PT Gas Energi Abadi,4.4,7,407,Tidak ada kendala bulan ini.
+2026-05,PT Gula Rasa Nusantara,4.6,221,37256,Pengiriman sering mundur 2-3 hari.
+2026-05,PT Kakao Lestari Jaya,4.3,24,1368,Tidak ada kendala bulan ini.
+2026-05,PT Karton Indah Perkasa,4.3,4664,759742,Kualitas konsisten.
+2026-05,PT Manis Lestari Abadi,4.5,376,47678,Respon cepat saat ada komplain.
+2026-05,PT Plastindo Kemas Utama,4.3,5509,903363,Kualitas konsisten.
+2026-05,PT Sawit Cahaya Pangan,4.3,50,11028,"Pengiriman rapi, dokumen lengkap."
+2026-05,PT Solusi Servis Industri,5.0,0,9,Tidak ada kendala bulan ini.
+2026-05,PT Susu Segar Prima,4.4,50,9352,Tidak ada kendala bulan ini.
+2026-05,PT Teknik Mesin Andalan,4.2,1,136,Kemasan barang baik.
+2026-05,PT Tepung Mulia Sentosa,4.0,1314,118300,Kemasan barang baik.
+2026-05,UD Telur Berkah,4.4,172,12758,Kemasan barang baik.
+2026-06,CV Aroma Bahan Kue,4.2,62,3651,Kualitas konsisten.
+2026-06,CV Bersih Higienis,4.1,2,708,Kemasan barang baik.
+2026-06,CV Butir Halus Mandiri,4.2,1010,84325,Kemasan barang baik.
+2026-06,CV Kemas Prima Plastik,2.2,183084,1161407,"Cetakan buram, sebagian ditolak QC."
+2026-06,CV Kristal Tebu Jaya,4.2,472,42596,Kualitas konsisten.
+2026-06,CV Lumbung Susu,4.4,38,12397,Kemasan barang baik.
+2026-06,CV Minyak Bening Sejati,4.7,144,9479,"Pengiriman rapi, dokumen lengkap."
+2026-06,CV Peternakan Telur Makmur,4.6,130,11207,"Pengiriman rapi, dokumen lengkap."
+2026-06,CV Sarana K3 Mandiri,4.0,952,157906,Kemasan barang baik.
+2026-06,CV Sparepart Bakery Jaya,4.0,0,47,Kemasan barang baik.
+2026-06,PT Armada Dingin Logistik,4.2,1,57,Tidak ada kendala bulan ini.
+2026-06,PT Bahan Roti Sejahtera,4.4,50,3496,Kemasan barang baik.
+2026-06,PT Dairy Nusa Pratama,3.8,151,12213,Tidak ada kendala bulan ini.
+2026-06,PT Ekspedisi Cepat Lancar,4.4,3,311,"Pengiriman rapi, dokumen lengkap."
+2026-06,PT Gandum Emas Raya,4.2,371,70000,Tidak ada kendala bulan ini.
+2026-06,PT Gas Energi Abadi,4.4,3,215,Tidak ada kendala bulan ini.
+2026-06,PT Gula Rasa Nusantara,4.5,198,36232,"Barang datang terlambat, produksi tertunda."
+2026-06,PT Kakao Lestari Jaya,4.1,5,810,Kemasan barang baik.
+2026-06,PT Karton Indah Perkasa,4.5,11494,710865,Kualitas konsisten.
+2026-06,PT Manis Lestari Abadi,4.3,222,40637,"Pengiriman rapi, dokumen lengkap."
+2026-06,PT Plastindo Kemas Utama,4.1,6226,694576,Respon cepat saat ada komplain.
+2026-06,PT Sawit Cahaya Pangan,4.1,403,23846,Tidak ada kendala bulan ini.
+2026-06,PT Solusi Servis Industri,4.2,0,13,Kemasan barang baik.
+2026-06,PT Susu Segar Prima,4.3,130,9367,Kualitas konsisten.
+2026-06,PT Teknik Mesin Andalan,3.8,4,215,Kemasan barang baik.
+2026-06,PT Tepung Mulia Sentosa,4.6,1402,118300,"Pengiriman rapi, dokumen lengkap."
+2026-06,UD Telur Berkah,4.1,108,8302,Respon cepat saat ada komplain.
+2026-07,CV Aroma Bahan Kue,4.6,104,6229,Kemasan barang baik.
+2026-07,CV Bersih Higienis,4.6,4,716,Tidak ada kendala bulan ini.
+2026-07,CV Butir Halus Mandiri,4.5,1242,68116,Kualitas konsisten.
+2026-07,CV Kemas Prima Plastik,2.9,115358,995457,"Cetakan buram, sebagian ditolak QC."
+2026-07,CV Kristal Tebu Jaya,4.6,155,21614,Respon cepat saat ada komplain.
+2026-07,CV Lumbung Susu,4.4,170,15496,Kualitas konsisten.
+2026-07,CV Minyak Bening Sejati,4.2,134,13034,Kemasan barang baik.
+2026-07,CV Peternakan Telur Makmur,4.6,151,10636,"Pengiriman rapi, dokumen lengkap."
+2026-07,CV Sarana K3 Mandiri,4.2,3335,172859,"Pengiriman rapi, dokumen lengkap."
+2026-07,CV Sparepart Bakery Jaya,4.5,1,145,Kemasan barang baik.
+2026-07,PT Armada Dingin Logistik,4.3,0,59,Respon cepat saat ada komplain.
+2026-07,PT Bahan Roti Sejahtera,3.8,41,5256,"Pengiriman rapi, dokumen lengkap."
+2026-07,PT Dairy Nusa Pratama,4.5,159,13235,Respon cepat saat ada komplain.
+2026-07,PT Ekspedisi Cepat Lancar,4.8,5,348,Respon cepat saat ada komplain.
+2026-07,PT Gandum Emas Raya,4.1,1684,115625,"Pengiriman rapi, dokumen lengkap."
+2026-07,PT Gas Energi Abadi,4.6,4,278,"Pengiriman rapi, dokumen lengkap."
+2026-07,PT Gula Rasa Nusantara,4.0,805,49062,Kualitas oke tapi jadwal kirim tidak tepat.
+2026-07,PT Kakao Lestari Jaya,4.7,19,1908,Tidak ada kendala bulan ini.
+2026-07,PT Karton Indah Perkasa,4.4,4002,765238,"Pengiriman rapi, dokumen lengkap."
+2026-07,PT Manis Lestari Abadi,3.9,317,57494,Kemasan barang baik.
+2026-07,PT Plastindo Kemas Utama,4.2,4646,626303,Respon cepat saat ada komplain.
+2026-07,PT Sawit Cahaya Pangan,4.1,301,16724,"Pengiriman rapi, dokumen lengkap."
+2026-07,PT Solusi Servis Industri,4.1,0,18,Tidak ada kendala bulan ini.
+2026-07,PT Susu Segar Prima,4.2,261,14955,Kemasan barang baik.
+2026-07,PT Teknik Mesin Andalan,4.4,2,158,"Pengiriman rapi, dokumen lengkap."
+2026-07,PT Tepung Mulia Sentosa,4.0,1295,109200,Respon cepat saat ada komplain.
+2026-07,UD Telur Berkah,4.3,186,11784,"Pengiriman rapi, dokumen lengkap."
+2026-08,CV Aroma Bahan Kue,4.4,100,5386,Respon cepat saat ada komplain.
+2026-08,CV Bersih Higienis,4.7,11,700,Respon cepat saat ada komplain.
+2026-08,CV Butir Halus Mandiri,4.4,870,45983,"Pengiriman rapi, dokumen lengkap."
+2026-08,CV Kemas Prima Plastik,2.5,212236,1627292,"Cetakan buram, sebagian ditolak QC."
+2026-08,CV Kristal Tebu Jaya,4.1,273,50752,Tidak ada kendala bulan ini.
+2026-08,CV Lumbung Susu,4.3,45,8349,Kemasan barang baik.
+2026-08,CV Minyak Bening Sejati,4.0,255,16415,Kemasan barang baik.
+2026-08,CV Peternakan Telur Makmur,4.5,190,11288,Tidak ada kendala bulan ini.
+2026-08,CV Sarana K3 Mandiri,4.3,2199,257103,Tidak ada kendala bulan ini.
+2026-08,CV Sparepart Bakery Jaya,4.6,3,277,Kualitas konsisten.
+2026-08,PT Armada Dingin Logistik,4.3,0,39,Respon cepat saat ada komplain.
+2026-08,PT Bahan Roti Sejahtera,4.7,26,6472,Respon cepat saat ada komplain.
+2026-08,PT Dairy Nusa Pratama,4.4,188,10303,"Pengiriman rapi, dokumen lengkap."
+2026-08,PT Ekspedisi Cepat Lancar,4.4,3,359,Tidak ada kendala bulan ini.
+2026-08,PT Gandum Emas Raya,4.1,988,89675,"Pengiriman rapi, dokumen lengkap."
+2026-08,PT Gas Energi Abadi,4.2,1,229,Kualitas konsisten.
+2026-08,PT Gula Rasa Nusantara,4.7,315,45782,Pengiriman sering mundur 2-3 hari.
+2026-08,PT Kakao Lestari Jaya,4.6,10,1865,Respon cepat saat ada komplain.
+2026-08,PT Karton Indah Perkasa,4.6,3467,350976,Tidak ada kendala bulan ini.
+2026-08,PT Manis Lestari Abadi,4.4,345,35610,"Pengiriman rapi, dokumen lengkap."
+2026-08,PT Plastindo Kemas Utama,4.2,15107,921728,"Pengiriman rapi, dokumen lengkap."
+2026-08,PT Sawit Cahaya Pangan,4.5,211,10585,Respon cepat saat ada komplain.
+2026-08,PT Solusi Servis Industri,4.4,0,15,"Pengiriman rapi, dokumen lengkap."
+2026-08,PT Susu Segar Prima,4.4,54,7583,Tidak ada kendala bulan ini.
+2026-08,PT Teknik Mesin Andalan,4.6,1,143,Kualitas konsisten.
+2026-08,PT Tepung Mulia Sentosa,4.5,439,121725,Tidak ada kendala bulan ini.
+2026-08,UD Telur Berkah,4.3,256,14293,"Pengiriman rapi, dokumen lengkap."
+2026-09,CV Aroma Bahan Kue,4.0,27,4840,Tidak ada kendala bulan ini.
+2026-09,CV Bersih Higienis,3.9,2,471,Kemasan barang baik.
+2026-09,CV Butir Halus Mandiri,4.3,286,37835,Respon cepat saat ada komplain.
+2026-09,CV Kemas Prima Plastik,2.7,62912,567902,Ketebalan plastik tidak sesuai spesifikasi.
+2026-09,CV Kristal Tebu Jaya,3.8,213,47523,Respon cepat saat ada komplain.
+2026-09,CV Lumbung Susu,4.2,174,8705,"Pengiriman rapi, dokumen lengkap."
+2026-09,CV Minyak Bening Sejati,4.0,123,16280,"Pengiriman rapi, dokumen lengkap."
+2026-09,CV Peternakan Telur Makmur,4.7,23,7307,Tidak ada kendala bulan ini.
+2026-09,CV Sarana K3 Mandiri,4.5,2540,189292,Kemasan barang baik.
+2026-09,CV Sparepart Bakery Jaya,3.9,0,114,Tidak ada kendala bulan ini.
+2026-09,PT Armada Dingin Logistik,4.3,0,45,Respon cepat saat ada komplain.
+2026-09,PT Bahan Roti Sejahtera,4.3,37,3390,Respon cepat saat ada komplain.
+2026-09,PT Dairy Nusa Pratama,4.5,114,7705,Tidak ada kendala bulan ini.
+2026-09,PT Ekspedisi Cepat Lancar,4.4,2,293,Tidak ada kendala bulan ini.
+2026-09,PT Gandum Emas Raya,4.2,235,60775,Kualitas konsisten.
+2026-09,PT Gas Energi Abadi,4.4,1,204,"Pengiriman rapi, dokumen lengkap."
+2026-09,PT Gula Rasa Nusantara,4.4,670,43033,Pengiriman sering mundur 2-3 hari.
+2026-09,PT Kakao Lestari Jaya,4.5,8,1518,Tidak ada kendala bulan ini.
+2026-09,PT Karton Indah Perkasa,4.3,10615,718897,Kualitas konsisten.
+2026-09,PT Manis Lestari Abadi,3.9,415,51196,Kualitas konsisten.
+2026-09,PT Plastindo Kemas Utama,3.9,12584,740985,Kemasan barang baik.
+2026-09,PT Sawit Cahaya Pangan,4.3,82,18536,Respon cepat saat ada komplain.
+2026-09,PT Solusi Servis Industri,4.0,0,10,Tidak ada kendala bulan ini.
+2026-09,PT Susu Segar Prima,4.7,117,14000,Kualitas konsisten.
+2026-09,PT Teknik Mesin Andalan,4.1,2,145,Respon cepat saat ada komplain.
+2026-09,PT Tepung Mulia Sentosa,4.5,892,74825,Tidak ada kendala bulan ini.
+2026-09,UD Telur Berkah,4.3,151,14439,Kualitas konsisten.
+2026-10,CV Aroma Bahan Kue,4.1,52,2906,Kemasan barang baik.
+2026-10,CV Bersih Higienis,4.6,3,326,Tidak ada kendala bulan ini.
+2026-10,CV Butir Halus Mandiri,3.7,654,49453,"Pengiriman rapi, dokumen lengkap."
+2026-10,CV Kemas Prima Plastik,2.9,173316,1368838,"Banyak kemasan sobek, perlu retur."
+2026-10,CV Kristal Tebu Jaya,4.4,717,40965,Respon cepat saat ada komplain.
+2026-10,CV Lumbung Susu,4.6,170,10905,"Pengiriman rapi, dokumen lengkap."
+2026-10,CV Minyak Bening Sejati,4.3,232,15820,Respon cepat saat ada komplain.
+2026-10,CV Peternakan Telur Makmur,4.3,189,11525,Kualitas konsisten.
+2026-10,CV Sarana K3 Mandiri,4.1,1731,98335,Tidak ada kendala bulan ini.
+2026-10,CV Sparepart Bakery Jaya,4.7,1,100,"Pengiriman rapi, dokumen lengkap."
+2026-10,PT Armada Dingin Logistik,4.4,1,54,Respon cepat saat ada komplain.
+2026-10,PT Bahan Roti Sejahtera,4.4,93,4948,Respon cepat saat ada komplain.
+2026-10,PT Dairy Nusa Pratama,4.0,169,12411,Respon cepat saat ada komplain.
+2026-10,PT Ekspedisi Cepat Lancar,4.2,7,501,Respon cepat saat ada komplain.
+2026-10,PT Gandum Emas Raya,4.0,824,125675,Kemasan barang baik.
+2026-10,PT Gas Energi Abadi,4.5,5,280,Respon cepat saat ada komplain.
+2026-10,PT Gula Rasa Nusantara,4.4,790,61453,"Barang datang terlambat, produksi tertunda."
+2026-10,PT Kakao Lestari Jaya,4.4,23,2301,Respon cepat saat ada komplain.
+2026-10,PT Karton Indah Perkasa,4.3,14142,808658,Tidak ada kendala bulan ini.
+2026-10,PT Manis Lestari Abadi,3.8,267,59710,"Pengiriman rapi, dokumen lengkap."
+2026-10,PT Plastindo Kemas Utama,4.1,8755,578502,"Pengiriman rapi, dokumen lengkap."
+2026-10,PT Sawit Cahaya Pangan,4.4,264,14220,Respon cepat saat ada komplain.
+2026-10,PT Solusi Servis Industri,3.8,0,8,Tidak ada kendala bulan ini.
+2026-10,PT Susu Segar Prima,4.7,174,18423,"Pengiriman rapi, dokumen lengkap."
+2026-10,PT Teknik Mesin Andalan,4.2,3,194,Kemasan barang baik.
+2026-10,PT Tepung Mulia Sentosa,4.4,915,112150,Kualitas konsisten.
+2026-10,UD Telur Berkah,4.1,193,12393,Kemasan barang baik.

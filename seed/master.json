@@ -1,0 +1,513 @@
+{
+  "categories": [
+    "Bahan Baku",
+    "Kemasan",
+    "Sparepart",
+    "Jasa",
+    "Logistik",
+    "Bahan Pendukung"
+  ],
+  "commodities": [
+    {
+      "name": "Gula Pasir",
+      "base_unit": "kg"
+    },
+    {
+      "name": "Tepung Terigu",
+      "base_unit": "kg"
+    },
+    {
+      "name": "Minyak Nabati",
+      "base_unit": "liter"
+    },
+    {
+      "name": "Mentega",
+      "base_unit": "kg"
+    },
+    {
+      "name": "Susu Bubuk",
+      "base_unit": "kg"
+    },
+    {
+      "name": "Cokelat Bubuk",
+      "base_unit": "kg"
+    },
+    {
+      "name": "Keju",
+      "base_unit": "kg"
+    },
+    {
+      "name": "Telur Ayam",
+      "base_unit": "kg"
+    }
+  ],
+  "global_units": [
+    {
+      "from_unit": "kg",
+      "base_unit": "kg",
+      "to_base": 1
+    },
+    {
+      "from_unit": "gram",
+      "base_unit": "kg",
+      "to_base": 0.001
+    },
+    {
+      "from_unit": "sak 25 kg",
+      "base_unit": "kg",
+      "to_base": 25
+    },
+    {
+      "from_unit": "sak 50 kg",
+      "base_unit": "kg",
+      "to_base": 50
+    },
+    {
+      "from_unit": "liter",
+      "base_unit": "liter",
+      "to_base": 1
+    },
+    {
+      "from_unit": "jerigen 18 l",
+      "base_unit": "liter",
+      "to_base": 18
+    },
+    {
+      "from_unit": "pcs",
+      "base_unit": "pcs",
+      "to_base": 1
+    },
+    {
+      "from_unit": "paket",
+      "base_unit": "pcs",
+      "to_base": 1
+    },
+    {
+      "from_unit": "trip",
+      "base_unit": "pcs",
+      "to_base": 1
+    }
+  ],
+  "items": [
+    {
+      "name": "Gula Pasir Kristal Putih",
+      "category": "Bahan Baku",
+      "commodity": "Gula Pasir",
+      "base_unit": "kg",
+      "karton_to_base": null
+    },
+    {
+      "name": "Gula Halus",
+      "category": "Bahan Baku",
+      "commodity": "Gula Pasir",
+      "base_unit": "kg",
+      "karton_to_base": null
+    },
+    {
+      "name": "Tepung Terigu Protein Tinggi",
+      "category": "Bahan Baku",
+      "commodity": "Tepung Terigu",
+      "base_unit": "kg",
+      "karton_to_base": null
+    },
+    {
+      "name": "Tepung Terigu Protein Sedang",
+      "category": "Bahan Baku",
+      "commodity": "Tepung Terigu",
+      "base_unit": "kg",
+      "karton_to_base": null
+    },
+    {
+      "name": "Minyak Goreng Sawit",
+      "category": "Bahan Baku",
+      "commodity": "Minyak Nabati",
+      "base_unit": "liter",
+      "karton_to_base": null
+    },
+    {
+      "name": "Mentega Tawar",
+      "category": "Bahan Baku",
+      "commodity": "Mentega",
+      "base_unit": "kg",
+      "karton_to_base": 15
+    },
+    {
+      "name": "Susu Bubuk Full Cream",
+      "category": "Bahan Baku",
+      "commodity": "Susu Bubuk",
+      "base_unit": "kg",
+      "karton_to_base": null
+    },
+    {
+      "name": "Cokelat Bubuk",
+      "category": "Bahan Baku",
+      "commodity": "Cokelat Bubuk",
+      "base_unit": "kg",
+      "karton_to_base": null
+    },
+    {
+      "name": "Keju Cheddar Blok",
+      "category": "Bahan Baku",
+      "commodity": "Keju",
+      "base_unit": "kg",
+      "karton_to_base": 10
+    },
+    {
+      "name": "Telur Ayam Negeri",
+      "category": "Bahan Baku",
+      "commodity": "Telur Ayam",
+      "base_unit": "kg",
+      "karton_to_base": null
+    },
+    {
+      "name": "Ragi Instan",
+      "category": "Bahan Baku",
+      "commodity": null,
+      "base_unit": "kg",
+      "karton_to_base": null
+    },
+    {
+      "name": "Garam Halus",
+      "category": "Bahan Baku",
+      "commodity": null,
+      "base_unit": "kg",
+      "karton_to_base": null
+    },
+    {
+      "name": "Baking Powder",
+      "category": "Bahan Baku",
+      "commodity": null,
+      "base_unit": "kg",
+      "karton_to_base": null
+    },
+    {
+      "name": "Vanili Bubuk",
+      "category": "Bahan Baku",
+      "commodity": null,
+      "base_unit": "kg",
+      "karton_to_base": null
+    },
+    {
+      "name": "Pewarna Makanan",
+      "category": "Bahan Baku",
+      "commodity": null,
+      "base_unit": "liter",
+      "karton_to_base": null
+    },
+    {
+      "name": "Selai Stroberi",
+      "category": "Bahan Baku",
+      "commodity": null,
+      "base_unit": "kg",
+      "karton_to_base": null
+    },
+    {
+      "name": "Kismis",
+      "category": "Bahan Baku",
+      "commodity": null,
+      "base_unit": "kg",
+      "karton_to_base": null
+    },
+    {
+      "name": "Wijen Putih",
+      "category": "Bahan Baku",
+      "commodity": null,
+      "base_unit": "kg",
+      "karton_to_base": null
+    },
+    {
+      "name": "Plastik Kemasan Roti",
+      "category": "Kemasan",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": 1000
+    },
+    {
+      "name": "Box Kue Karton",
+      "category": "Kemasan",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": 100
+    },
+    {
+      "name": "Paper Cup 8oz",
+      "category": "Kemasan",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": 1000
+    },
+    {
+      "name": "Label Stiker Produk",
+      "category": "Kemasan",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Tray Plastik",
+      "category": "Kemasan",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": 200
+    },
+    {
+      "name": "Kantong Kresek",
+      "category": "Kemasan",
+      "commodity": null,
+      "base_unit": "kg",
+      "karton_to_base": null
+    },
+    {
+      "name": "Lakban Bening",
+      "category": "Kemasan",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Stretch Film",
+      "category": "Kemasan",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Dus Karton Besar",
+      "category": "Kemasan",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Plastik Vakum",
+      "category": "Kemasan",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": 500
+    },
+    {
+      "name": "Mika Kue",
+      "category": "Kemasan",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": 500
+    },
+    {
+      "name": "Pita Kemasan",
+      "category": "Kemasan",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Bearing 6205",
+      "category": "Sparepart",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "V-Belt Mixer",
+      "category": "Sparepart",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Seal Pintu Oven",
+      "category": "Sparepart",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Heater Element Oven",
+      "category": "Sparepart",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Sensor Suhu",
+      "category": "Sparepart",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Carbon Brush Motor Mixer",
+      "category": "Sparepart",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Conveyor Belt",
+      "category": "Sparepart",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Filter Udara Kompresor",
+      "category": "Sparepart",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Oli Gearbox",
+      "category": "Sparepart",
+      "commodity": null,
+      "base_unit": "liter",
+      "karton_to_base": null
+    },
+    {
+      "name": "Nozzle Filling",
+      "category": "Sparepart",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Servis Mesin Oven",
+      "category": "Jasa",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Kalibrasi Timbangan",
+      "category": "Jasa",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Pest Control Bulanan",
+      "category": "Jasa",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Cleaning Service Pabrik",
+      "category": "Jasa",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Maintenance AC",
+      "category": "Jasa",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Uji Lab Produk",
+      "category": "Jasa",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Pengiriman Jakarta-Bandung",
+      "category": "Logistik",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Pengiriman Jakarta-Surabaya",
+      "category": "Logistik",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Pengiriman Dalam Kota",
+      "category": "Logistik",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Sewa Truk Reefer Harian",
+      "category": "Logistik",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Ekspedisi Laut Makassar",
+      "category": "Logistik",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Kurir Dokumen",
+      "category": "Logistik",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Gas LPG 50 kg",
+      "category": "Bahan Pendukung",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": null
+    },
+    {
+      "name": "Sabun Cuci Tangan",
+      "category": "Bahan Pendukung",
+      "commodity": null,
+      "base_unit": "liter",
+      "karton_to_base": null
+    },
+    {
+      "name": "Sarung Tangan Plastik",
+      "category": "Bahan Pendukung",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": 1000
+    },
+    {
+      "name": "Hairnet",
+      "category": "Bahan Pendukung",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": 1000
+    },
+    {
+      "name": "Masker Medis",
+      "category": "Bahan Pendukung",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": 2000
+    },
+    {
+      "name": "Alkohol 70%",
+      "category": "Bahan Pendukung",
+      "commodity": null,
+      "base_unit": "liter",
+      "karton_to_base": null
+    },
+    {
+      "name": "Tisu Gulung",
+      "category": "Bahan Pendukung",
+      "commodity": null,
+      "base_unit": "pcs",
+      "karton_to_base": 48
+    },
+    {
+      "name": "Desinfektan",
+      "category": "Bahan Pendukung",
+      "commodity": null,
+      "base_unit": "liter",
+      "karton_to_base": null
+    }
+  ]
+}
