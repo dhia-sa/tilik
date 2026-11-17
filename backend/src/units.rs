@@ -17,10 +17,9 @@ impl std::fmt::Display for UnitError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             UnitError::Unknown(u) => write!(f, "satuan tidak dikenal: '{u}'"),
-            UnitError::Mismatch { unit, unit_base, item_base } => write!(
-                f,
-                "satuan '{unit}' ({unit_base}) tidak cocok dengan satuan dasar item ({item_base})"
-            ),
+            UnitError::Mismatch { unit, unit_base, item_base } => {
+                write!(f, "satuan '{unit}' ({unit_base}) tidak cocok dengan satuan dasar item ({item_base})")
+            }
         }
     }
 }
@@ -101,11 +100,9 @@ impl UnitTable {
         }
         match self.global.get(&u) {
             Some((base, f)) if base == item_base => Ok(*f),
-            Some((base, _)) => Err(UnitError::Mismatch {
-                unit: unit.trim().to_string(),
-                unit_base: base.clone(),
-                item_base: item_base.to_string(),
-            }),
+            Some((base, _)) => {
+                Err(UnitError::Mismatch { unit: unit.trim().to_string(), unit_base: base.clone(), item_base: item_base.to_string() })
+            }
             None => Err(UnitError::Unknown(unit.trim().to_string())),
         }
     }

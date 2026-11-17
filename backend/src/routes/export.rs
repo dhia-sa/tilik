@@ -62,7 +62,12 @@ enum Cell {
     Num(Option<f64>),
 }
 
-pub async fn export(State(st): State<AppState>, _u: CurrentUser, Path(file): Path<String>, Query(q): Query<FilterQuery>) -> AppResult<impl IntoResponse> {
+pub async fn export(
+    State(st): State<AppState>,
+    _u: CurrentUser,
+    Path(file): Path<String>,
+    Query(q): Query<FilterQuery>,
+) -> AppResult<impl IntoResponse> {
     let view = file.strip_suffix(".xlsx").unwrap_or(&file).to_string();
     let f = resolve(&st, &q).await?;
     let mut wb = Workbook::new();
@@ -70,14 +75,22 @@ pub async fn export(State(st): State<AppState>, _u: CurrentUser, Path(file): Pat
     let pct = Format::new().set_num_format("0.0%");
     let num = Format::new().set_num_format("#,##0.0");
     let bold = Format::new().set_bold();
+    let category_name = match f.category {
+        Some(id) => sqlx::query_scalar::<_, String>("SELECT name FROM categories WHERE id = ?").bind(id).fetch_optional(&st.db).await?,
+        None => None,
+    };
+    let vendor_name = match f.vendor {
+        Some(id) => sqlx::query_scalar::<_, String>("SELECT name FROM vendors WHERE id = ?").bind(id).fetch_optional(&st.db).await?,
+        None => None,
+    };
     let filter_text = format!(
         "Filter: {} s/d {} (pembanding {} s/d {}){}{}",
         f.from,
         f.to,
         f.prev_from,
         f.prev_to,
-        f.category.map(|c| format!(", kategori id {c}")).unwrap_or_default(),
-        f.vendor.map(|v| format!(", vendor id {v}")).unwrap_or_default()
+        f.category.map(|c| format!(", kategori {}", category_name.clone().unwrap_or_else(|| format!("id {c}")))).unwrap_or_default(),
+        f.vendor.map(|v| format!(", vendor {}", vendor_name.clone().unwrap_or_else(|| format!("id {v}")))).unwrap_or_default()
     );
     let scope = Scope { category: f.category, vendor: f.vendor, commodity: None };
     match view.as_str() {
@@ -91,7 +104,13 @@ pub async fn export(State(st): State<AppState>, _u: CurrentUser, Path(file): Pat
                 s.title(&filter_text)?;
                 s.header(&["Kategori", "Spend (Rp)", "Spend periode sebelumnya (Rp)", "Perubahan", "Porsi"])?;
                 for c in &cats {
-                    s.cells(vec![Cell::S(c.name.clone()), Cell::Money(c.spend), Cell::Money(c.prev_spend), Cell::Pct(c.change_pct), Cell::Pct(Some(c.share_pct))])?;
+                    s.cells(vec![
+                        Cell::S(c.name.clone()),
+                        Cell::Money(c.spend),
+                        Cell::Money(c.prev_spend),
+                        Cell::Pct(c.change_pct),
+                        Cell::Pct(Some(c.share_pct)),
+                    ])?;
                 }
             }
             let ws = wb.add_worksheet().set_name("Spend per item").map_err(xe)?;
@@ -100,8 +119,13 @@ pub async fn export(State(st): State<AppState>, _u: CurrentUser, Path(file): Pat
             s.header(&["Item", "Kategori", "Spend (Rp)", "Qty (satuan dasar)", "Satuan dasar", "Harga rata-rata (Rp)", "Jumlah PO"])?;
             for i in &items {
                 s.cells(vec![
-                    Cell::S(i.item.clone()), Cell::S(i.category.clone()), Cell::Money(i.spend), Cell::Num(Some(i.base_qty)), Cell::S(i.base_unit.clone()),
-                    Cell::Money(i.avg_price), Cell::Num(Some(i.po_count as f64)),
+                    Cell::S(i.item.clone()),
+                    Cell::S(i.category.clone()),
+                    Cell::Money(i.spend),
+                    Cell::Num(Some(i.base_qty)),
+                    Cell::S(i.base_unit.clone()),
+                    Cell::Money(i.avg_price),
+                    Cell::Num(Some(i.po_count as f64)),
                 ])?;
             }
         }
@@ -116,7 +140,11 @@ pub async fn export(State(st): State<AppState>, _u: CurrentUser, Path(file): Pat
                 s.header(&["Komoditas", "Satuan", "Harga minggu ini (Rp)", "Harga minggu lalu (Rp)", "Perubahan", "Alert"])?;
                 for r in &rows {
                     s.cells(vec![
-                        Cell::S(r.name.clone()), Cell::S(r.base_unit.clone()), Cell::Num(r.price_this_week), Cell::Num(r.price_last_week), Cell::Pct(r.change_pct),
+                        Cell::S(r.name.clone()),
+                        Cell::S(r.base_unit.clone()),
+                        Cell::Num(r.price_this_week),
+                        Cell::Num(r.price_last_week),
+                        Cell::Pct(r.change_pct),
                         Cell::S(r.alert_message.clone().unwrap_or_default()),
                     ])?;
                 }
@@ -128,7 +156,12 @@ pub async fn export(State(st): State<AppState>, _u: CurrentUser, Path(file): Pat
                 let d = queries::commodity_detail(&st.db, r.id, reference, 52, settings.anomaly()).await?;
                 for w in d.weeks {
                     s.cells(vec![
-                        Cell::S(r.name.clone()), Cell::S(w.week), Cell::S(w.week_start), Cell::Num(w.price), Cell::Num(Some(w.qty)), Cell::Pct(w.change_pct),
+                        Cell::S(r.name.clone()),
+                        Cell::S(w.week),
+                        Cell::S(w.week_start),
+                        Cell::Num(w.price),
+                        Cell::Num(Some(w.qty)),
+                        Cell::Pct(w.change_pct),
                         Cell::S(if w.alert { "ya".into() } else { String::new() }),
                     ])?;
                 }
@@ -143,14 +176,35 @@ pub async fn export(State(st): State<AppState>, _u: CurrentUser, Path(file): Pat
             s.title("SpendView - Scorecard vendor")?;
             s.title(&format!("{filter_text}. Bobot: ketepatan {}%, kualitas {}%, harga {}%", w.on_time, w.quality, w.price))?;
             s.header(&[
-                "Vendor", "Skor total", "Label", "Spend (Rp)", "Jumlah PO", "PO terkirim", "PO telat", "Tepat waktu", "Rata-rata kualitas (1-5)",
-                "Reject", "Skor kualitas", "Selisih harga vs pasar", "Skor harga",
+                "Vendor",
+                "Skor total",
+                "Label",
+                "Spend (Rp)",
+                "Jumlah PO",
+                "PO terkirim",
+                "PO telat",
+                "Tepat waktu",
+                "Rata-rata kualitas (1-5)",
+                "Reject",
+                "Skor kualitas",
+                "Selisih harga vs pasar",
+                "Skor harga",
             ])?;
             for r in &rows {
                 s.cells(vec![
-                    Cell::S(r.vendor.clone()), Cell::Num(r.total), Cell::S(r.label.clone()), Cell::Money(r.spend), Cell::Num(Some(r.po_count as f64)),
-                    Cell::Num(Some(r.delivered as f64)), Cell::Num(Some(r.late as f64)), Cell::Pct(r.on_time_pct), Cell::Num(r.avg_quality), Cell::Pct(r.reject_pct),
-                    Cell::Num(r.quality_score), Cell::Pct(r.price_diff_pct), Cell::Num(r.price_score),
+                    Cell::S(r.vendor.clone()),
+                    Cell::Num(r.total),
+                    Cell::S(r.label.clone()),
+                    Cell::Money(r.spend),
+                    Cell::Num(Some(r.po_count as f64)),
+                    Cell::Num(Some(r.delivered as f64)),
+                    Cell::Num(Some(r.late as f64)),
+                    Cell::Pct(r.on_time_pct),
+                    Cell::Num(r.avg_quality),
+                    Cell::Pct(r.reject_pct),
+                    Cell::Num(r.quality_score),
+                    Cell::Pct(r.price_diff_pct),
+                    Cell::Num(r.price_score),
                 ])?;
             }
         }

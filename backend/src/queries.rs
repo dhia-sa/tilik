@@ -109,7 +109,14 @@ pub struct SpendRow {
     pub share_pct: f64,
 }
 
-pub async fn spend_by(db: &SqlitePool, group: GroupBy, from: NaiveDate, to: NaiveDate, s: Scope, limit: Option<i64>) -> AppResult<Vec<SpendRow>> {
+pub async fn spend_by(
+    db: &SqlitePool,
+    group: GroupBy,
+    from: NaiveDate,
+    to: NaiveDate,
+    s: Scope,
+    limit: Option<i64>,
+) -> AppResult<Vec<SpendRow>> {
     let (key, name, join, order) = match group {
         GroupBy::Category => ("c.id", "c.name", "JOIN categories c ON c.id = i.category_id", "2 DESC"),
         GroupBy::Vendor => ("v.id", "v.name", "JOIN vendors v ON v.id = po.vendor_id", "2 DESC"),
@@ -126,7 +133,13 @@ pub async fn spend_by(db: &SqlitePool, group: GroupBy, from: NaiveDate, to: Naiv
     let total = kpis(db, from, to, s).await?.total_spend;
     Ok(rows
         .into_iter()
-        .map(|(name, spend, po_count, id)| SpendRow { id, name, spend, po_count, share_pct: if total > 0.0 { spend / total * 100.0 } else { 0.0 } })
+        .map(|(name, spend, po_count, id)| SpendRow {
+            id,
+            name,
+            spend,
+            po_count,
+            share_pct: if total > 0.0 { spend / total * 100.0 } else { 0.0 },
+        })
         .collect())
 }
 
@@ -140,7 +153,14 @@ pub struct CategorySpend {
     pub share_pct: f64,
 }
 
-pub async fn spend_by_category_compare(db: &SqlitePool, from: NaiveDate, to: NaiveDate, pf: NaiveDate, pt: NaiveDate, s: Scope) -> AppResult<Vec<CategorySpend>> {
+pub async fn spend_by_category_compare(
+    db: &SqlitePool,
+    from: NaiveDate,
+    to: NaiveDate,
+    pf: NaiveDate,
+    pt: NaiveDate,
+    s: Scope,
+) -> AppResult<Vec<CategorySpend>> {
     let cur = spend_by(db, GroupBy::Category, from, to, Scope { category: None, ..s }, None).await?;
     let prev = spend_by(db, GroupBy::Category, pf, pt, Scope { category: None, ..s }, None).await?;
     let prev_map: HashMap<Option<i64>, f64> = prev.iter().map(|r| (r.id, r.spend)).collect();
@@ -152,7 +172,14 @@ pub async fn spend_by_category_compare(db: &SqlitePool, from: NaiveDate, to: Nai
             let spend = cur_map.get(&Some(id)).map(|r| r.spend).unwrap_or(0.0);
             let share = cur_map.get(&Some(id)).map(|r| r.share_pct).unwrap_or(0.0);
             let prev_spend = prev_map.get(&Some(id)).copied().unwrap_or(0.0);
-            CategorySpend { id, name, spend, prev_spend, change_pct: (prev_spend > 0.0).then(|| (spend / prev_spend - 1.0) * 100.0), share_pct: share }
+            CategorySpend {
+                id,
+                name,
+                spend,
+                prev_spend,
+                change_pct: (prev_spend > 0.0).then(|| (spend / prev_spend - 1.0) * 100.0),
+                share_pct: share,
+            }
         })
         .collect();
     out.sort_by(|a, b| b.spend.total_cmp(&a.spend));
@@ -177,7 +204,8 @@ pub async fn top_items(db: &SqlitePool, from: NaiveDate, to: NaiveDate, s: Scope
          FROM purchase_orders po JOIN items i ON i.id = po.item_id JOIN categories c ON c.id = i.category_id
          WHERE {PO_FILTER} GROUP BY i.id ORDER BY spend DESC LIMIT ?"
     );
-    let rows: Vec<(i64, String, String, f64, f64, String, i64)> = bind_filter!(sqlx::query_as(&sql), from, to, s).bind(limit).fetch_all(db).await?;
+    let rows: Vec<(i64, String, String, f64, f64, String, i64)> =
+        bind_filter!(sqlx::query_as(&sql), from, to, s).bind(limit).fetch_all(db).await?;
     Ok(rows
         .into_iter()
         .map(|(item_id, item, category, spend, base_qty, base_unit, po_count)| ItemSpend {
@@ -193,7 +221,14 @@ pub async fn top_items(db: &SqlitePool, from: NaiveDate, to: NaiveDate, s: Scope
         .collect())
 }
 
-pub async fn decomposition(db: &SqlitePool, from: NaiveDate, to: NaiveDate, pf: NaiveDate, pt: NaiveDate, s: Scope) -> AppResult<Decomposition> {
+pub async fn decomposition(
+    db: &SqlitePool,
+    from: NaiveDate,
+    to: NaiveDate,
+    pf: NaiveDate,
+    pt: NaiveDate,
+    s: Scope,
+) -> AppResult<Decomposition> {
     let sql = format!(
         "SELECT i.id, i.name, TOTAL(po.base_qty), TOTAL(po.amount)
          FROM purchase_orders po JOIN items i ON i.id = po.item_id WHERE {PO_FILTER} GROUP BY i.id"
@@ -239,10 +274,13 @@ pub struct CommodityRow {
 
 pub fn weeks_ending(reference: NaiveDate, n: i64) -> Vec<(String, NaiveDate)> {
     let last = crate::analytics::period::week_start(reference);
-    (0..n).rev().map(|k| {
-        let ws = last - Duration::days(7 * k);
-        (iso_week_label(ws), ws)
-    }).collect()
+    (0..n)
+        .rev()
+        .map(|k| {
+            let ws = last - Duration::days(7 * k);
+            (iso_week_label(ws), ws)
+        })
+        .collect()
 }
 
 pub async fn commodities_table(db: &SqlitePool, reference: NaiveDate) -> AppResult<Vec<CommodityRow>> {
@@ -252,12 +290,16 @@ pub async fn commodities_table(db: &SqlitePool, reference: NaiveDate) -> AppResu
     let coms: Vec<(i64, String, String)> = sqlx::query_as("SELECT id, name, base_unit FROM commodities ORDER BY id").fetch_all(db).await?;
     let first = weeks.first().map(|w| w.1.to_string()).unwrap_or_default();
     let rows: Vec<(i64, String, f64, f64)> =
-        sqlx::query_as("SELECT commodity_id, week, avg_price, base_qty FROM commodity_weekly WHERE week_start >= ?").bind(first).fetch_all(db).await?;
+        sqlx::query_as("SELECT commodity_id, week, avg_price, base_qty FROM commodity_weekly WHERE week_start >= ?")
+            .bind(first)
+            .fetch_all(db)
+            .await?;
     let mut map: HashMap<(i64, String), (f64, f64)> = HashMap::new();
     for (c, w, p, q) in rows {
         map.insert((c, w), (p, q));
     }
-    let alerts: Vec<(i64, String)> = sqlx::query_as("SELECT ref_id, message FROM alerts WHERE kind = 'price' AND week = ?").bind(&this_week).fetch_all(db).await?;
+    let alerts: Vec<(i64, String)> =
+        sqlx::query_as("SELECT ref_id, message FROM alerts WHERE kind = 'price' AND week = ?").bind(&this_week).fetch_all(db).await?;
     let alert_map: HashMap<i64, String> = alerts.into_iter().collect();
     Ok(coms
         .into_iter()
@@ -320,19 +362,26 @@ pub struct CommodityDetail {
     pub vendor_weekly: Vec<serde_json::Value>,
 }
 
-pub async fn commodity_detail(db: &SqlitePool, id: i64, reference: NaiveDate, n_weeks: i64, params: AnomalyParams) -> AppResult<CommodityDetail> {
+pub async fn commodity_detail(
+    db: &SqlitePool,
+    id: i64,
+    reference: NaiveDate,
+    n_weeks: i64,
+    params: AnomalyParams,
+) -> AppResult<CommodityDetail> {
     let (name, unit): (String, String) = sqlx::query_as("SELECT name, base_unit FROM commodities WHERE id = ?")
         .bind(id)
         .fetch_optional(db)
         .await?
         .ok_or_else(|| AppError::NotFound("Komoditas tidak ditemukan".into()))?;
     let series = commodity_series(db, id).await?;
-    let qty: HashMap<String, f64> = sqlx::query_as::<_, (String, f64)>("SELECT week, base_qty FROM commodity_weekly WHERE commodity_id = ?")
-        .bind(id)
-        .fetch_all(db)
-        .await?
-        .into_iter()
-        .collect();
+    let qty: HashMap<String, f64> =
+        sqlx::query_as::<_, (String, f64)>("SELECT week, base_qty FROM commodity_weekly WHERE commodity_id = ?")
+            .bind(id)
+            .fetch_all(db)
+            .await?
+            .into_iter()
+            .collect();
     let idx: HashMap<String, usize> = series.iter().enumerate().map(|(i, w)| (w.week.clone(), i)).collect();
     let weeks: Vec<WeekDetail> = weeks_ending(reference, n_weeks)
         .into_iter()
@@ -353,7 +402,16 @@ pub async fn commodity_detail(db: &SqlitePool, id: i64, reference: NaiveDate, n_
                     alert: a.by_threshold || a.by_sigma,
                 }
             }
-            None => WeekDetail { week: w, week_start: ws.to_string(), price: None, qty: 0.0, change_pct: None, mean12: None, upper_band: None, alert: false },
+            None => WeekDetail {
+                week: w,
+                week_start: ws.to_string(),
+                price: None,
+                qty: 0.0,
+                change_pct: None,
+                mean12: None,
+                upper_band: None,
+                alert: false,
+            },
         })
         .collect();
     let start52 = weeks.first().map(|w| w.week_start.clone()).unwrap_or_default();
@@ -498,10 +556,8 @@ pub async fn vendor_scorecard(db: &SqlitePool, from: NaiveDate, to: NaiveDate, s
     .bind(to.format("%Y-%m").to_string())
     .fetch_all(db)
     .await?;
-    let rmap: HashMap<i64, (f64, f64)> = ratings
-        .into_iter()
-        .map(|(v, q, r, t)| (v, (q, if t > 0.0 { r / t * 100.0 } else { 0.0 })))
-        .collect();
+    let rmap: HashMap<i64, (f64, f64)> =
+        ratings.into_iter().map(|(v, q, r, t)| (v, (q, if t > 0.0 { r / t * 100.0 } else { 0.0 }))).collect();
     // harga pasar dihitung dari semua vendor (tanpa filter vendor) pada periode & kategori yang sama
     let price_sql = format!(
         "SELECT po.vendor_id, po.item_id, SUM(po.amount), SUM(po.base_qty)
@@ -514,7 +570,13 @@ pub async fn vendor_scorecard(db: &SqlitePool, from: NaiveDate, to: NaiveDate, s
         .into_iter()
         .map(|(vid, name, spend, pos, delivered, on_time)| {
             let r = rmap.get(&vid).copied();
-            let inp = VendorInputs { delivered, on_time, avg_quality: r.map(|x| x.0), reject_pct: r.map(|x| x.1), price_diff_pct: diffs.get(&vid).copied() };
+            let inp = VendorInputs {
+                delivered,
+                on_time,
+                avg_quality: r.map(|x| x.0),
+                reject_pct: r.map(|x| x.1),
+                price_diff_pct: diffs.get(&vid).copied(),
+            };
             let sc = score(&inp, w);
             VendorScoreRow {
                 vendor_id: vid,
@@ -551,7 +613,13 @@ pub struct AlertRow {
     pub value: f64,
 }
 
-pub async fn alerts(db: &SqlitePool, kind: Option<&str>, from: Option<NaiveDate>, to: Option<NaiveDate>, limit: i64) -> AppResult<Vec<AlertRow>> {
+pub async fn alerts(
+    db: &SqlitePool,
+    kind: Option<&str>,
+    from: Option<NaiveDate>,
+    to: Option<NaiveDate>,
+    limit: i64,
+) -> AppResult<Vec<AlertRow>> {
     let rows: Vec<(i64, String, i64, Option<String>, String, String, String, f64)> = sqlx::query_as(
         "SELECT a.id, a.kind, a.ref_id,
                 CASE a.kind WHEN 'price' THEN (SELECT name FROM commodities WHERE id = a.ref_id) ELSE (SELECT name FROM vendors WHERE id = a.ref_id) END,

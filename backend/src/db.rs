@@ -88,7 +88,11 @@ pub async fn seed(pool: &SqlitePool, cfg: &Config) -> AppResult<()> {
             sqlx::query("INSERT INTO categories(name) VALUES (?)").bind(c).execute(&mut *tx).await?;
         }
         for c in &master.commodities {
-            sqlx::query("INSERT INTO commodities(name, base_unit) VALUES (?, ?)").bind(&c.name).bind(&c.base_unit).execute(&mut *tx).await?;
+            sqlx::query("INSERT INTO commodities(name, base_unit) VALUES (?, ?)")
+                .bind(&c.name)
+                .bind(&c.base_unit)
+                .execute(&mut *tx)
+                .await?;
         }
         for u in &master.global_units {
             sqlx::query("INSERT INTO unit_conversions(item_id, from_unit, base_unit, to_base) VALUES (NULL, ?, ?, ?)")
@@ -124,7 +128,8 @@ pub async fn seed(pool: &SqlitePool, cfg: &Config) -> AppResult<()> {
 
     let batches: i64 = sqlx::query_scalar("SELECT COUNT(*) FROM import_batches").fetch_one(pool).await?;
     if batches == 0 && cfg.seed_on_start {
-        let admin_id: i64 = sqlx::query_scalar("SELECT id FROM users WHERE role = 'data_admin' ORDER BY id LIMIT 1").fetch_one(pool).await?;
+        let admin_id: i64 =
+            sqlx::query_scalar("SELECT id FROM users WHERE role = 'data_admin' ORDER BY id LIMIT 1").fetch_one(pool).await?;
         for (kind, file) in [(ImportKind::Po, "po_12bulan.csv"), (ImportKind::VendorRating, "penilaian_vendor_12bulan.csv")] {
             let path = cfg.seed_dir.join(file);
             let data = std::fs::read(&path).map_err(|e| AppError::internal(format!("gagal membaca {}: {e}", path.display())))?;

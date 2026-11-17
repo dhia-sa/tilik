@@ -1,6 +1,9 @@
 //! SpendView — dashboard spend, harga komoditas & performa vendor.
 //! Satu binary: API di /api/* + menyajikan hasil build frontend (React).
 
+// Baris hasil sqlx dibaca sebagai tuple; alias type untuk tiap query tidak menambah kejelasan.
+#![allow(clippy::type_complexity)]
+
 mod aggregates;
 mod ai;
 mod analytics;
@@ -43,7 +46,10 @@ async fn run() -> Result<(), Box<dyn std::error::Error>> {
     let pool = db::connect(&cfg).await?;
     db::seed(&pool, &cfg).await?;
     if !cfg.frontend_dist.join("index.html").exists() {
-        tracing::warn!("frontend belum di-build ({}). Jalankan: npm --prefix frontend ci && npm --prefix frontend run build", cfg.frontend_dist.display());
+        tracing::warn!(
+            "frontend belum di-build ({}). Jalankan: npm --prefix frontend ci && npm --prefix frontend run build",
+            cfg.frontend_dist.display()
+        );
     }
     let ai = ai::AiService::new(ai::build_provider(&cfg).await, cfg.ai_max_parallel, pool.clone());
     let state = state::AppState { db: pool, cfg: Arc::new(cfg.clone()), ai: Arc::new(ai), pending: Arc::new(Mutex::new(HashMap::new())) };

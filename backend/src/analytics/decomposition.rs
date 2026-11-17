@@ -118,7 +118,7 @@ mod tests {
         let rows = vec![
             row(1, 1000.0, 14_000.0, 1200.0, 15_000.0),
             row(2, 500.0, 9_800.0, 400.0, 11_000.0),
-            row(3, 0.0, 0.0, 50.0, 85_000.0), // item baru
+            row(3, 0.0, 0.0, 50.0, 85_000.0),  // item baru
             row(4, 20.0, 150_000.0, 0.0, 0.0), // tidak dibeli lagi
         ];
         let d = decompose(&rows);

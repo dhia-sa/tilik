@@ -47,7 +47,14 @@ async fn import_kotor_lalu_rollback_mengembalikan_data() {
     let v = import::validate(ImportKind::Po, &data, &master).expect("validasi");
     assert_eq!(v.errors.len(), 30);
     assert_eq!(v.rows.len(), 20);
-    let p = PendingImport { kind: ImportKind::Po, file_name: "po_kotor.csv".into(), user_id: 2, rows: v.rows, errors: 30, created: Instant::now() };
+    let p = PendingImport {
+        kind: ImportKind::Po,
+        file_name: "po_kotor.csv".into(),
+        user_id: 2,
+        rows: v.rows,
+        errors: 30,
+        created: Instant::now(),
+    };
     let r = import::commit(&pool, &p).await.expect("commit");
     let mid = queries::kpis(&pool, all.0, all.1, Scope::default()).await.expect("kpi");
     assert_eq!(mid.po_count, before.po_count + 20);
@@ -66,7 +73,8 @@ async fn pola_data_dummy_terdeteksi() {
     assert!(alerts.iter().any(|a| a.ref_name == "Tepung Terigu" && a.week == "2026-W37"));
     assert!(!alerts.iter().any(|a| a.ref_name == "Tepung Terigu" && a.week != "2026-W37"));
     // 3 vendor bermasalah tidak berlabel Baik
-    let rows = queries::vendor_scorecard(&pool, d("2025-11-17"), d("2026-11-14"), Scope::default(), Default::default()).await.expect("scorecard");
+    let rows =
+        queries::vendor_scorecard(&pool, d("2025-11-17"), d("2026-11-14"), Scope::default(), Default::default()).await.expect("scorecard");
     for v in ["PT Gula Rasa Nusantara", "CV Kemas Prima Plastik", "CV Aroma Bahan Kue"] {
         let r = rows.iter().find(|r| r.vendor == v).expect("vendor ada");
         assert_ne!(r.label, "Baik", "{v} harus bermasalah/perlu perhatian");

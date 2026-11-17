@@ -22,10 +22,12 @@ fn scope(f: &Filter) -> Scope {
 pub async fn meta(State(st): State<AppState>, _u: CurrentUser) -> AppResult<Json<Value>> {
     let reference = reference_date(&st).await?;
     let (from, to) = default_range(reference);
-    let range: (Option<String>, Option<String>) = sqlx::query_as("SELECT MIN(po_date), MAX(po_date) FROM purchase_orders").fetch_one(&st.db).await?;
+    let range: (Option<String>, Option<String>) =
+        sqlx::query_as("SELECT MIN(po_date), MAX(po_date) FROM purchase_orders").fetch_one(&st.db).await?;
     let cats: Vec<(i64, String)> = sqlx::query_as("SELECT id, name FROM categories ORDER BY name").fetch_all(&st.db).await?;
     let vendors: Vec<(i64, String)> = sqlx::query_as("SELECT id, name FROM vendors ORDER BY name").fetch_all(&st.db).await?;
-    let coms: Vec<(i64, String, String)> = sqlx::query_as("SELECT id, name, base_unit FROM commodities ORDER BY id").fetch_all(&st.db).await?;
+    let coms: Vec<(i64, String, String)> =
+        sqlx::query_as("SELECT id, name, base_unit FROM commodities ORDER BY id").fetch_all(&st.db).await?;
     Ok(Json(json!({
         "reference_date": reference,
         "default_from": from,
@@ -65,7 +67,12 @@ async fn category_name(st: &AppState, id: i64) -> AppResult<String> {
         .ok_or_else(|| AppError::NotFound("Kategori tidak ditemukan".into()))
 }
 
-pub async fn spend_category(State(st): State<AppState>, _u: CurrentUser, Path(id): Path<i64>, Query(q): Query<FilterQuery>) -> AppResult<Json<Value>> {
+pub async fn spend_category(
+    State(st): State<AppState>,
+    _u: CurrentUser,
+    Path(id): Path<i64>,
+    Query(q): Query<FilterQuery>,
+) -> AppResult<Json<Value>> {
     let f = resolve(&st, &q).await?;
     let name = category_name(&st, id).await?;
     let s = Scope { category: Some(id), vendor: f.vendor, commodity: None };
@@ -74,7 +81,9 @@ pub async fn spend_category(State(st): State<AppState>, _u: CurrentUser, Path(id
     let vendors = queries::spend_by(&st.db, queries::GroupBy::Vendor, f.from, f.to, s, Some(5)).await?;
     let mut dec = queries::decomposition(&st.db, f.from, f.to, f.prev_from, f.prev_to, s).await?;
     dec.items.truncate(15);
-    Ok(Json(json!({ "filter": f, "category": { "id": id, "name": name }, "trend": trend, "top_items": items, "top_vendors": vendors, "decomposition": dec })))
+    Ok(Json(
+        json!({ "filter": f, "category": { "id": id, "name": name }, "trend": trend, "top_items": items, "top_vendors": vendors, "decomposition": dec }),
+    ))
 }
 
 /// Tabel fakta dekomposisi yang dikirim ke AI (dan dipakai untuk verifikasi angka).
@@ -83,8 +92,13 @@ pub fn decomposition_facts(name: &str, f: &Filter, d: &crate::analytics::decompo
     let mut rows = vec![
         vec![json!("Spend periode sebelumnya"), r0(d.spend0), Value::Null, Value::Null, Value::Null],
         vec![json!("Spend periode ini"), r0(d.spend1), Value::Null, Value::Null, Value::Null],
-        vec![json!("Total perubahan"), r0(d.total_change), Value::Null, Value::Null,
-             if d.spend0 > 0.0 { json!(((d.spend1 / d.spend0 - 1.0) * 1000.0).round() / 10.0) } else { Value::Null }],
+        vec![
+            json!("Total perubahan"),
+            r0(d.total_change),
+            Value::Null,
+            Value::Null,
+            if d.spend0 > 0.0 { json!(((d.spend1 / d.spend0 - 1.0) * 1000.0).round() / 10.0) } else { Value::Null },
+        ],
         vec![json!("Efek volume"), r0(d.volume_effect), Value::Null, Value::Null, Value::Null],
         vec![json!("Efek harga"), r0(d.price_effect), Value::Null, Value::Null, Value::Null],
         vec![json!("Efek item baru"), r0(d.new_item_effect), Value::Null, Value::Null, Value::Null],
@@ -101,19 +115,30 @@ pub fn decomposition_facts(name: &str, f: &Filter, d: &crate::analytics::decompo
         tool: "decomposition".into(),
         params: json!({ "category": name, "period": [f.from, f.to], "previous": [f.prev_from, f.prev_to] }),
         title: format!("Dekomposisi spend {name}: {} s/d {} vs {} s/d {}", f.from, f.to, f.prev_from, f.prev_to),
-        columns: vec!["Komponen".into(), "Nilai / total perubahan (Rp)".into(), "Efek volume (Rp)".into(), "Efek harga (Rp)".into(), "Perubahan harga / spend (%)".into()],
+        columns: vec![
+            "Komponen".into(),
+            "Nilai / total perubahan (Rp)".into(),
+            "Efek volume (Rp)".into(),
+            "Efek harga (Rp)".into(),
+            "Perubahan harga / spend (%)".into(),
+        ],
         rows,
         note: None,
     }
 }
 
-pub async fn explain_category(State(st): State<AppState>, _u: CurrentUser, Path(id): Path<i64>, Query(q): Query<FilterQuery>) -> AppResult<Json<Value>> {
+pub async fn explain_category(
+    State(st): State<AppState>,
+    _u: CurrentUser,
+    Path(id): Path<i64>,
+    Query(q): Query<FilterQuery>,
+) -> AppResult<Json<Value>> {
     let f = resolve(&st, &q).await?;
     let name = category_name(&st, id).await?;
     let s = Scope { category: Some(id), vendor: f.vendor, commodity: None };
     let dec = queries::decomposition(&st.db, f.from, f.to, f.prev_from, f.prev_to, s).await?;
     let facts = decomposition_facts(&name, &f, &dec);
-    let allowed = allowed_numbers(&[json!(facts.rows), facts.params.clone()], &[facts.title.clone()]);
+    let allowed = allowed_numbers(&[json!(facts.rows), facts.params.clone()], std::slice::from_ref(&facts.title));
     let mut feedback: Option<String> = None;
     let mut rejected: Vec<String> = vec![];
     let mut ai_error: Option<String> = None;
@@ -127,7 +152,9 @@ pub async fn explain_category(State(st): State<AppState>, _u: CurrentUser, Path(
             Ok(out) => {
                 let bad = unverified_numbers(&out.narrative, &allowed);
                 if bad.is_empty() {
-                    return Ok(Json(json!({ "narrative": out.narrative, "verified": true, "fallback": false, "provider": st.ai.provider_name(), "facts": facts })));
+                    return Ok(Json(
+                        json!({ "narrative": out.narrative, "verified": true, "fallback": false, "provider": st.ai.provider_name(), "facts": facts }),
+                    ));
                 }
                 feedback = Some(bad.join(", "));
                 rejected = bad;
@@ -163,7 +190,12 @@ pub struct WeeksQuery {
     pub weeks: Option<i64>,
 }
 
-pub async fn commodity(State(st): State<AppState>, _u: CurrentUser, Path(id): Path<i64>, Query(q): Query<WeeksQuery>) -> AppResult<Json<Value>> {
+pub async fn commodity(
+    State(st): State<AppState>,
+    _u: CurrentUser,
+    Path(id): Path<i64>,
+    Query(q): Query<WeeksQuery>,
+) -> AppResult<Json<Value>> {
     let reference = reference_date(&st).await?;
     let settings = Settings::load(&st.db).await?;
     let d = queries::commodity_detail(&st.db, id, reference, q.weeks.unwrap_or(52).clamp(4, 104), settings.anomaly()).await?;
@@ -179,7 +211,12 @@ pub async fn scorecard(State(st): State<AppState>, _u: CurrentUser, Query(q): Qu
     Ok(Json(json!({ "filter": f, "weights": settings.weights(), "vendors": rows, "problems": problems })))
 }
 
-pub async fn vendor_detail(State(st): State<AppState>, _u: CurrentUser, Path(id): Path<i64>, Query(q): Query<FilterQuery>) -> AppResult<Json<Value>> {
+pub async fn vendor_detail(
+    State(st): State<AppState>,
+    _u: CurrentUser,
+    Path(id): Path<i64>,
+    Query(q): Query<FilterQuery>,
+) -> AppResult<Json<Value>> {
     let f = resolve(&st, &q).await?;
     let name: String = sqlx::query_scalar("SELECT name FROM vendors WHERE id = ?")
         .bind(id)
@@ -212,8 +249,8 @@ pub async fn vendor_detail(State(st): State<AppState>, _u: CurrentUser, Path(id)
          WHERE po.vendor_id = ? AND po.po_date BETWEEN ? AND ? ORDER BY po.po_date DESC, po.po_no DESC LIMIT 200",
     )
     .bind(id)
-    .bind(f.from_s())
-    .bind(f.to_s())
+    .bind(f.start_iso())
+    .bind(f.end_iso())
     .fetch_all(&st.db)
     .await?;
     let po_rows: Vec<Value> = pos
@@ -234,7 +271,9 @@ pub async fn vendor_detail(State(st): State<AppState>, _u: CurrentUser, Path(id)
         .into_iter()
         .map(|(p, q, r, t, fb)| json!({ "period": p, "quality_score": q, "reject_pct": if t > 0.0 { r / t * 100.0 } else { 0.0 }, "feedback": fb }))
         .collect();
-    Ok(Json(json!({ "filter": f, "vendor": { "id": id, "name": name }, "score": score, "trend": trend, "pos": po_rows, "feedback": feedback })))
+    Ok(Json(
+        json!({ "filter": f, "vendor": { "id": id, "name": name }, "score": score, "trend": trend, "pos": po_rows, "feedback": feedback }),
+    ))
 }
 
 #[derive(Deserialize)]
@@ -245,7 +284,12 @@ pub struct AlertQuery {
 }
 
 pub async fn alerts(State(st): State<AppState>, _u: CurrentUser, Query(q): Query<AlertQuery>) -> AppResult<Json<Value>> {
-    let from = q.from.as_deref().filter(|s| !s.is_empty()).map(|s| parse_date(s).ok_or_else(|| AppError::BadRequest("from tidak valid".into()))).transpose()?;
+    let from = q
+        .from
+        .as_deref()
+        .filter(|s| !s.is_empty())
+        .map(|s| parse_date(s).ok_or_else(|| AppError::BadRequest("from tidak valid".into())))
+        .transpose()?;
     let kind = q.kind.as_deref().filter(|k| *k == "price" || *k == "vendor");
     let rows = queries::alerts(&st.db, kind, from, None, q.limit.unwrap_or(100).clamp(1, 1000)).await?;
     Ok(Json(json!({ "alerts": rows })))

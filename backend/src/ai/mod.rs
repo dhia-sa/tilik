@@ -3,7 +3,7 @@
 //! `AiProvider` punya tiga implementasi: `ClaudeCli` (`claude -p ... --json-schema`),
 //! `CodexCli` (`codex exec --output-schema ...`) dan `MockAi` (deterministik, untuk test /
 //! kalau CLI tidak tersedia). Proses dijalankan langsung (tanpa `sh -c`), prompt dikirim
-//! sebagai argumen, dengan timeout dan batas proses paralel (Semaphore).
+//! lewat stdin (bukan argumen command line), dengan timeout dan batas proses paralel (Semaphore).
 
 pub mod mock;
 pub mod numcheck;
@@ -105,13 +105,7 @@ impl AiProvider for ClaudeCli {
             let schema = serde_json::to_string(&req.schema).map_err(|e| AiError::InvalidOutput(e.to_string()))?;
             let mut cmd = Command::new(&self.bin);
             // `claude -p` tanpa argumen prompt membaca prompt dari stdin
-            cmd.arg("-p")
-                .arg("--output-format")
-                .arg("json")
-                .arg("--json-schema")
-                .arg(&schema)
-                .arg("--tools")
-                .arg("");
+            cmd.arg("-p").arg("--output-format").arg("json").arg("--json-schema").arg(&schema).arg("--tools").arg("");
             let out = run_command(cmd, &req.prompt, self.timeout_secs).await?;
             let stdout = String::from_utf8_lossy(&out.stdout).to_string();
             if stdout.trim().is_empty() {

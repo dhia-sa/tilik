@@ -22,9 +22,7 @@ impl AiProvider for MockAi {
 
 fn respond(req: &AiRequest) -> AiOutput {
     let v = match &req.purpose {
-        AiPurpose::SelectTool { question, reference_date } => {
-            serde_json::to_value(route(question, *reference_date)).unwrap_or(Value::Null)
-        }
+        AiPurpose::SelectTool { question, reference_date } => serde_json::to_value(route(question, *reference_date)).unwrap_or(Value::Null),
         AiPurpose::Summarize { result } => json!({ "summary": template_summary(result) }),
         AiPurpose::Explain { facts } => json!({ "narrative": explain_template(facts) }),
     };
@@ -40,11 +38,21 @@ fn first_number(q: &str) -> Option<i64> {
 }
 
 const COMMODITY_WORDS: [(&str, &str); 8] = [
-    ("gula", "Gula Pasir"), ("tepung", "Tepung Terigu"), ("minyak", "Minyak Nabati"), ("mentega", "Mentega"),
-    ("susu", "Susu Bubuk"), ("cokelat", "Cokelat Bubuk"), ("keju", "Keju"), ("telur", "Telur Ayam"),
+    ("gula", "Gula Pasir"),
+    ("tepung", "Tepung Terigu"),
+    ("minyak", "Minyak Nabati"),
+    ("mentega", "Mentega"),
+    ("susu", "Susu Bubuk"),
+    ("cokelat", "Cokelat Bubuk"),
+    ("keju", "Keju"),
+    ("telur", "Telur Ayam"),
 ];
 const CATEGORY_WORDS: [(&str, &str); 6] = [
-    ("bahan baku", "Bahan Baku"), ("kemasan", "Kemasan"), ("sparepart", "Sparepart"), ("jasa", "Jasa"), ("logistik", "Logistik"),
+    ("bahan baku", "Bahan Baku"),
+    ("kemasan", "Kemasan"),
+    ("sparepart", "Sparepart"),
+    ("jasa", "Jasa"),
+    ("logistik", "Logistik"),
     ("pendukung", "Bahan Pendukung"),
 ];
 
@@ -87,13 +95,41 @@ pub fn route(question: &str, today: NaiveDate) -> ToolChoice {
         return choose("none", ToolParams::default(), "pertanyaan di luar data SpendView");
     }
     if q.contains("alert") || q.contains("peringatan") {
-        p.kind = Some(if q.contains("vendor") { "vendor" } else if q.contains("harga") { "price" } else { "all" }.into());
+        p.kind = Some(
+            if q.contains("vendor") {
+                "vendor"
+            } else if q.contains("harga") {
+                "price"
+            } else {
+                "all"
+            }
+            .into(),
+        );
         if p.date_from.is_none() {
             p.date_from = Some(week_start(today).to_string());
         }
         return choose("alerts", p, "pertanyaan tentang alert");
     }
-    if q.contains("vendor") && has(&q, &["telat", "terlambat", "tepat waktu", "on-time", "on time", "terbaik", "terburuk", "skor", "bermasalah", "kualitas", "reject", "termurah", "termahal"]) {
+    if q.contains("vendor")
+        && has(
+            &q,
+            &[
+                "telat",
+                "terlambat",
+                "tepat waktu",
+                "on-time",
+                "on time",
+                "terbaik",
+                "terburuk",
+                "skor",
+                "bermasalah",
+                "kualitas",
+                "reject",
+                "termurah",
+                "termahal",
+            ],
+        )
+    {
         let (metric, order) = if has(&q, &["telat", "terlambat"]) {
             ("late", "desc")
         } else if has(&q, &["tepat waktu", "on-time", "on time"]) {
@@ -114,7 +150,9 @@ pub fn route(question: &str, today: NaiveDate) -> ToolChoice {
         p.category = category;
         return choose("vendor_ranking", p, "peringkat vendor");
     }
-    if has(&q, &["naik berapa", "turun berapa", "berapa persen", "dibanding", "dibandingkan", " vs "]) && (commodity.is_some() || q.contains("harga")) {
+    if has(&q, &["naik berapa", "turun berapa", "berapa persen", "dibanding", "dibandingkan", " vs "])
+        && (commodity.is_some() || q.contains("harga"))
+    {
         let this_m = month_start(today);
         let (a, b) = if q.contains("minggu lalu") {
             (iso_week_label(today - Duration::days(7)), iso_week_label(today))
@@ -128,7 +166,13 @@ pub fn route(question: &str, today: NaiveDate) -> ToolChoice {
         );
     }
     if q.contains("harga") && commodity.is_some() {
-        let weeks = if q.contains("minggu") { first_number(&q).unwrap_or(8) } else if q.contains("bulan") { first_number(&q).unwrap_or(3) * 4 } else { 8 };
+        let weeks = if q.contains("minggu") {
+            first_number(&q).unwrap_or(8)
+        } else if q.contains("bulan") {
+            first_number(&q).unwrap_or(3) * 4
+        } else {
+            8
+        };
         return choose("commodity_price", ToolParams { commodity, weeks: Some(weeks), ..Default::default() }, "tren harga komoditas");
     }
     if q.contains("item") || q.contains("barang") {

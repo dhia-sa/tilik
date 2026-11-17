@@ -6,9 +6,8 @@ use crate::error::{AppError, AppResult};
 use crate::units::{normalize, UnitError};
 use std::collections::{HashMap, HashSet};
 
-pub const PO_COLUMNS: [&str; 11] = [
-    "po_no", "po_date", "vendor", "category", "item", "commodity", "qty", "unit", "unit_price", "delivered_date", "promised_date",
-];
+pub const PO_COLUMNS: [&str; 11] =
+    ["po_no", "po_date", "vendor", "category", "item", "commodity", "qty", "unit", "unit_price", "delivered_date", "promised_date"];
 pub const RATING_COLUMNS: [&str; 6] = ["period", "vendor", "quality_score", "reject_qty", "total_qty", "feedback"];
 
 /// Parse angka secara ketat: hanya digit dengan titik desimal opsional (mis. 1234.5).
@@ -179,12 +178,10 @@ pub fn validate_po(data: &[u8], m: &Master) -> AppResult<Validated> {
         } else if !item.is_empty() {
             // item baru: satuan dasar ditentukan dari satuan global / komoditas
             match m.units.global_base_of(&unit) {
-                Some(base) => {
-                    match m.units.factor(None, &base, &unit) {
-                        Ok(f) => factor_base = Some((f, base)),
-                        Err(e) => reasons.push(e.to_string()),
-                    }
-                }
+                Some(base) => match m.units.factor(None, &base, &unit) {
+                    Ok(f) => factor_base = Some((f, base)),
+                    Err(e) => reasons.push(e.to_string()),
+                },
                 None => reasons.push(UnitError::Unknown(unit.clone()).to_string()),
             }
         }
@@ -236,7 +233,12 @@ pub fn validate_po(data: &[u8], m: &Master) -> AppResult<Validated> {
             (true, Some(po_date), Some((cat_id, cat_name)), Some(qty), Some(unit_price), Some((factor, base_unit)), Some(promised)) => {
                 let n = normalize(qty, unit_price as f64, factor);
                 let new_item = if existing.is_none() {
-                    Some(NewItem { name: item.clone(), category_id: cat_id, commodity_id: com.as_ref().map(|c| c.0), base_unit: base_unit.clone() })
+                    Some(NewItem {
+                        name: item.clone(),
+                        category_id: cat_id,
+                        commodity_id: com.as_ref().map(|c| c.0),
+                        base_unit: base_unit.clone(),
+                    })
                 } else {
                     None
                 };
@@ -250,7 +252,9 @@ pub fn validate_po(data: &[u8], m: &Master) -> AppResult<Validated> {
                     item_id: existing.map(|i| i.id),
                     new_item,
                     commodity: com.map(|c| c.1).or_else(|| {
-                        existing.and_then(|i| i.commodity_id).and_then(|cid| m.commodities.values().find(|(id, _)| *id == cid).map(|(_, n)| n.clone()))
+                        existing
+                            .and_then(|i| i.commodity_id)
+                            .and_then(|cid| m.commodities.values().find(|(id, _)| *id == cid).map(|(_, n)| n.clone()))
                     }),
                     qty,
                     unit: unit.trim().to_string(),

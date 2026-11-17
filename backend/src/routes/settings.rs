@@ -16,7 +16,9 @@ pub async fn get(State(st): State<AppState>, user: CurrentUser) -> AppResult<Jso
     user.require_data_admin()?;
     let settings: Vec<(String, String)> = sqlx::query_as("SELECT key, value FROM settings ORDER BY key").fetch_all(&st.db).await?;
     let cats: Vec<(i64, String, i64)> =
-        sqlx::query_as("SELECT c.id, c.name, (SELECT COUNT(*) FROM items i WHERE i.category_id = c.id) FROM categories c ORDER BY c.name").fetch_all(&st.db).await?;
+        sqlx::query_as("SELECT c.id, c.name, (SELECT COUNT(*) FROM items i WHERE i.category_id = c.id) FROM categories c ORDER BY c.name")
+            .fetch_all(&st.db)
+            .await?;
     let coms: Vec<(i64, String, String, i64)> = sqlx::query_as(
         "SELECT c.id, c.name, c.base_unit, (SELECT COUNT(*) FROM items i WHERE i.commodity_id = c.id) FROM commodities c ORDER BY c.name",
     )
@@ -37,7 +39,10 @@ pub async fn get(State(st): State<AppState>, user: CurrentUser) -> AppResult<Jso
     let users: Value = if user.role == Role::Admin {
         let rows: Vec<(i64, String, String, String, String)> =
             sqlx::query_as("SELECT id, email, name, role, created_at FROM users ORDER BY id").fetch_all(&st.db).await?;
-        json!(rows.into_iter().map(|(id, email, name, role, at)| json!({"id": id, "email": email, "name": name, "role": role, "created_at": at})).collect::<Vec<_>>())
+        json!(rows
+            .into_iter()
+            .map(|(id, email, name, role, at)| json!({"id": id, "email": email, "name": name, "role": role, "created_at": at}))
+            .collect::<Vec<_>>())
     } else {
         Value::Null
     };
@@ -165,7 +170,12 @@ pub struct ItemUpdate {
     pub commodity_id: Option<i64>,
 }
 
-pub async fn update_item(State(st): State<AppState>, user: CurrentUser, Path(id): Path<i64>, Json(req): Json<ItemUpdate>) -> AppResult<Json<Value>> {
+pub async fn update_item(
+    State(st): State<AppState>,
+    user: CurrentUser,
+    Path(id): Path<i64>,
+    Json(req): Json<ItemUpdate>,
+) -> AppResult<Json<Value>> {
     user.require_data_admin()?;
     let base: String = sqlx::query_scalar("SELECT base_unit FROM items WHERE id = ?")
         .bind(id)
@@ -173,7 +183,8 @@ pub async fn update_item(State(st): State<AppState>, user: CurrentUser, Path(id)
         .await?
         .ok_or_else(|| AppError::NotFound("Item tidak ditemukan".into()))?;
     if let Some(cid) = req.commodity_id {
-        let cu: Option<String> = sqlx::query_scalar("SELECT base_unit FROM commodities WHERE id = ?").bind(cid).fetch_optional(&st.db).await?;
+        let cu: Option<String> =
+            sqlx::query_scalar("SELECT base_unit FROM commodities WHERE id = ?").bind(cid).fetch_optional(&st.db).await?;
         match cu {
             None => return Err(AppError::BadRequest("Komoditas tidak ditemukan".into())),
             Some(u) if u != base => return Err(AppError::BadRequest(format!("Satuan dasar item ({base}) berbeda dengan komoditas ({u})"))),
@@ -212,7 +223,8 @@ pub async fn add_unit(State(st): State<AppState>, user: CurrentUser, Json(req): 
         return Err(AppError::BadRequest("Faktor konversi harus lebih dari 0".into()));
     }
     if let Some(item_id) = req.item_id {
-        let base: Option<String> = sqlx::query_scalar("SELECT base_unit FROM items WHERE id = ?").bind(item_id).fetch_optional(&st.db).await?;
+        let base: Option<String> =
+            sqlx::query_scalar("SELECT base_unit FROM items WHERE id = ?").bind(item_id).fetch_optional(&st.db).await?;
         match base {
             None => return Err(AppError::BadRequest("Item tidak ditemukan".into())),
             Some(b) if b != req.base_unit => return Err(AppError::BadRequest(format!("Satuan dasar item adalah {b}"))),
@@ -269,7 +281,8 @@ pub async fn add_user(State(st): State<AppState>, user: CurrentUser, Json(req): 
         return Err(AppError::BadRequest("Email tidak valid".into()));
     }
     let name = clean_name(&req.name.unwrap_or_default())?;
-    let role = Role::parse(req.role.as_deref().unwrap_or("")).ok_or_else(|| AppError::BadRequest("Role harus viewer, data_admin, atau admin".into()))?;
+    let role = Role::parse(req.role.as_deref().unwrap_or(""))
+        .ok_or_else(|| AppError::BadRequest("Role harus viewer, data_admin, atau admin".into()))?;
     let pw = req.password.unwrap_or_default();
     if pw.len() < 8 {
         return Err(AppError::BadRequest("Password minimal 8 karakter".into()));
@@ -285,7 +298,12 @@ pub async fn add_user(State(st): State<AppState>, user: CurrentUser, Json(req): 
     Ok(Json(json!({ "id": id })))
 }
 
-pub async fn update_user(State(st): State<AppState>, user: CurrentUser, Path(id): Path<i64>, Json(req): Json<UserReq>) -> AppResult<Json<Value>> {
+pub async fn update_user(
+    State(st): State<AppState>,
+    user: CurrentUser,
+    Path(id): Path<i64>,
+    Json(req): Json<UserReq>,
+) -> AppResult<Json<Value>> {
     user.require_admin()?;
     if let Some(r) = &req.role {
         let role = Role::parse(r).ok_or_else(|| AppError::BadRequest("Role tidak valid".into()))?;

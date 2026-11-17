@@ -69,9 +69,7 @@ pub fn evaluate_week(series: &[WeekPrice], idx: usize, p: AnomalyParams) -> Pric
         .collect();
     let stats = if window.len() >= 4 { mean_std(&window) } else { None };
     let by_threshold = change_pct.map(|c| c > p.threshold_pct).unwrap_or(false);
-    let by_sigma = stats
-        .map(|(m, s)| cur.price > m + p.sigma * s && cur.price > m * (1.0 + p.min_dev_pct / 100.0))
-        .unwrap_or(false);
+    let by_sigma = stats.map(|(m, s)| cur.price > m + p.sigma * s && cur.price > m * (1.0 + p.min_dev_pct / 100.0)).unwrap_or(false);
     PriceAnomaly {
         week: cur.week.clone(),
         week_start: cur.week_start,
@@ -87,10 +85,7 @@ pub fn evaluate_week(series: &[WeekPrice], idx: usize, p: AnomalyParams) -> Pric
 
 /// Semua minggu yang memicu alert. `series` harus urut naik berdasarkan minggu.
 pub fn detect_price_anomalies(series: &[WeekPrice], p: AnomalyParams) -> Vec<PriceAnomaly> {
-    (0..series.len())
-        .map(|i| evaluate_week(series, i, p))
-        .filter(|a| a.by_threshold || a.by_sigma)
-        .collect()
+    (0..series.len()).map(|i| evaluate_week(series, i, p)).filter(|a| a.by_threshold || a.by_sigma).collect()
 }
 
 #[cfg(test)]

@@ -1,7 +1,9 @@
 //! Tanya Data: AI memilih tool -> Rust menjalankan query -> AI merangkum -> backend memverifikasi angka.
 
 use crate::ai::numcheck::{allowed_numbers, unverified_numbers};
-use crate::ai::tools::{self, select_prompt, select_schema, summary_prompt, summary_schema, SummaryOut, ToolChoice, ToolContext, Validated};
+use crate::ai::tools::{
+    self, select_prompt, select_schema, summary_prompt, summary_schema, SummaryOut, ToolChoice, ToolContext, Validated,
+};
 use crate::ai::{AiPurpose, AiRequest};
 use crate::auth::CurrentUser;
 use crate::error::{AppError, AppResult};
@@ -25,7 +27,15 @@ pub async fn tool_context(st: &AppState) -> AppResult<ToolContext> {
     let settings = Settings::load(&st.db).await?;
     let categories: Vec<String> = sqlx::query_scalar("SELECT name FROM categories ORDER BY name").fetch_all(&st.db).await?;
     let commodities: Vec<String> = sqlx::query_scalar("SELECT name FROM commodities ORDER BY name").fetch_all(&st.db).await?;
-    Ok(ToolContext { reference, default_from, default_to, weights: settings.weights(), anomaly: settings.anomaly(), categories, commodities })
+    Ok(ToolContext {
+        reference,
+        default_from,
+        default_to,
+        weights: settings.weights(),
+        anomaly: settings.anomaly(),
+        categories,
+        commodities,
+    })
 }
 
 pub async fn ask(State(st): State<AppState>, user: CurrentUser, Json(req): Json<AskReq>) -> AppResult<Json<Value>> {
@@ -154,12 +164,11 @@ async fn save_history(st: &AppState, user_id: i64, question: &str, resp: &Value)
 }
 
 pub async fn history(State(st): State<AppState>, user: CurrentUser) -> AppResult<Json<Value>> {
-    let rows: Vec<(i64, String, String, String)> = sqlx::query_as(
-        "SELECT id, question, tool_calls_json, created_at FROM ask_history WHERE user_id = ? ORDER BY id DESC LIMIT 50",
-    )
-    .bind(user.id)
-    .fetch_all(&st.db)
-    .await?;
+    let rows: Vec<(i64, String, String, String)> =
+        sqlx::query_as("SELECT id, question, tool_calls_json, created_at FROM ask_history WHERE user_id = ? ORDER BY id DESC LIMIT 50")
+            .bind(user.id)
+            .fetch_all(&st.db)
+            .await?;
     let items: Vec<Value> = rows
         .into_iter()
         .map(|(id, q, resp, at)| json!({ "id": id, "question": q, "response": serde_json::from_str::<Value>(&resp).unwrap_or(Value::Null), "created_at": at }))

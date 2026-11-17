@@ -25,10 +25,10 @@ pub struct Filter {
 }
 
 impl Filter {
-    pub fn from_s(&self) -> String {
+    pub fn start_iso(&self) -> String {
         self.from.to_string()
     }
-    pub fn to_s(&self) -> String {
+    pub fn end_iso(&self) -> String {
         self.to.to_string()
     }
 }

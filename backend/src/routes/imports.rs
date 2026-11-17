@@ -20,7 +20,9 @@ pub async fn preview(State(st): State<AppState>, user: CurrentUser, mut mp: Mult
         match field.name() {
             Some("kind") => {
                 let v = field.text().await.map_err(|e| AppError::BadRequest(e.to_string()))?;
-                kind = Some(ImportKind::parse(v.trim()).ok_or_else(|| AppError::BadRequest("Jenis import harus po atau vendor_rating".into()))?);
+                kind = Some(
+                    ImportKind::parse(v.trim()).ok_or_else(|| AppError::BadRequest("Jenis import harus po atau vendor_rating".into()))?,
+                );
             }
             Some("file") => {
                 let name = field.file_name().unwrap_or("upload.csv").to_string();
@@ -57,7 +59,17 @@ pub async fn preview(State(st): State<AppState>, user: CurrentUser, mut mp: Mult
     {
         let mut pending = st.pending.lock().await;
         pending.retain(|_, p| p.created.elapsed() < PREVIEW_TTL);
-        pending.insert(token.clone(), PendingImport { kind, file_name: file_name.clone(), user_id: user.id, rows: v.rows, errors: errors_count, created: Instant::now() });
+        pending.insert(
+            token.clone(),
+            PendingImport {
+                kind,
+                file_name: file_name.clone(),
+                user_id: user.id,
+                rows: v.rows,
+                errors: errors_count,
+                created: Instant::now(),
+            },
+        );
     }
     Ok(Json(json!({
         "token": token,

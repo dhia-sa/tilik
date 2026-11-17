@@ -70,10 +70,7 @@ impl CurrentUser {
 
 pub fn hash_password(pw: &str) -> AppResult<String> {
     let salt = SaltString::generate(&mut OsRng);
-    Argon2::default()
-        .hash_password(pw.as_bytes(), &salt)
-        .map(|h| h.to_string())
-        .map_err(AppError::internal)
+    Argon2::default().hash_password(pw.as_bytes(), &salt).map(|h| h.to_string()).map_err(AppError::internal)
 }
 
 pub fn verify_password(pw: &str, hash: &str) -> bool {

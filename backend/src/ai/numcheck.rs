@@ -11,9 +11,7 @@ use std::sync::OnceLock;
 
 fn number_re() -> &'static Regex {
     static RE: OnceLock<Regex> = OnceLock::new();
-    RE.get_or_init(|| {
-        Regex::new(r"(?i)(\d[\d.,]*\d|\d)\s*(%|persen|triliun|miliar|milyar|juta|jt|ribu|rb|m\b|t\b)?").expect("regex valid")
-    })
+    RE.get_or_init(|| Regex::new(r"(?i)(\d[\d.,]*\d|\d)\s*(%|persen|triliun|miliar|milyar|juta|jt|ribu|rb|m\b|t\b)?").expect("regex valid"))
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -90,7 +88,7 @@ fn numbers_in_text(s: &str) -> Vec<f64> {
         for (v, _) in interpretations(m.as_str()) {
             out.push(v);
         }
-        for part in m.as_str().split(|c| c == '.' || c == ',') {
+        for part in m.as_str().split(['.', ',']) {
             if let Ok(v) = part.parse::<f64>() {
                 out.push(v);
             }

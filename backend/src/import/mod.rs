@@ -227,16 +227,15 @@ pub async fn commit(db: &SqlitePool, p: &PendingImport) -> AppResult<CommitResul
     let started = Instant::now();
     let master = load_master(db).await?;
     let mut tx = db.begin().await?;
-    let batch_id: i64 = sqlx::query_scalar(
-        "INSERT INTO import_batches(kind, file_name, rows_ok, rows_error, user_id) VALUES (?, ?, ?, ?, ?) RETURNING id",
-    )
-    .bind(p.kind.as_str())
-    .bind(&p.file_name)
-    .bind(p.rows.len() as i64)
-    .bind(p.errors as i64)
-    .bind(p.user_id)
-    .fetch_one(&mut *tx)
-    .await?;
+    let batch_id: i64 =
+        sqlx::query_scalar("INSERT INTO import_batches(kind, file_name, rows_ok, rows_error, user_id) VALUES (?, ?, ?, ?, ?) RETURNING id")
+            .bind(p.kind.as_str())
+            .bind(&p.file_name)
+            .bind(p.rows.len() as i64)
+            .bind(p.errors as i64)
+            .bind(p.user_id)
+            .fetch_one(&mut *tx)
+            .await?;
 
     let mut vendors = master.vendors.clone();
     let (mut new_vendors, mut new_items) = (0usize, 0usize);
@@ -312,21 +311,15 @@ pub async fn commit(db: &SqlitePool, p: &PendingImport) -> AppResult<CommitResul
     tx.commit().await?;
     crate::aggregates::recompute(db).await?;
     let duration_ms = started.elapsed().as_millis();
-    sqlx::query("UPDATE import_batches SET duration_ms = ? WHERE id = ?")
-        .bind(duration_ms as i64)
-        .bind(batch_id)
-        .execute(db)
-        .await?;
+    sqlx::query("UPDATE import_batches SET duration_ms = ? WHERE id = ?").bind(duration_ms as i64).bind(batch_id).execute(db).await?;
     Ok(CommitResult { batch_id, rows_ok: p.rows.len(), rows_error: p.errors, duration_ms, new_vendors, new_items })
 }
 
 /// Rollback batch: hapus semua baris dengan batch_id tersebut (beserta vendor/item yang dibuat
 /// batch ini dan tidak dipakai data lain), lalu hitung ulang agregat.
 pub async fn rollback(db: &SqlitePool, batch_id: i64) -> AppResult<(u64, u64)> {
-    let row: Option<(i64,)> = sqlx::query_as("SELECT rolled_back FROM import_batches WHERE id = ?")
-        .bind(batch_id)
-        .fetch_optional(db)
-        .await?;
+    let row: Option<(i64,)> =
+        sqlx::query_as("SELECT rolled_back FROM import_batches WHERE id = ?").bind(batch_id).fetch_optional(db).await?;
     match row {
         None => return Err(AppError::NotFound("Batch import tidak ditemukan".into())),
         Some((1,)) => return Err(AppError::BadRequest("Batch ini sudah di-rollback".into())),

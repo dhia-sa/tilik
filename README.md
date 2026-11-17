@@ -10,7 +10,7 @@ Penugasan Rust + React · Batch 1 PT Agrinesia Raya · Kode tugas **RR-B1-03** �
 
 ## Cara menjalankan (3 perintah)
 
-Prasyarat: **Rust 1.80+** (`rustup`), **Node.js 20+**. Di Windows, Rust membutuhkan *Visual Studio C++ Build Tools* (dipakai juga untuk meng-compile SQLite bawaan).
+Prasyarat: **Rust 1.87+** (`rustup`; diuji dengan 1.100), **Node.js 20+** (diuji dengan 24). Di Windows, Rust membutuhkan *Visual Studio C++ Build Tools* (dipakai juga untuk meng-compile SQLite bawaan).
 
 ```bash
 npm --prefix frontend ci
@@ -46,7 +46,7 @@ Aplikasi **tidak memanggil API LLM langsung dan tidak butuh API key**. Backend m
 
 - Saat start, backend mengecek `<CLI> --version`. Kalau CLI tidak ditemukan, otomatis memakai `mock` (log menampilkan peringatan) supaya app tetap bisa dicoba. Set `AI_STRICT=true` untuk menonaktifkan fallback ini.
 - Path binary bisa diatur lewat `CLAUDE_BIN` / `CODEX_BIN`. Di Windows backend juga mencoba `claude.cmd` / `claude.exe`.
-- Versi CLI yang dipakai saat pengembangan: **Claude Code 2.1.325**. Provider yang aktif terlihat di sidebar (mis. "AI: claude").
+- Versi CLI yang dipakai saat pengembangan dan pengujian: **Claude Code 2.1.325 dan 2.1.326** (Windows 11). CLI harus sudah login (`claude auth login`) di akun yang menjalankan aplikasi. Provider yang aktif terlihat di sidebar (mis. "AI: claude").
 
 ---
 
@@ -80,7 +80,7 @@ Aplikasi **tidak memanggil API LLM langsung dan tidak butuh API key**. Backend m
 8. **Tanya Data** — 6 pertanyaan contoh tersedia sebagai tombol; tool + parameter bisa dibuka di setiap jawaban.
 9. **Di luar data** — "Harga emas hari ini?" → tool `none`, dijawab bahwa data tidak tersedia.
 10. **Export** — halaman Vendor → Export Excel (ikut filter periode & kategori).
-11. **`cargo test`** — `cd backend && cargo test` (39 test: normalisasi satuan, rata-rata tertimbang, dekomposisi, scorecard, anomali, validasi CSV, verifikasi angka AI, routing mock, plus test integrasi seed → import → rollback).
+11. **`cargo test`** — `cd backend && cargo test` (39 test: normalisasi satuan, rata-rata tertimbang, dekomposisi, scorecard, anomali, validasi CSV, verifikasi angka AI, routing mock, plus test integrasi seed → import → rollback). Kode juga lolos `cargo fmt --check` dan `cargo clippy --all-targets -- -D warnings`.
 
 ---
 

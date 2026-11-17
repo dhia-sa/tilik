@@ -12,7 +12,8 @@ use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use sqlx::SqlitePool;
 
-pub const TOOL_NAMES: [&str; 8] = ["spend_by", "commodity_price", "vendor_ranking", "price_change", "top_items", "alerts", "kpi_summary", "none"];
+pub const TOOL_NAMES: [&str; 8] =
+    ["spend_by", "commodity_price", "vendor_ranking", "price_change", "top_items", "alerts", "kpi_summary", "none"];
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
 pub struct ToolParams {
@@ -58,9 +59,20 @@ fn nullable(t: &str) -> Value {
 /// `additionalProperties: false` supaya kompatibel dengan Claude CLI dan Codex CLI.
 pub fn select_schema() -> Value {
     let fields = [
-        ("group_by", "string"), ("date_from", "string"), ("date_to", "string"), ("category", "string"), ("vendor", "string"),
-        ("item", "string"), ("commodity", "string"), ("weeks", "integer"), ("metric", "string"), ("order", "string"),
-        ("limit", "integer"), ("period_a", "string"), ("period_b", "string"), ("kind", "string"),
+        ("group_by", "string"),
+        ("date_from", "string"),
+        ("date_to", "string"),
+        ("category", "string"),
+        ("vendor", "string"),
+        ("item", "string"),
+        ("commodity", "string"),
+        ("weeks", "integer"),
+        ("metric", "string"),
+        ("order", "string"),
+        ("limit", "integer"),
+        ("period_a", "string"),
+        ("period_b", "string"),
+        ("kind", "string"),
     ];
     let mut props = serde_json::Map::new();
     for (k, t) in fields {
@@ -115,9 +127,7 @@ pub struct ToolResult {
 pub fn select_prompt(question: &str, ctx: &ToolContext, feedback: Option<&str>) -> String {
     let ws = week_start(ctx.reference);
     let ms = month_start(ctx.reference);
-    let fb = feedback
-        .map(|f| format!("\nPERCOBAAN SEBELUMNYA DITOLAK: {f}\nPerbaiki pilihan tool/parameter.\n"))
-        .unwrap_or_default();
+    let fb = feedback.map(|f| format!("\nPERCOBAAN SEBELUMNYA DITOLAK: {f}\nPerbaiki pilihan tool/parameter.\n")).unwrap_or_default();
     format!(
         r#"Kamu adalah asisten data procurement aplikasi SpendView (data dummy PT Agrinesia Raya).
 Tugasmu HANYA memilih SATU tool beserta parameternya untuk menjawab pertanyaan user. Jangan menulis SQL, jangan menjawab pertanyaannya.
@@ -156,11 +166,14 @@ Pertanyaan user: {question}"#,
 pub fn table_text(r: &ToolResult) -> String {
     let mut s = format!("{}\nKolom: {}\n", r.title, r.columns.join(" | "));
     for row in r.rows.iter().take(60) {
-        let cells: Vec<String> = row.iter().map(|v| match v {
-            Value::String(s) => s.clone(),
-            Value::Null => "-".into(),
-            other => other.to_string(),
-        }).collect();
+        let cells: Vec<String> = row
+            .iter()
+            .map(|v| match v {
+                Value::String(s) => s.clone(),
+                Value::Null => "-".into(),
+                other => other.to_string(),
+            })
+            .collect();
         s.push_str(&cells.join(" | "));
         s.push('\n');
     }
@@ -172,7 +185,9 @@ pub fn table_text(r: &ToolResult) -> String {
 
 pub fn summary_prompt(question: &str, r: &ToolResult, feedback: Option<&str>) -> String {
     let fb = feedback
-        .map(|f| format!("\nRINGKASAN SEBELUMNYA DITOLAK karena memuat angka yang tidak ada di tabel: {f}. Gunakan hanya angka dari tabel.\n"))
+        .map(|f| {
+            format!("\nRINGKASAN SEBELUMNYA DITOLAK karena memuat angka yang tidak ada di tabel: {f}. Gunakan hanya angka dari tabel.\n")
+        })
         .unwrap_or_default();
     format!(
         "Kamu analis procurement. Jawab pertanyaan user dalam Bahasa Indonesia, 2-4 kalimat, berdasarkan TABEL HASIL di bawah.\n\
@@ -186,9 +201,8 @@ Pertanyaan: {question}\n\nTABEL HASIL (tool {tool}):\n{table}",
 }
 
 pub fn explain_prompt(category: &str, facts: &ToolResult, feedback: Option<&str>) -> String {
-    let fb = feedback
-        .map(|f| format!("\nNARASI SEBELUMNYA DITOLAK karena memuat angka yang tidak ada di tabel: {f}.\n"))
-        .unwrap_or_default();
+    let fb =
+        feedback.map(|f| format!("\nNARASI SEBELUMNYA DITOLAK karena memuat angka yang tidak ada di tabel: {f}.\n")).unwrap_or_default();
     format!(
         "Kamu analis procurement. Tulis narasi singkat (3-4 kalimat, Bahasa Indonesia) yang menjelaskan KENAPA spend kategori {category} \
 naik/turun dibanding periode sebelumnya, berdasarkan dekomposisi harga vs volume berikut. Sebutkan efek terbesar dan item penyumbang utama.\n\
@@ -201,13 +215,53 @@ ATURAN KERAS: semua angka harus berasal dari tabel (boleh dibulatkan, mis. Rp 1,
 
 #[derive(Debug, Clone)]
 pub enum Validated {
-    SpendBy { group: GroupBy, from: NaiveDate, to: NaiveDate, scope: Scope, cat_name: Option<String>, vendor_name: Option<String>, limit: i64 },
-    CommodityPrice { id: i64, name: String, unit: String, weeks: i64 },
-    VendorRanking { metric: String, desc: bool, limit: i64, from: NaiveDate, to: NaiveDate, scope: Scope, scope_label: Option<String> },
-    PriceChange { item: Option<i64>, commodity: Option<i64>, name: String, unit: String, a: (NaiveDate, NaiveDate, String), b: (NaiveDate, NaiveDate, String) },
-    TopItems { from: NaiveDate, to: NaiveDate, cat: Option<(i64, String)>, limit: i64 },
-    Alerts { kind: Option<String>, from: NaiveDate, to: NaiveDate },
-    Kpi { from: NaiveDate, to: NaiveDate },
+    SpendBy {
+        group: GroupBy,
+        from: NaiveDate,
+        to: NaiveDate,
+        scope: Scope,
+        cat_name: Option<String>,
+        vendor_name: Option<String>,
+        limit: i64,
+    },
+    CommodityPrice {
+        id: i64,
+        name: String,
+        unit: String,
+        weeks: i64,
+    },
+    VendorRanking {
+        metric: String,
+        desc: bool,
+        limit: i64,
+        from: NaiveDate,
+        to: NaiveDate,
+        scope: Scope,
+        scope_label: Option<String>,
+    },
+    PriceChange {
+        item: Option<i64>,
+        commodity: Option<i64>,
+        name: String,
+        unit: String,
+        a: (NaiveDate, NaiveDate, String),
+        b: (NaiveDate, NaiveDate, String),
+    },
+    TopItems {
+        from: NaiveDate,
+        to: NaiveDate,
+        cat: Option<(i64, String)>,
+        limit: i64,
+    },
+    Alerts {
+        kind: Option<String>,
+        from: NaiveDate,
+        to: NaiveDate,
+    },
+    Kpi {
+        from: NaiveDate,
+        to: NaiveDate,
+    },
     None,
 }
 
@@ -409,7 +463,8 @@ pub async fn execute(db: &SqlitePool, ctx: &ToolContext, v: &Validated, tool: &s
             r.title = "Di luar cakupan data SpendView".into();
         }
         Validated::SpendBy { group, from, to, scope, cat_name, vendor_name, limit } => {
-            r.params = json!({ "group_by": group, "date_from": from, "date_to": to, "category": cat_name, "vendor": vendor_name, "limit": limit });
+            r.params =
+                json!({ "group_by": group, "date_from": from, "date_to": to, "category": cat_name, "vendor": vendor_name, "limit": limit });
             let rows = queries::spend_by(db, *group, *from, *to, *scope, Some(if *group == GroupBy::Month { 60 } else { *limit })).await?;
             let total = queries::kpis(db, *from, *to, *scope).await?.total_spend;
             r.title = format!("Spend per {} ({} s/d {})", group_label(*group).to_lowercase(), from, to);
@@ -417,8 +472,13 @@ pub async fn execute(db: &SqlitePool, ctx: &ToolContext, v: &Validated, tool: &s
                 r.columns = vec!["Bulan".into(), "Spend (Rp)".into(), "Jumlah PO".into()];
                 r.rows = rows.iter().map(|x| vec![json!(x.name), r0(x.spend), json!(x.po_count)]).collect();
             } else {
-                r.columns = vec!["Peringkat".into(), group_label(*group).into(), "Spend (Rp)".into(), "Jumlah PO".into(), "Porsi (%)".into()];
-                r.rows = rows.iter().enumerate().map(|(i, x)| vec![json!(i + 1), json!(x.name), r0(x.spend), json!(x.po_count), r1(x.share_pct)]).collect();
+                r.columns =
+                    vec!["Peringkat".into(), group_label(*group).into(), "Spend (Rp)".into(), "Jumlah PO".into(), "Porsi (%)".into()];
+                r.rows = rows
+                    .iter()
+                    .enumerate()
+                    .map(|(i, x)| vec![json!(i + 1), json!(x.name), r0(x.spend), json!(x.po_count), r1(x.share_pct)])
+                    .collect();
             }
             r.note = Some(format!("Total spend periode ini: {}", fmt_rp(total)));
         }
@@ -426,11 +486,27 @@ pub async fn execute(db: &SqlitePool, ctx: &ToolContext, v: &Validated, tool: &s
             r.params = json!({ "commodity": name, "weeks": weeks });
             let d = queries::commodity_detail(db, *id, ctx.reference, *weeks, ctx.anomaly).await?;
             r.title = format!("Harga rata-rata tertimbang {} per minggu ({} minggu terakhir)", name, weeks);
-            r.columns = vec!["Minggu".into(), "Mulai".into(), format!("Harga (Rp/{unit})"), "Perubahan vs minggu lalu (%)".into(), format!("Qty ({unit})"), "Alert".into()];
+            r.columns = vec![
+                "Minggu".into(),
+                "Mulai".into(),
+                format!("Harga (Rp/{unit})"),
+                "Perubahan vs minggu lalu (%)".into(),
+                format!("Qty ({unit})"),
+                "Alert".into(),
+            ];
             r.rows = d
                 .weeks
                 .iter()
-                .map(|w| vec![json!(w.week), json!(w.week_start), w.price.map(r0).unwrap_or(Value::Null), o1(w.change_pct), r0(w.qty), json!(if w.alert { "ya" } else { "-" })])
+                .map(|w| {
+                    vec![
+                        json!(w.week),
+                        json!(w.week_start),
+                        w.price.map(r0).unwrap_or(Value::Null),
+                        o1(w.change_pct),
+                        r0(w.qty),
+                        json!(if w.alert { "ya" } else { "-" }),
+                    ]
+                })
                 .collect();
             let prices: Vec<(String, f64)> = d.weeks.iter().filter_map(|w| w.price.map(|p| (w.week.clone(), p))).collect();
             if let (Some(first), Some(last)) = (prices.first(), prices.last()) {
@@ -443,7 +519,13 @@ pub async fn execute(db: &SqlitePool, ctx: &ToolContext, v: &Validated, tool: &s
                         fmt_pct(ch),
                         fmt_rp(first.1),
                         fmt_rp(last.1),
-                        if ch > 0.5 { "naik" } else if ch < -0.5 { "turun" } else { "stabil" }
+                        if ch > 0.5 {
+                            "naik"
+                        } else if ch < -0.5 {
+                            "turun"
+                        } else {
+                            "stabil"
+                        }
                     ));
                 }
             }
@@ -469,13 +551,32 @@ pub async fn execute(db: &SqlitePool, ctx: &ToolContext, v: &Validated, tool: &s
                 to
             );
             r.columns = vec![
-                "Peringkat".into(), "Vendor".into(), "Skor".into(), "Label".into(), "Tepat waktu (%)".into(), "PO telat".into(),
-                "PO terkirim".into(), "Skor kualitas".into(), "Selisih harga vs pasar (%)".into(),
+                "Peringkat".into(),
+                "Vendor".into(),
+                "Skor".into(),
+                "Label".into(),
+                "Tepat waktu (%)".into(),
+                "PO telat".into(),
+                "PO terkirim".into(),
+                "Skor kualitas".into(),
+                "Selisih harga vs pasar (%)".into(),
             ];
             r.rows = rows
                 .iter()
                 .enumerate()
-                .map(|(i, x)| vec![json!(i + 1), json!(x.vendor), o1(x.total), json!(x.label), o1(x.on_time_pct), json!(x.late), json!(x.delivered), o1(x.quality_score), o1(x.price_diff_pct)])
+                .map(|(i, x)| {
+                    vec![
+                        json!(i + 1),
+                        json!(x.vendor),
+                        o1(x.total),
+                        json!(x.label),
+                        o1(x.on_time_pct),
+                        json!(x.late),
+                        json!(x.delivered),
+                        o1(x.quality_score),
+                        o1(x.price_diff_pct),
+                    ]
+                })
                 .collect();
         }
         Validated::PriceChange { item, commodity, name, unit, a, b } => {
@@ -483,13 +584,25 @@ pub async fn execute(db: &SqlitePool, ctx: &ToolContext, v: &Validated, tool: &s
             let pc = queries::price_change(db, *item, *commodity, name, unit, a.clone(), b.clone()).await?;
             r.title = format!("Perubahan harga {} ({} vs {})", name, a.2, b.2);
             r.columns = vec![
-                "Nama".into(), "Periode A".into(), format!("Harga A (Rp/{unit})"), "Periode B".into(), format!("Harga B (Rp/{unit})"),
-                "Perubahan (%)".into(), format!("Qty A ({unit})"), format!("Qty B ({unit})"),
+                "Nama".into(),
+                "Periode A".into(),
+                format!("Harga A (Rp/{unit})"),
+                "Periode B".into(),
+                format!("Harga B (Rp/{unit})"),
+                "Perubahan (%)".into(),
+                format!("Qty A ({unit})"),
+                format!("Qty B ({unit})"),
             ];
             if pc.price_a.is_some() || pc.price_b.is_some() {
                 r.rows = vec![vec![
-                    json!(name), json!(format!("{} ({} s/d {})", a.2, a.0, a.1)), pc.price_a.map(r0).unwrap_or(Value::Null),
-                    json!(format!("{} ({} s/d {})", b.2, b.0, b.1)), pc.price_b.map(r0).unwrap_or(Value::Null), o1(pc.change_pct), r0(pc.qty_a), r0(pc.qty_b),
+                    json!(name),
+                    json!(format!("{} ({} s/d {})", a.2, a.0, a.1)),
+                    pc.price_a.map(r0).unwrap_or(Value::Null),
+                    json!(format!("{} ({} s/d {})", b.2, b.0, b.1)),
+                    pc.price_b.map(r0).unwrap_or(Value::Null),
+                    o1(pc.change_pct),
+                    r0(pc.qty_a),
+                    r0(pc.qty_b),
                 ]];
             }
         }
@@ -497,22 +610,51 @@ pub async fn execute(db: &SqlitePool, ctx: &ToolContext, v: &Validated, tool: &s
             r.params = json!({ "category": cat.as_ref().map(|c| c.1.clone()), "date_from": from, "date_to": to, "limit": limit });
             let scope = Scope { category: cat.as_ref().map(|c| c.0), ..Default::default() };
             let rows = queries::top_items(db, *from, *to, scope, *limit).await?;
-            r.title = format!("Top {} item{} berdasarkan spend ({} s/d {})", limit, cat.as_ref().map(|c| format!(" {}", c.1)).unwrap_or_default(), from, to);
-            r.columns = vec!["Peringkat".into(), "Item".into(), "Spend (Rp)".into(), "Qty".into(), "Satuan".into(), "Harga rata-rata (Rp)".into(), "Jumlah PO".into()];
+            r.title = format!(
+                "Top {} item{} berdasarkan spend ({} s/d {})",
+                limit,
+                cat.as_ref().map(|c| format!(" {}", c.1)).unwrap_or_default(),
+                from,
+                to
+            );
+            r.columns = vec![
+                "Peringkat".into(),
+                "Item".into(),
+                "Spend (Rp)".into(),
+                "Qty".into(),
+                "Satuan".into(),
+                "Harga rata-rata (Rp)".into(),
+                "Jumlah PO".into(),
+            ];
             r.rows = rows
                 .iter()
                 .enumerate()
-                .map(|(i, x)| vec![json!(i + 1), json!(x.item), r0(x.spend), r0(x.base_qty), json!(x.base_unit), r0(x.avg_price), json!(x.po_count)])
+                .map(|(i, x)| {
+                    vec![json!(i + 1), json!(x.item), r0(x.spend), r0(x.base_qty), json!(x.base_unit), r0(x.avg_price), json!(x.po_count)]
+                })
                 .collect();
         }
         Validated::Alerts { kind, from, to } => {
             r.params = json!({ "kind": kind.clone().unwrap_or_else(|| "all".into()), "date_from": from, "date_to": to });
             let rows = queries::alerts(db, kind.as_deref(), Some(*from), Some(*to), 50).await?;
-            r.title = format!("Alert {} periode {} s/d {}", kind.as_deref().map(|k| if k == "price" { "harga" } else { "vendor" }).unwrap_or("semua"), from, to);
+            r.title = format!(
+                "Alert {} periode {} s/d {}",
+                kind.as_deref().map(|k| if k == "price" { "harga" } else { "vendor" }).unwrap_or("semua"),
+                from,
+                to
+            );
             r.columns = vec!["Minggu/Periode".into(), "Jenis".into(), "Komoditas/Vendor".into(), "Pesan".into(), "Nilai (%)".into()];
             r.rows = rows
                 .iter()
-                .map(|a| vec![json!(a.week), json!(if a.kind == "price" { "harga" } else { "vendor" }), json!(a.ref_name), json!(a.message), r1(a.value)])
+                .map(|a| {
+                    vec![
+                        json!(a.week),
+                        json!(if a.kind == "price" { "harga" } else { "vendor" }),
+                        json!(a.ref_name),
+                        json!(a.message),
+                        r1(a.value),
+                    ]
+                })
                 .collect();
         }
         Validated::Kpi { from, to } => {
@@ -526,7 +668,12 @@ pub async fn execute(db: &SqlitePool, ctx: &ToolContext, v: &Validated, tool: &s
             r.rows = vec![
                 vec![json!("Total spend (Rp)"), r0(cur.total_spend), r0(prev.total_spend), ch(cur.total_spend, prev.total_spend)],
                 vec![json!("Jumlah PO"), json!(cur.po_count), json!(prev.po_count), ch(cur.po_count as f64, prev.po_count as f64)],
-                vec![json!("Vendor aktif"), json!(cur.active_vendors), json!(prev.active_vendors), ch(cur.active_vendors as f64, prev.active_vendors as f64)],
+                vec![
+                    json!("Vendor aktif"),
+                    json!(cur.active_vendors),
+                    json!(prev.active_vendors),
+                    ch(cur.active_vendors as f64, prev.active_vendors as f64),
+                ],
                 vec![json!("On-time delivery (%)"), o1(cur.on_time_pct), o1(prev.on_time_pct), Value::Null],
             ];
         }
@@ -557,7 +704,9 @@ pub fn template_summary(r: &ToolResult) -> String {
         "spend_by" if r.columns.first().map(|c| c == "Bulan").unwrap_or(false) => {
             let max = r.rows.iter().max_by(|a, b| num(&a[1]).unwrap_or(0.0).total_cmp(&num(&b[1]).unwrap_or(0.0)));
             match max {
-                Some(m) => format!("{}. Bulan dengan spend tertinggi adalah {} sebesar {}.", r.title, s(&m[0]), fmt_rp(num(&m[1]).unwrap_or(0.0))),
+                Some(m) => {
+                    format!("{}. Bulan dengan spend tertinggi adalah {} sebesar {}.", r.title, s(&m[0]), fmt_rp(num(&m[1]).unwrap_or(0.0)))
+                }
                 None => r.title.clone(),
             }
         }
@@ -598,16 +747,23 @@ pub fn template_summary(r: &ToolResult) -> String {
             t
         }
         "vendor_ranking" => {
-            let mut t = format!("{}: posisi teratas {} (skor {}, label {}, tepat waktu {}, {} PO telat dari {} PO terkirim).",
+            let mut t = format!(
+                "{}: posisi teratas {} (skor {}, label {}, tepat waktu {}, {} PO telat dari {} PO terkirim).",
                 r.title,
                 s(&first[1]),
                 num(&first[2]).map(|x| format!("{x:.1}").replace('.', ",")).unwrap_or("-".into()),
                 s(&first[3]),
                 num(&first[4]).map(fmt_pct).unwrap_or("-".into()),
                 s(&first[5]),
-                s(&first[6]));
+                s(&first[6])
+            );
             if let Some(second) = r.rows.get(1) {
-                t.push_str(&format!(" Berikutnya {} ({} PO telat, tepat waktu {}).", s(&second[1]), s(&second[5]), num(&second[4]).map(fmt_pct).unwrap_or("-".into())));
+                t.push_str(&format!(
+                    " Berikutnya {} ({} PO telat, tepat waktu {}).",
+                    s(&second[1]),
+                    s(&second[5]),
+                    num(&second[4]).map(fmt_pct).unwrap_or("-".into())
+                ));
             }
             t
         }
@@ -625,7 +781,8 @@ pub fn template_summary(r: &ToolResult) -> String {
             _ => format!("Data harga {} tidak lengkap untuk kedua periode.", s(&first[0])),
         },
         "top_items" => {
-            let names: Vec<String> = r.rows.iter().take(3).map(|row| format!("{} ({})", s(&row[1]), fmt_rp(num(&row[2]).unwrap_or(0.0)))).collect();
+            let names: Vec<String> =
+                r.rows.iter().take(3).map(|row| format!("{} ({})", s(&row[1]), fmt_rp(num(&row[2]).unwrap_or(0.0)))).collect();
             format!("{}. Tiga teratas: {}.", r.title, names.join(", "))
         }
         "alerts" => {

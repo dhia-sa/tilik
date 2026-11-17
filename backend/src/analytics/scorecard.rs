@@ -6,6 +6,7 @@
 //!  - Harga (25%): selisih harga vendor vs rata-rata pasar internal untuk item yang sama
 //!    (tertimbang spend). Skor = 80 - 4 x selisih% (dibatasi 0..100): sama dengan pasar = 80,
 //!    5% lebih murah = 100, 5% lebih mahal = 60, 20% lebih mahal = 0.
+//!
 //! Kalau satu komponen tidak punya data, bobotnya dibagi ulang ke komponen lain.
 
 use serde::Serialize;
@@ -68,11 +69,7 @@ pub fn score(inp: &VendorInputs, w: Weights) -> Score {
     let price = inp.price_diff_pct.map(price_component);
     let parts = [(on_time_pct, w.on_time), (quality, w.quality), (price, w.price)];
     let wsum: f64 = parts.iter().filter(|(v, _)| v.is_some()).map(|(_, w)| *w).sum();
-    let total = if wsum > 0.0 {
-        Some(parts.iter().filter_map(|(v, w)| v.map(|v| v * w)).sum::<f64>() / wsum)
-    } else {
-        None
-    };
+    let total = if wsum > 0.0 { Some(parts.iter().filter_map(|(v, w)| v.map(|v| v * w)).sum::<f64>() / wsum) } else { None };
     Score {
         on_time_pct,
         on_time_score: on_time_pct,
@@ -148,8 +145,10 @@ mod tests {
 
     #[test]
     fn bobot_berubah_peringkat_berubah() {
-        let telat_murah = VendorInputs { delivered: 10, on_time: 5, avg_quality: Some(4.6), reject_pct: Some(0.0), price_diff_pct: Some(-5.0) };
-        let tepat_mahal = VendorInputs { delivered: 10, on_time: 10, avg_quality: Some(4.6), reject_pct: Some(0.0), price_diff_pct: Some(10.0) };
+        let telat_murah =
+            VendorInputs { delivered: 10, on_time: 5, avg_quality: Some(4.6), reject_pct: Some(0.0), price_diff_pct: Some(-5.0) };
+        let tepat_mahal =
+            VendorInputs { delivered: 10, on_time: 10, avg_quality: Some(4.6), reject_pct: Some(0.0), price_diff_pct: Some(10.0) };
         let w1 = Weights { on_time: 40.0, quality: 35.0, price: 25.0 };
         let w2 = Weights { on_time: 10.0, quality: 30.0, price: 60.0 };
         let a1 = score(&telat_murah, w1).total.expect("ada");
