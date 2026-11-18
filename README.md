@@ -64,7 +64,9 @@ Aplikasi **tidak memanggil API LLM langsung dan tidak butuh API key**. Backend m
 | F8 Export Excel (.xlsx) Spend, Komoditas, Vendor sesuai filter aktif | Selesai | tombol "Export Excel" |
 | Pengaturan: kategori, komoditas, mapping item, konversi satuan, threshold, bobot, user | Selesai | Pengaturan |
 | Bonus: mode gelap | Selesai | tombol di sidebar |
-| Bonus: ringkasan mingguan, proyeksi harga, deteksi split PO | Tidak dikerjakan (prioritas fitur wajib) | – |
+| Bonus: proyeksi harga komoditas 4 minggu (regresi linear) + pita ketidakpastian 95% | Selesai | Komoditas → detail |
+| Bonus: deteksi kemungkinan split PO (banyak PO kecil, vendor & hari sama, total di atas batas approval) | Selesai | Vendor, detail vendor |
+| Bonus: ringkasan mingguan otomatis | Tidak dikerjakan | – |
 
 ---
 
@@ -80,7 +82,12 @@ Aplikasi **tidak memanggil API LLM langsung dan tidak butuh API key**. Backend m
 8. **Tanya Data** — 6 pertanyaan contoh tersedia sebagai tombol; tool + parameter bisa dibuka di setiap jawaban.
 9. **Di luar data** — "Harga emas hari ini?" → tool `none`, dijawab bahwa data tidak tersedia.
 10. **Export** — halaman Vendor → Export Excel (ikut filter periode & kategori).
-11. **`cargo test`** — `cd backend && cargo test` (39 test: normalisasi satuan, rata-rata tertimbang, dekomposisi, scorecard, anomali, validasi CSV, verifikasi angka AI, routing mock, plus test integrasi seed → import → rollback). Kode juga lolos `cargo fmt --check` dan `cargo clippy --all-targets -- -D warnings`.
+11. **`cargo test`** — `cd backend && cargo test` (53 test: normalisasi satuan, rata-rata tertimbang, dekomposisi, scorecard, anomali, proyeksi harga, split PO, validasi CSV, verifikasi angka AI, routing mock, plus test integrasi seed → import → rollback). Kode juga lolos `cargo fmt --check` dan `cargo clippy --all-targets -- -D warnings`.
+
+### Bonus
+
+- **Proyeksi harga 4 minggu** — Komoditas → klik mis. Gula Pasir. Grafik 52 minggu diteruskan dengan garis putus-putus (proyeksi) dan area arsir (rentang 95%), plus tabel 4 minggu ke depan. Gula: tren +Rp 220/kg per minggu, 2026-W47 ≈ Rp 17.391 (rentang Rp 16.671 – Rp 18.111). Proyeksi juga ada di export Excel Komoditas (sheet "Proyeksi 4 minggu").
+- **Split PO** — halaman Vendor, kartu "Kemungkinan split PO" (ikut filter periode & vendor). Untuk melihat contoh yang jelas: login Data Admin → Import → upload `seed/po_split_demo.csv` → muncul grup **PT Karton Indah Perkasa, 13 Nov 2026: 4 PO, total Rp 384,25 jt**, padahal tiap PO < Rp 100 jt. Rollback batch tersebut → grup hilang lagi (dicek juga di `cargo test`). Batas approval dan minimal jumlah PO bisa diubah di Pengaturan; hasilnya juga ada di export Excel Vendor.
 
 ---
 
@@ -121,7 +128,7 @@ Satu binary menyajikan API di `/api/*` dan file hasil build frontend (SPA fallba
 | GET | `/api/overview?from=&to=&category=&vendor=` | Semua |
 | GET | `/api/spend/by-category` · `/api/spend/category/{id}` · POST `/api/spend/category/{id}/explain` | Semua |
 | GET | `/api/commodities` · `/api/commodities/{id}` | Semua |
-| GET | `/api/vendors/scorecard` · `/api/vendors/{id}` | Semua |
+| GET | `/api/vendors/scorecard` · `/api/vendors/split-po` · `/api/vendors/{id}` | Semua |
 | POST / GET | `/api/ask` · `/api/ask/history` | Semua |
 | GET | `/api/alerts` · `/api/meta` | Semua |
 | GET | `/api/export/{spend|commodities|vendors}.xlsx` | Semua |
@@ -145,6 +152,8 @@ Satu binary menyajikan API di `/api/*` dan file hasil build frontend (SPA fallba
 - Dekomposisi: rumus brief per item lalu dijumlah. Item yang hanya ada di salah satu periode tidak punya harga pembanding, jadi dicatat sebagai **efek item baru / item tidak dibeli lagi** sehingga `volume + harga + baru + hilang = spend₁ − spend₀` selalu tepat.
 - Scorecard: ketepatan kirim = % PO terkirim dengan `delivered_date ≤ promised_date` (PO belum terkirim tidak dihitung). Kualitas = `(rata-rata skor − 1)/4 × 100 − % reject`. Harga = `80 − 4 × selisih%` terhadap rata-rata harga semua vendor untuk item yang sama (tertimbang spend), dibatasi 0–100 — harga sama dengan pasar = 80, 5% lebih murah = 100, 20% lebih mahal = 0. Komponen tanpa data dibobot ulang.
 - KPI dibandingkan dengan periode sebelumnya yang panjangnya sama. Filter default: 3 bulan terakhir.
+- Proyeksi harga (bonus): regresi linear sederhana (least squares) atas harga mingguan 12 minggu terakhir yang punya data; x = jarak minggu kalender, jadi minggu tanpa PO tidak menggeser tren. Pita = interval prediksi 95% `ŷ ± t(0,975; n−2) · s · √(1 + 1/n + (x₀ − x̄)²/Sxx)`, jadi makin lebar untuk minggu yang lebih jauh dan saat harga historis berfluktuasi (mis. tepung, karena lonjakan W37 masih di dalam 12 minggu). Karena regresi meratakan tren, minggu proyeksi pertama bisa di bawah harga minggu terakhir kalau minggu terakhir melonjak di atas tren (gula W46). Minimal 4 minggu data; kalau kurang, proyeksi tidak ditampilkan.
+- Split PO (bonus): grup = vendor sama + tanggal PO sama. Ditandai kalau jumlah PO ≥ 3, **setiap** PO < batas approval (default Rp 100 jt), dan total ≥ batas. PO yang sendirian sudah di atas batas tidak dihitung (PO itu memang lewat approval). Item yang muncul di lebih dari satu PO ditampilkan sebagai petunjuk. Filter kategori sengaja diabaikan karena batas approval berlaku untuk nilai PO utuh. Data dummy tidak sengaja dibuat dengan pola split, tetapi generator memang sering membuat beberapa PO ke vendor yang sama di hari yang sama, jadi muncul beberapa kandidat alami (5 dalam 3 bulan terakhir, 54 dalam setahun) — ini "kemungkinan" untuk ditinjau, bukan tuduhan.
 
 **AI (Tanya Data & Jelaskan)**
 - AI tidak menulis SQL. Panggilan pertama: AI memilih `{ tool, params, reason }` lewat JSON schema (semua field wajib/nullable, `additionalProperties: false`, kompatibel dengan Claude & Codex). Rust memvalidasi ulang dengan serde + aturan per tool; kalau tidak valid, AI diminta memperbaiki maks. 2x dengan pesan error, lalu menjawab "belum bisa menjawab" + saran pertanyaan.
@@ -164,11 +173,13 @@ Satu binary menyajikan API di `/api/*` dan file hasil build frontend (SPA fallba
 - Pola: gula naik bertahap 3 bulan terakhir; lonjakan tepung di 2026-W37; volume naik menjelang Ramadan/Lebaran (Jan–Mar 2026) dan Desember; 3 vendor bermasalah.
 - `penilaian_vendor_12bulan.csv` — penilaian bulanan 2025-11 s/d 2026-10.
 - `po_kotor.csv` — 30 baris error + 20 baris valid.
+- `po_split_demo.csv` — 4 PO kecil ke PT Karton Indah Perkasa pada 13 Nov 2026 (total Rp 384,25 jt) untuk demo deteksi split PO. Tidak diimpor otomatis.
 - `master.json` — kategori, komoditas, item & konversi satuan. `expected_totals.csv` — total spend & jumlah PO per bulan untuk cek manual.
 
 ## Keterbatasan
 
-- Bonus (ringkasan mingguan otomatis, proyeksi harga, deteksi split PO) belum dikerjakan.
+- Bonus ringkasan mingguan otomatis belum dikerjakan.
+- Proyeksi harga memakai tren linear saja (tanpa musiman), jadi cocok untuk horizon pendek (4 minggu).
 - Jawaban Tanya Data bergantung pada CLI yang sudah login di mesin lokal; mode `mock` hanya memahami pola pertanyaan umum (kata kunci).
 - Sesi disimpan di database dan berlaku 12 jam; belum ada rate limit login.
 - Waktu di riwayat import ditampilkan dalam UTC (perhitungan minggu & tanggal data memakai tanggal lokal WIB).

@@ -1,0 +1,6 @@
+po_no,po_date,vendor,category,item,commodity,qty,unit,unit_price,delivered_date,promised_date
+PO-DEMO-SPLIT-01,2026-11-13,PT Karton Indah Perkasa,Kemasan,Box Kue Karton,,395,karton,250000,2026-11-14,2026-11-16
+PO-DEMO-SPLIT-02,2026-11-13,PT Karton Indah Perkasa,Kemasan,Box Kue Karton,,390,karton,250000,2026-11-14,2026-11-16
+PO-DEMO-SPLIT-03,2026-11-13,PT Karton Indah Perkasa,Kemasan,Box Kue Karton,,380,karton,250000,2026-11-14,2026-11-16
+PO-DEMO-SPLIT-04,2026-11-13,PT Karton Indah Perkasa,Kemasan,Box Kue Karton,,300,karton,250000,2026-11-14,2026-11-16
+PO-DEMO-SPLIT-04,2026-11-13,PT Karton Indah Perkasa,Kemasan,Mika Kue,,40,karton,450000,2026-11-14,2026-11-16

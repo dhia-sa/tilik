@@ -24,6 +24,8 @@ const LABELS: Record<string, string> = {
   weight_on_time: 'Bobot scorecard: ketepatan kirim',
   weight_quality: 'Bobot scorecard: kualitas',
   weight_price: 'Bobot scorecard: harga',
+  split_po_approval_limit: 'Split PO: batas approval per PO (Rp)',
+  split_po_min_count: 'Split PO: minimal jumlah PO per vendor per hari',
 }
 
 type Tab = 'threshold' | 'master' | 'items' | 'units' | 'users'
@@ -60,7 +62,7 @@ function ThresholdTab({ d, reload }: { d: SettingsData; reload: () => void }) {
   }, [d.settings])
   const a = useAction(reload)
   return (
-    <Card title="Threshold alert & bobot scorecard" subtitle="Setelah disimpan, alert dan skor dihitung ulang otomatis.">
+    <Card title="Threshold alert, bobot scorecard & split PO" subtitle="Setelah disimpan, alert dan skor dihitung ulang otomatis.">
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         {Object.keys(LABELS).map((k) => (
           <Input key={k} label={LABELS[k]} type="number" step={0.5} value={vals[k] ?? ''} onChange={(v) => setVals({ ...vals, [k]: v })} />

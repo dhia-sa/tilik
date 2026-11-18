@@ -149,20 +149,52 @@ pub async fn export(
                     ])?;
                 }
             }
-            let ws = wb.add_worksheet().set_name("52 minggu").map_err(xe)?;
+            let mut forecasts = Vec::new();
+            {
+                let ws = wb.add_worksheet().set_name("52 minggu").map_err(xe)?;
+                let mut s = Sheet { ws, row: 0, money: money.clone(), pct: pct.clone(), num: num.clone(), bold: bold.clone() };
+                s.header(&["Komoditas", "Minggu", "Mulai", "Harga (Rp/satuan dasar)", "Qty", "Perubahan vs minggu lalu", "Alert"])?;
+                for r in &rows {
+                    let d = queries::commodity_detail(&st.db, r.id, reference, 52, settings.anomaly()).await?;
+                    forecasts.push((r.name.clone(), r.base_unit.clone(), d.forecast.clone()));
+                    for w in d.weeks {
+                        s.cells(vec![
+                            Cell::S(r.name.clone()),
+                            Cell::S(w.week),
+                            Cell::S(w.week_start),
+                            Cell::Num(w.price),
+                            Cell::Num(Some(w.qty)),
+                            Cell::Pct(w.change_pct),
+                            Cell::S(if w.alert { "ya".into() } else { String::new() }),
+                        ])?;
+                    }
+                }
+            }
+            let ws = wb.add_worksheet().set_name("Proyeksi 4 minggu").map_err(xe)?;
             let mut s = Sheet { ws, row: 0, money, pct, num, bold };
-            s.header(&["Komoditas", "Minggu", "Mulai", "Harga (Rp/satuan dasar)", "Qty", "Perubahan vs minggu lalu", "Alert"])?;
-            for r in &rows {
-                let d = queries::commodity_detail(&st.db, r.id, reference, 52, settings.anomaly()).await?;
-                for w in d.weeks {
+            s.title(&format!("Proyeksi harga: regresi linear {} minggu terakhir, pita = interval prediksi 95%", queries::FORECAST_WINDOW))?;
+            s.header(&[
+                "Komoditas",
+                "Satuan",
+                "Minggu",
+                "Mulai",
+                "Proyeksi (Rp)",
+                "Batas bawah (Rp)",
+                "Batas atas (Rp)",
+                "Tren per minggu",
+            ])?;
+            for (name, unit, fc) in forecasts {
+                let Some(fc) = fc else { continue };
+                for p in fc.points {
                     s.cells(vec![
-                        Cell::S(r.name.clone()),
-                        Cell::S(w.week),
-                        Cell::S(w.week_start),
-                        Cell::Num(w.price),
-                        Cell::Num(Some(w.qty)),
-                        Cell::Pct(w.change_pct),
-                        Cell::S(if w.alert { "ya".into() } else { String::new() }),
+                        Cell::S(name.clone()),
+                        Cell::S(unit.clone()),
+                        Cell::S(p.week),
+                        Cell::S(p.week_start),
+                        Cell::Num(Some(p.price)),
+                        Cell::Num(Some(p.lower)),
+                        Cell::Num(Some(p.upper)),
+                        Cell::Pct(Some(fc.slope_pct_per_week)),
                     ])?;
                 }
             }
@@ -171,40 +203,64 @@ pub async fn export(
             let settings = Settings::load(&st.db).await?;
             let rows = queries::vendor_scorecard(&st.db, f.from, f.to, scope, settings.weights()).await?;
             let w = settings.weights();
-            let ws = wb.add_worksheet().set_name("Scorecard vendor").map_err(xe)?;
+            {
+                let ws = wb.add_worksheet().set_name("Scorecard vendor").map_err(xe)?;
+                let mut s = Sheet { ws, row: 0, money: money.clone(), pct: pct.clone(), num: num.clone(), bold: bold.clone() };
+                s.title("SpendView - Scorecard vendor")?;
+                s.title(&format!("{filter_text}. Bobot: ketepatan {}%, kualitas {}%, harga {}%", w.on_time, w.quality, w.price))?;
+                s.header(&[
+                    "Vendor",
+                    "Skor total",
+                    "Label",
+                    "Spend (Rp)",
+                    "Jumlah PO",
+                    "PO terkirim",
+                    "PO telat",
+                    "Tepat waktu",
+                    "Rata-rata kualitas (1-5)",
+                    "Reject",
+                    "Skor kualitas",
+                    "Selisih harga vs pasar",
+                    "Skor harga",
+                ])?;
+                for r in &rows {
+                    s.cells(vec![
+                        Cell::S(r.vendor.clone()),
+                        Cell::Num(r.total),
+                        Cell::S(r.label.clone()),
+                        Cell::Money(r.spend),
+                        Cell::Num(Some(r.po_count as f64)),
+                        Cell::Num(Some(r.delivered as f64)),
+                        Cell::Num(Some(r.late as f64)),
+                        Cell::Pct(r.on_time_pct),
+                        Cell::Num(r.avg_quality),
+                        Cell::Pct(r.reject_pct),
+                        Cell::Num(r.quality_score),
+                        Cell::Pct(r.price_diff_pct),
+                        Cell::Num(r.price_score),
+                    ])?;
+                }
+            }
+            let sp = settings.split_po();
+            let groups = queries::split_po_candidates(&st.db, f.from, f.to, f.vendor, sp).await?;
+            let ws = wb.add_worksheet().set_name("Kemungkinan split PO").map_err(xe)?;
             let mut s = Sheet { ws, row: 0, money, pct, num, bold };
-            s.title("SpendView - Scorecard vendor")?;
-            s.title(&format!("{filter_text}. Bobot: ketepatan {}%, kualitas {}%, harga {}%", w.on_time, w.quality, w.price))?;
-            s.header(&[
-                "Vendor",
-                "Skor total",
-                "Label",
-                "Spend (Rp)",
-                "Jumlah PO",
-                "PO terkirim",
-                "PO telat",
-                "Tepat waktu",
-                "Rata-rata kualitas (1-5)",
-                "Reject",
-                "Skor kualitas",
-                "Selisih harga vs pasar",
-                "Skor harga",
-            ])?;
-            for r in &rows {
+            s.title(&format!(
+                "Kemungkinan split PO: >= {} PO ke vendor yang sama di hari yang sama, tiap PO < {}, total >= batas",
+                sp.min_count,
+                crate::aggregates::fmt_rp(sp.approval_limit)
+            ))?;
+            s.header(&["Tanggal", "Vendor", "Jumlah PO", "Total (Rp)", "PO terbesar (Rp)", "Di atas batas", "Item berulang", "Nomor PO"])?;
+            for g in &groups {
                 s.cells(vec![
-                    Cell::S(r.vendor.clone()),
-                    Cell::Num(r.total),
-                    Cell::S(r.label.clone()),
-                    Cell::Money(r.spend),
-                    Cell::Num(Some(r.po_count as f64)),
-                    Cell::Num(Some(r.delivered as f64)),
-                    Cell::Num(Some(r.late as f64)),
-                    Cell::Pct(r.on_time_pct),
-                    Cell::Num(r.avg_quality),
-                    Cell::Pct(r.reject_pct),
-                    Cell::Num(r.quality_score),
-                    Cell::Pct(r.price_diff_pct),
-                    Cell::Num(r.price_score),
+                    Cell::S(g.po_date.to_string()),
+                    Cell::S(g.vendor.clone()),
+                    Cell::Num(Some(g.po_count as f64)),
+                    Cell::Money(g.total),
+                    Cell::Money(g.largest_po),
+                    Cell::Pct(Some(g.over_limit_pct)),
+                    Cell::S(g.repeated_items.join(", ")),
+                    Cell::S(g.pos.iter().map(|p| p.po_no.as_str()).collect::<Vec<_>>().join(", ")),
                 ])?;
             }
         }

@@ -3,6 +3,7 @@ import { CartesianGrid, Line, LineChart, ReferenceLine, ResponsiveContainer, Too
 import { AXIS, GRID, Legend, TooltipBox } from '../components/charts'
 import { DataTable } from '../components/DataTable'
 import { FilterBar } from '../components/FilterBar'
+import { SplitPoCard } from '../components/SplitPo'
 import { AsyncView, Card, Empty, KpiTile, PageHeader, ScoreLabel } from '../components/ui'
 import { useApp } from '../context'
 import { dateLabel, monthLabel, num, pct, rp, rpShort } from '../format'
@@ -26,6 +27,12 @@ export default function VendorDetailPage() {
   const { id } = useParams()
   const { filterQs } = useApp()
   const state = useApi<Data>(`/vendors/${id}${filterQs}`)
+  const splitQs = (() => {
+    const p = new URLSearchParams(filterQs.replace(/^\?/, ''))
+    p.set('vendor', String(id))
+    p.delete('category')
+    return `?${p.toString()}`
+  })()
   return (
     <>
       <PageHeader title={state.data ? state.data.vendor.name : 'Vendor'} subtitle={<Link to="/vendor" className="hover:underline">← Kembali ke scorecard</Link>} />
@@ -135,6 +142,7 @@ export default function VendorDetailPage() {
                   )}
                 </Card>
               </div>
+              <SplitPoCard qs={splitQs} showVendor={false} />
             </div>
           )
         }}

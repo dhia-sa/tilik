@@ -27,6 +27,7 @@ pub fn api() -> Router<AppState> {
         .route("/commodities", get(dashboard::commodities))
         .route("/commodities/{id}", get(dashboard::commodity))
         .route("/vendors/scorecard", get(dashboard::scorecard))
+        .route("/vendors/split-po", get(dashboard::split_po))
         .route("/vendors/{id}", get(dashboard::vendor_detail))
         .route("/alerts", get(dashboard::alerts))
         .route("/ask", post(ask::ask))

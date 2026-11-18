@@ -7,6 +7,7 @@ Menghasilkan di folder seed/:
   - po_12bulan.csv              : 12 bulan data PO (17 Nov 2025 - 15 Nov 2026, 52 minggu ISO)
   - penilaian_vendor_12bulan.csv: penilaian vendor bulanan (2025-11 .. 2026-10)
   - po_kotor.csv                : file CSV "kotor" untuk demo validasi (~30 baris error)
+  - po_split_demo.csv           : 4 PO kecil ke vendor yang sama di hari yang sama (demo deteksi split PO)
   - expected_totals.csv         : total spend per bulan (untuk cek manual reviewer)
 
 Pola yang sengaja dibuat:
@@ -396,6 +397,20 @@ def dirty_rows():
     return rows, len(out), len(valid)
 
 
+def split_demo_rows():
+    """Demo deteksi split PO: 4 PO kecil (masing-masing < Rp 100 jt) ke vendor yang sama di hari
+    yang sama, total Rp 384 jt. Tidak memakai random, jadi tidak mengubah file lain."""
+    d, sent, promised = "2026-11-13", "2026-11-14", "2026-11-16"
+    v, cat = "PT Karton Indah Perkasa", "Kemasan"
+    return [
+        ["PO-DEMO-SPLIT-01", d, v, cat, "Box Kue Karton", "", 395, "karton", 250000, sent, promised],
+        ["PO-DEMO-SPLIT-02", d, v, cat, "Box Kue Karton", "", 390, "karton", 250000, sent, promised],
+        ["PO-DEMO-SPLIT-03", d, v, cat, "Box Kue Karton", "", 380, "karton", 250000, sent, promised],
+        ["PO-DEMO-SPLIT-04", d, v, cat, "Box Kue Karton", "", 300, "karton", 250000, sent, promised],
+        ["PO-DEMO-SPLIT-04", d, v, cat, "Mika Kue", "", 40, "karton", 450000, sent, promised],
+    ]
+
+
 def main():
     lines = gen_lines()
     write_po(lines, os.path.join(HERE, "po_12bulan.csv"))
@@ -411,6 +426,11 @@ def main():
         w = csv.writer(f)
         w.writerow(["po_no", "po_date", "vendor", "category", "item", "commodity", "qty", "unit", "unit_price", "delivered_date", "promised_date"])
         w.writerows(rows)
+
+    with open(os.path.join(HERE, "po_split_demo.csv"), "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["po_no", "po_date", "vendor", "category", "item", "commodity", "qty", "unit", "unit_price", "delivered_date", "promised_date"])
+        w.writerows(split_demo_rows())
 
     master = {
         "categories": CATEGORIES,

@@ -4,6 +4,7 @@ import { postJson } from '../api'
 import { DataTable } from '../components/DataTable'
 import { ExportButton } from '../components/Export'
 import { FilterBar } from '../components/FilterBar'
+import { SplitPoCard } from '../components/SplitPo'
 import { AsyncView, Button, Card, ErrorBox, Input, PageHeader, ScoreLabel } from '../components/ui'
 import { useApp } from '../context'
 import { num, pct, rpShort } from '../format'
@@ -122,6 +123,7 @@ export default function VendorsPage() {
             <Card title={`Semua vendor (${d.vendors.length})`} subtitle="Klik vendor untuk detail">
               <DataTable<VendorScore> rows={d.vendors} rowKey={(r) => r.vendor_id} onRowClick={(r) => nav(`/vendor/${r.vendor_id}`)} columns={scoreColumns()} initialSort={{ key: 't', desc: true }} />
             </Card>
+            <SplitPoCard qs={filterQs} />
           </div>
         )}
       </AsyncView>

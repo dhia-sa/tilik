@@ -33,6 +33,15 @@ export interface CommodityRow {
   change_pct: number | null; qty_this_week: number; sparkline: WeekPoint[]; alert: boolean; alert_message: string | null
 }
 export interface WeekDetail { week: string; week_start: string; price: number | null; qty: number; change_pct: number | null; mean12: number | null; upper_band: number | null; alert: boolean }
+export interface ForecastPoint { week: string; week_start: string; price: number; lower: number; upper: number }
+export interface Forecast {
+  method: string; window_weeks: number; points_used: number; last_week: string; last_price: number
+  slope_per_week: number; slope_pct_per_week: number; resid_std: number; points: ForecastPoint[]
+}
+export interface SplitGroup {
+  vendor_id: number; vendor: string; po_date: string; po_count: number; total: number; largest_po: number; over_limit_pct: number
+  repeated_items: string[]; pos: { po_no: string; amount: number; items: string[] }[]
+}
 export interface VendorPrice { vendor_id: number; vendor: string; avg_price_4w: number | null; avg_price_52w: number; qty_52w: number; diff_vs_market_pct: number }
 export interface VendorScore {
   vendor_id: number; vendor: string; spend: number; po_count: number; delivered: number; on_time: number; late: number

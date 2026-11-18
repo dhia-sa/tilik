@@ -4,8 +4,10 @@
 use crate::aggregates::commodity_series;
 use crate::analytics::anomaly::{evaluate_week, AnomalyParams};
 use crate::analytics::decomposition::{decompose, Decomposition, ItemPeriods};
+use crate::analytics::forecast::{forecast_weeks, Forecast};
 use crate::analytics::period::{add_months, iso_week_label, month_end, month_start};
 use crate::analytics::scorecard::{price_diff_by_vendor, score, VendorInputs, Weights};
+use crate::analytics::split_po::{detect_split_po, PoTotal, SplitGroup, SplitParams};
 use crate::error::{AppError, AppResult};
 use chrono::{Duration, NaiveDate};
 use serde::Serialize;
@@ -360,7 +362,13 @@ pub struct CommodityDetail {
     pub weeks: Vec<WeekDetail>,
     pub vendors: Vec<VendorPrice>,
     pub vendor_weekly: Vec<serde_json::Value>,
+    /// Proyeksi 4 minggu setelah minggu data terakhir (None kalau data < 4 minggu).
+    pub forecast: Option<Forecast>,
 }
+
+/// Jumlah minggu data yang dipakai regresi proyeksi, dan jumlah minggu yang diproyeksikan.
+pub const FORECAST_WINDOW: i64 = 12;
+pub const FORECAST_HORIZON: i64 = 4;
 
 pub async fn commodity_detail(
     db: &SqlitePool,
@@ -375,6 +383,9 @@ pub async fn commodity_detail(
         .await?
         .ok_or_else(|| AppError::NotFound("Komoditas tidak ditemukan".into()))?;
     let series = commodity_series(db, id).await?;
+    let ref_week = crate::analytics::period::week_start(reference);
+    let upto: Vec<_> = series.iter().filter(|w| w.week_start <= ref_week).cloned().collect();
+    let forecast = forecast_weeks(&upto, FORECAST_WINDOW, FORECAST_HORIZON);
     let qty: HashMap<String, f64> =
         sqlx::query_as::<_, (String, f64)>("SELECT week, base_qty FROM commodity_weekly WHERE commodity_id = ?")
             .bind(id)
@@ -468,7 +479,7 @@ pub async fn commodity_detail(
             serde_json::Value::Object(m)
         })
         .collect();
-    Ok(CommodityDetail { id, name, base_unit: unit, weeks, vendors, vendor_weekly })
+    Ok(CommodityDetail { id, name, base_unit: unit, weeks, vendors, vendor_weekly, forecast })
 }
 
 /// Cari id komoditas dari nama (mis. "gula" -> Gula Pasir).
@@ -705,6 +716,48 @@ pub async fn price_change(
         qty_a: qa,
         qty_b: qb,
     })
+}
+
+// ---------------------------------------------------------------- Split PO
+
+/// Kemungkinan split PO dalam periode. Filter kategori sengaja tidak dipakai: batas approval
+/// berlaku untuk nilai PO utuh, bukan sebagian baris item.
+pub async fn split_po_candidates(
+    db: &SqlitePool,
+    from: NaiveDate,
+    to: NaiveDate,
+    vendor: Option<i64>,
+    p: SplitParams,
+) -> AppResult<Vec<SplitGroup>> {
+    let rows: Vec<(String, i64, String, String, f64, String)> = sqlx::query_as(
+        "SELECT po.po_no, v.id, v.name, po.po_date, po.amount, i.name
+         FROM purchase_orders po JOIN vendors v ON v.id = po.vendor_id JOIN items i ON i.id = po.item_id
+         WHERE po.po_date BETWEEN ? AND ? AND (? IS NULL OR po.vendor_id = ?)
+         ORDER BY po.po_no, i.name",
+    )
+    .bind(from.to_string())
+    .bind(to.to_string())
+    .bind(vendor)
+    .bind(vendor)
+    .fetch_all(db)
+    .await?;
+    let mut pos: HashMap<(String, i64, String), PoTotal> = HashMap::new();
+    for (po_no, vid, vname, date, amount, item) in rows {
+        let Ok(po_date) = NaiveDate::parse_from_str(&date, "%Y-%m-%d") else { continue };
+        let e = pos.entry((po_no.clone(), vid, date)).or_insert_with(|| PoTotal {
+            po_no,
+            vendor_id: vid,
+            vendor: vname,
+            po_date,
+            amount: 0.0,
+            items: Vec::new(),
+        });
+        e.amount += amount;
+        if !e.items.contains(&item) {
+            e.items.push(item);
+        }
+    }
+    Ok(detect_split_po(pos.into_values().collect(), p))
 }
 
 #[cfg(test)]

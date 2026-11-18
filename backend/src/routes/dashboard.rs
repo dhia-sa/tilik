@@ -211,6 +211,19 @@ pub async fn scorecard(State(st): State<AppState>, _u: CurrentUser, Query(q): Qu
     Ok(Json(json!({ "filter": f, "weights": settings.weights(), "vendors": rows, "problems": problems })))
 }
 
+/// Kemungkinan split PO (bonus): vendor sama, tanggal sama, banyak PO di bawah batas approval
+/// yang totalnya melewati batas.
+pub async fn split_po(State(st): State<AppState>, _u: CurrentUser, Query(q): Query<FilterQuery>) -> AppResult<Json<Value>> {
+    let f = resolve(&st, &q).await?;
+    let p = Settings::load(&st.db).await?.split_po();
+    let groups = queries::split_po_candidates(&st.db, f.from, f.to, f.vendor, p).await?;
+    Ok(Json(json!({
+        "filter": f,
+        "params": { "approval_limit": p.approval_limit, "min_count": p.min_count },
+        "groups": groups,
+    })))
+}
+
 pub async fn vendor_detail(
     State(st): State<AppState>,
     _u: CurrentUser,
