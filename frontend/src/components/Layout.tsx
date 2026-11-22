@@ -1,68 +1,127 @@
-import type { ReactNode } from 'react'
-import { NavLink } from 'react-router-dom'
+import { useEffect, useState, type ReactNode } from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
+import { LayoutDashboard, LogOut, Menu, Moon, X, ScanEye, Settings, Sparkles, Store, Sun, Upload, Wallet, Wheat, type LucideIcon } from 'lucide-react'
 import { useApp } from '../context'
 import type { Role } from '../types'
 
-const NAV: { to: string; label: string; icon: string; roles?: Role[] }[] = [
-  { to: '/', label: 'Overview', icon: 'M3 12l9-8 9 8M5 10v10h14V10' },
-  { to: '/spend', label: 'Spend', icon: 'M4 20V10M10 20V4M16 20v-7M22 20H2' },
-  { to: '/komoditas', label: 'Komoditas', icon: 'M3 17l6-6 4 4 8-8M15 7h6v6' },
-  { to: '/vendor', label: 'Vendor', icon: 'M4 21V8l8-5 8 5v13M9 21v-6h6v6' },
-  { to: '/tanya', label: 'Tanya Data', icon: 'M21 12a8 8 0 01-11.6 7.1L3 21l1.9-6.4A8 8 0 1121 12z' },
-  { to: '/import', label: 'Import', icon: 'M12 3v12m0 0l-4-4m4 4l4-4M4 17v3h16v-3', roles: ['data_admin', 'admin'] },
-  { to: '/pengaturan', label: 'Pengaturan', icon: 'M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z', roles: ['data_admin', 'admin'] },
+const NAV: { group: string; items: { to: string; label: string; icon: LucideIcon; roles?: Role[] }[] }[] = [
+  {
+    group: 'Menu',
+    items: [
+      { to: '/', label: 'Ringkasan', icon: LayoutDashboard },
+      { to: '/spend', label: 'Spend', icon: Wallet },
+      { to: '/komoditas', label: 'Komoditas', icon: Wheat },
+      { to: '/vendor', label: 'Vendor', icon: Store },
+      { to: '/tanya', label: 'Tanya Data', icon: Sparkles },
+    ],
+  },
+  {
+    group: 'Data',
+    items: [
+      { to: '/import', label: 'Import', icon: Upload, roles: ['data_admin', 'admin'] },
+      { to: '/pengaturan', label: 'Pengaturan', icon: Settings, roles: ['data_admin', 'admin'] },
+    ],
+  },
 ]
 
 const ROLE_LABEL: Record<Role, string> = { viewer: 'Viewer', data_admin: 'Data Admin', admin: 'Admin IT' }
 
+function initials(name: string): string {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase())
+    .join('')
+}
+
+export function Logo({ size = 36 }: { size?: number }) {
+  return (
+    <span className="grid shrink-0 place-items-center rounded-[10px] bg-accent text-white" style={{ width: size, height: size }}>
+      <ScanEye size={Math.round(size * 0.56)} strokeWidth={2} aria-hidden />
+    </span>
+  )
+}
+
 export function Layout({ children }: { children: ReactNode }) {
   const { user, logout, theme, toggleTheme, meta } = useApp()
+  const [open, setOpen] = useState(false)
+  const { pathname } = useLocation()
+  useEffect(() => setOpen(false), [pathname])
   return (
     <div className="flex min-h-screen">
-      <aside className="sticky top-0 flex h-screen w-56 shrink-0 flex-col border-r border-line bg-surface px-3 py-4">
-        <div className="mb-6 flex items-center gap-2 px-2">
-          <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden>
-            <rect width="32" height="32" rx="8" fill="var(--accent)" />
-            <path d="M8 22l6-7 4 4 6-9" stroke="white" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+      <div className="fixed inset-x-0 top-0 z-30 flex h-14 items-center gap-3 border-b border-line bg-surface px-4 lg:hidden">
+        <button onClick={() => setOpen(true)} aria-label="Buka menu" className="grid h-9 w-9 place-items-center rounded-lg text-ink-2 hover:bg-surface-2 hover:text-ink">
+          <Menu size={20} />
+        </button>
+        <Logo size={28} />
+        <span className="font-display text-base font-bold text-ink">Tilik</span>
+      </div>
+      {open && <div className="fixed inset-0 z-40 bg-[#0f172a]/40 lg:hidden" onClick={() => setOpen(false)} aria-hidden />}
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 flex h-screen w-64 shrink-0 flex-col border-r border-line bg-surface transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] lg:sticky lg:top-0 lg:translate-x-0 ${
+          open ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <button onClick={() => setOpen(false)} aria-label="Tutup menu" className="absolute right-3 top-6 grid h-8 w-8 place-items-center rounded-lg text-ink-2 hover:bg-surface-2 lg:hidden">
+          <X size={18} />
+        </button>
+        <div className="flex items-center gap-2.5 px-5 py-6">
+          <Logo />
           <div>
-            <div className="text-sm font-semibold leading-tight text-ink">SpendView</div>
-            <div className="text-[11px] text-muted">Procurement & Finance</div>
+            <div className="font-display text-lg font-bold leading-none text-ink">Tilik</div>
+            <div className="mt-1 text-xs text-muted">Analitik pengadaan</div>
           </div>
         </div>
-        <nav className="flex flex-1 flex-col gap-0.5">
-          {NAV.filter((n) => !n.roles || n.roles.includes(user.role)).map((n) => (
-            <NavLink
-              key={n.to}
-              to={n.to}
-              end={n.to === '/'}
-              className={({ isActive }) =>
-                `flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm ${isActive ? 'bg-surface-2 font-medium text-ink' : 'text-ink-2 hover:bg-surface-2 hover:text-ink'}`
-              }
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <path d={n.icon} />
-              </svg>
-              {n.label}
-            </NavLink>
-          ))}
+        <nav className="flex flex-1 flex-col overflow-auto px-3 pb-3">
+          {NAV.map((g) => {
+            const items = g.items.filter((n) => !n.roles || n.roles.includes(user.role))
+            if (items.length === 0) return null
+            return (
+              <div key={g.group} className="flex flex-col gap-0.5">
+                <div className="px-2.5 pb-1.5 pt-4 text-[11px] font-medium uppercase tracking-wider text-muted">{g.group}</div>
+                {items.map((n) => (
+                  <NavLink
+                    key={n.to}
+                    to={n.to}
+                    end={n.to === '/'}
+                    className={({ isActive }) =>
+                      `flex items-center gap-2 border-r-4 p-2.5 text-sm font-medium ${
+                        isActive ? 'rounded-l-[10px] border-accent bg-surface-2 text-accent' : 'rounded-[10px] border-transparent text-ink-2 hover:bg-bg hover:text-ink'
+                      }`
+                    }
+                  >
+                    <n.icon size={20} strokeWidth={1.75} aria-hidden />
+                    {n.label}
+                  </NavLink>
+                ))}
+              </div>
+            )
+          })}
         </nav>
-        <div className="mt-4 border-t border-line pt-3">
-          <div className="px-2 text-sm font-medium text-ink">{user.name}</div>
-          <div className="px-2 text-xs text-muted">
-            {ROLE_LABEL[user.role]} · AI: {meta.ai_provider}
+        <div className="m-3 rounded-2xl border border-line p-3">
+          <div className="flex items-center gap-2.5">
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-crit-bg font-display text-sm font-bold text-crit">{initials(user.name)}</span>
+            <div className="min-w-0 flex-1">
+              <div className="truncate text-sm font-medium text-ink">{user.name}</div>
+              <div className="truncate text-xs text-ink-2">
+                {ROLE_LABEL[user.role]} · AI {meta.ai_provider}
+              </div>
+            </div>
           </div>
-          <div className="mt-2 flex gap-1">
-            <button onClick={toggleTheme} className="flex-1 rounded-lg px-2 py-1.5 text-left text-xs text-ink-2 hover:bg-surface-2" title="Ganti tema">
-              {theme === 'dark' ? '☀ Mode terang' : '☾ Mode gelap'}
+          <div className="mt-3 flex gap-1 border-t border-line pt-2">
+            <button onClick={toggleTheme} className="flex flex-1 items-center gap-1.5 rounded-lg px-2 py-1.5 text-xs font-medium text-ink-2 hover:bg-surface-2 hover:text-ink" title="Ganti tema">
+              {theme === 'dark' ? <Sun size={16} aria-hidden /> : <Moon size={16} aria-hidden />}
+              {theme === 'dark' ? 'Mode terang' : 'Mode gelap'}
             </button>
-            <button onClick={logout} className="rounded-lg px-2 py-1.5 text-xs text-ink-2 hover:bg-surface-2">
+            <button onClick={logout} className="flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-xs font-medium text-ink-2 hover:bg-crit-bg hover:text-crit" title="Keluar">
+              <LogOut size={16} aria-hidden />
               Keluar
             </button>
           </div>
         </div>
       </aside>
-      <main className="min-w-0 flex-1 px-6 py-5">{children}</main>
+      <main className="min-w-0 flex-1 px-4 pb-12 pt-20 sm:px-6 lg:px-10 lg:pt-8">{children}</main>
     </div>
   )
 }

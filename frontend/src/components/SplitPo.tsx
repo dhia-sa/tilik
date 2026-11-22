@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { dateLabel, num, pct, rp, rpShort } from '../format'
 import { useApi } from '../hooks'
 import type { Filter, SplitGroup } from '../types'
@@ -14,7 +15,14 @@ interface Data {
 /** Kartu "Kemungkinan split PO" (bonus). `qs` = query string filter, mis. "?from=…&to=…". */
 export function SplitPoCard({ qs, showVendor = true }: { qs: string; showVendor?: boolean }) {
   const state = useApi<Data>(`/vendors/split-po${qs}`)
+  const { hash } = useLocation()
+  const ref = useRef<HTMLDivElement>(null)
+  const ready = !!state.data
+  useEffect(() => {
+    if (ready && hash === '#split-po') ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [ready, hash])
   return (
+    <div id="split-po" ref={ref} className="scroll-mt-6">
     <AsyncView state={state} height="h-40">
       {(d) => (
         <Card
@@ -63,5 +71,6 @@ export function SplitPoCard({ qs, showVendor = true }: { qs: string; showVendor?
         </Card>
       )}
     </AsyncView>
+    </div>
   )
 }

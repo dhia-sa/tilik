@@ -1,12 +1,14 @@
 import { useState, type FormEvent } from 'react'
+import { ArrowRight, Moon, ShieldCheck, Sun, UserRound, Wrench } from 'lucide-react'
 import { postJson } from '../api'
+import { Logo } from '../components/Layout'
 import { Button, ErrorBox, Input } from '../components/ui'
 import type { User } from '../types'
 
 const DEMO = [
-  { label: 'Viewer', email: 'viewer@spendview.local', pw: 'viewer123' },
-  { label: 'Data Admin', email: 'dataadmin@spendview.local', pw: 'dataadmin123' },
-  { label: 'Admin IT', email: 'admin@spendview.local', pw: 'admin123' },
+  { label: 'Viewer', desc: 'Semua dashboard dan Tanya Data', email: 'viewer@tilik.local', pw: 'viewer123', icon: UserRound },
+  { label: 'Data Admin', desc: '+ Import, rollback, pengaturan', email: 'dataadmin@tilik.local', pw: 'dataadmin123', icon: ShieldCheck },
+  { label: 'Admin IT', desc: '+ Kelola user dan role', email: 'admin@tilik.local', pw: 'admin123', icon: Wrench },
 ]
 
 export default function LoginPage(props: { onLogin: (u: User) => void; theme: string; toggleTheme: () => void }) {
@@ -30,20 +32,17 @@ export default function LoginPage(props: { onLogin: (u: User) => void; theme: st
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <div className="w-full max-w-sm">
-        <div className="mb-6 flex items-center gap-3">
-          <svg width="36" height="36" viewBox="0 0 32 32" aria-hidden>
-            <rect width="32" height="32" rx="8" fill="var(--accent)" />
-            <path d="M8 22l6-7 4 4 6-9" stroke="white" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+    <div className="flex min-h-screen items-center justify-center px-4 py-10">
+      <div className="w-full max-w-md">
+        <div className="mb-8 flex items-center gap-3">
+          <Logo size={44} />
           <div>
-            <h1 className="text-lg font-semibold text-ink">SpendView</h1>
-            <p className="text-xs text-muted">Spend, harga komoditas & performa vendor</p>
+            <h1 className="text-2xl leading-none text-ink">Tilik</h1>
+            <p className="mt-1.5 text-sm text-ink-2">Spend, harga komoditas, dan performa vendor</p>
           </div>
         </div>
-        <form onSubmit={submit} className="flex flex-col gap-3 rounded-xl border border-line bg-surface p-5">
-          <h2 className="text-sm font-semibold text-ink">Masuk</h2>
+        <form onSubmit={submit} className="flex flex-col gap-4 rounded-2xl border border-line bg-surface p-6">
+          <h2 className="text-base text-ink">Masuk</h2>
           <Input label="Email" type="email" value={email} onChange={setEmail} placeholder="nama@perusahaan.local" />
           <Input label="Password" type="password" value={password} onChange={setPassword} />
           {error && <ErrorBox message={error} />}
@@ -51,18 +50,34 @@ export default function LoginPage(props: { onLogin: (u: User) => void; theme: st
             {busy ? 'Memproses…' : 'Masuk'}
           </Button>
         </form>
-        <div className="mt-4 rounded-xl border border-dashed border-line p-4 text-xs text-ink-2">
-          <div className="mb-2 font-medium">Akun demo (data dummy)</div>
-          <div className="flex flex-wrap gap-2">
+        <div className="mt-4 rounded-2xl border border-line bg-surface p-6">
+          <div className="mb-3 flex items-center justify-between">
+            <span className="font-display text-sm font-bold text-ink">Akun demo</span>
+            <span className="rounded-full bg-surface-2 px-2 py-0.5 text-xs font-medium text-ink-2">data dummy</span>
+          </div>
+          <div className="flex flex-col gap-2">
             {DEMO.map((d) => (
-              <Button key={d.email} onClick={() => submit(undefined, { email: d.email, pw: d.pw })} disabled={busy}>
-                Masuk sebagai {d.label}
-              </Button>
+              <button
+                key={d.email}
+                onClick={() => submit(undefined, { email: d.email, pw: d.pw })}
+                disabled={busy}
+                className="group flex items-center gap-3 rounded-xl border border-line px-3 py-2.5 text-left hover:border-line-strong hover:bg-bg disabled:opacity-50"
+              >
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-crit-bg text-crit">
+                  <d.icon size={18} strokeWidth={1.75} aria-hidden />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-medium text-ink">Masuk sebagai {d.label}</span>
+                  <span className="block text-xs text-ink-2">{d.desc}</span>
+                </span>
+                <ArrowRight size={16} className="text-muted group-hover:text-accent" aria-hidden />
+              </button>
             ))}
           </div>
         </div>
-        <button onClick={props.toggleTheme} className="mt-4 text-xs text-muted hover:text-ink">
-          {props.theme === 'dark' ? '☀ Mode terang' : '☾ Mode gelap'}
+        <button onClick={props.toggleTheme} className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-ink-2 hover:text-ink">
+          {props.theme === 'dark' ? <Sun size={14} aria-hidden /> : <Moon size={14} aria-hidden />}
+          {props.theme === 'dark' ? 'Mode terang' : 'Mode gelap'}
         </button>
       </div>
     </div>

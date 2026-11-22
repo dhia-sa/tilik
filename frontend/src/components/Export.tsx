@@ -1,3 +1,4 @@
+import { Download } from 'lucide-react'
 import { useApp } from '../context'
 
 /** Tombol export Excel sesuai filter aktif. */
@@ -7,11 +8,9 @@ export function ExportButton({ view, extraQs = '' }: { view: 'spend' | 'commodit
   return (
     <a
       href={`/api/export/${view}.xlsx${q}`}
-      className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-surface px-3 py-1.5 text-sm font-medium text-ink hover:bg-surface-2"
+      className="inline-flex h-10 items-center gap-2 rounded-xl border border-line bg-surface px-4 text-sm font-medium text-ink hover:border-line-strong hover:bg-surface-2"
     >
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden>
-        <path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14" />
-      </svg>
+      <Download size={18} strokeWidth={1.75} aria-hidden />
       Export Excel
     </a>
   )

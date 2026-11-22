@@ -96,12 +96,12 @@ export default function VendorsPage() {
                       .filter((x) => x.s !== null)
                       .sort((a, b) => (a.s ?? 0) - (b.s ?? 0))[0]
                     return (
-                      <button key={v.vendor_id} onClick={() => nav(`/vendor/${v.vendor_id}`)} className="rounded-lg border border-line p-3 text-left hover:bg-surface-2">
+                      <button key={v.vendor_id} onClick={() => nav(`/vendor/${v.vendor_id}`)} className="rounded-xl border border-line p-3 text-left hover:bg-surface-2">
                         <div className="flex items-start justify-between gap-2">
                           <span className="text-sm font-medium text-ink">{v.vendor}</span>
                           <ScoreLabel label={v.label} />
                         </div>
-                        <div className="mt-1 text-2xl font-semibold text-ink">{num(v.total, 1)}</div>
+                        <div className="mt-1 font-display text-2xl font-bold text-ink">{num(v.total, 1)}</div>
                         <div className="text-xs text-ink-2">
                           Terlemah: {weakest?.k} ({num(weakest?.s, 1)}) · telat {num(v.late)}/{num(v.delivered)} PO · harga {pct(v.price_diff_pct, 1, true)}
                         </div>

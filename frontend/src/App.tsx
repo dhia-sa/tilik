@@ -16,8 +16,17 @@ import AskPage from './pages/Ask'
 import ImportPage from './pages/Import'
 import SettingsPage from './pages/Settings'
 
+const THEME_KEY = 'tilik-theme'
+
+/** Default terang (desain utama); pilihan pengguna diingat di browser. */
 function initialTheme(): 'light' | 'dark' {
-  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  try {
+    const saved = localStorage.getItem(THEME_KEY)
+    if (saved === 'light' || saved === 'dark') return saved
+  } catch {
+    /* storage tidak tersedia */
+  }
+  return 'light'
 }
 
 function AdminOnly({ children }: { children: React.ReactNode }) {
@@ -32,6 +41,11 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme
+    try {
+      localStorage.setItem(THEME_KEY, theme)
+    } catch {
+      /* storage tidak tersedia */
+    }
   }, [theme])
 
   useEffect(() => {

@@ -104,7 +104,7 @@ export default function ImportPage() {
                 type="file"
                 accept=".csv,text/csv"
                 onChange={(e) => { setFile(e.target.files?.[0] ?? null); setPreview(null); setDone(null) }}
-                className="rounded-lg border border-line bg-surface px-2 py-1 text-sm text-ink file:mr-2 file:rounded file:border-0 file:bg-surface-2 file:px-2 file:py-1 file:text-ink"
+                className="rounded-xl border border-line bg-surface px-2 py-1 text-sm text-ink file:mr-2 file:rounded file:border-0 file:bg-surface-2 file:px-2 file:py-1 file:text-ink"
               />
             </label>
             <Button variant="primary" onClick={doPreview} disabled={!file || busy !== null}>
@@ -120,7 +120,7 @@ export default function ImportPage() {
         </Card>
 
         {err && <ErrorBox message={err} />}
-        {done && <div className="rounded-lg border border-line bg-surface-2 px-4 py-3 text-sm text-good">● {done}</div>}
+        {done && <div className="rounded-xl border border-line bg-surface-2 px-4 py-3 text-sm text-good">● {done}</div>}
 
         {preview && (
           <Card
@@ -136,9 +136,9 @@ export default function ImportPage() {
             }
           >
             <div className="mb-3 grid grid-cols-2 gap-3 md:grid-cols-4">
-              <div className="rounded-lg border border-line p-3"><div className="text-xs text-ink-2">Baris valid</div><div className="text-xl font-semibold text-good">{num(preview.rows_ok)}</div></div>
-              <div className="rounded-lg border border-line p-3"><div className="text-xs text-ink-2">Baris error</div><div className={`text-xl font-semibold ${preview.rows_error ? 'text-crit' : 'text-ink'}`}>{num(preview.rows_error)}</div></div>
-              <div className="col-span-2 rounded-lg border border-line p-3 text-xs text-ink-2">
+              <div className="rounded-xl border border-line p-3"><div className="text-xs text-ink-2">Baris valid</div><div className="font-display text-xl font-bold text-good">{num(preview.rows_ok)}</div></div>
+              <div className="rounded-xl border border-line p-3"><div className="text-xs text-ink-2">Baris error</div><div className={`font-display text-xl font-bold ${preview.rows_error ? 'text-crit' : 'text-ink'}`}>{num(preview.rows_error)}</div></div>
+              <div className="col-span-2 rounded-xl border border-line p-3 text-xs text-ink-2">
                 Vendor baru yang akan dibuat: {preview.new_vendors.length ? preview.new_vendors.join(', ') : 'tidak ada'}
                 {preview.rows_error > 0 && <div className="mt-1">Baris error tidak akan disimpan. Perbaiki di file lalu import ulang bila perlu.</div>}
               </div>

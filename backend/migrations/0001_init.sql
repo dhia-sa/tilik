@@ -1,4 +1,4 @@
--- SpendView schema awal
+-- Tilik schema awal
 
 CREATE TABLE users (
     id            INTEGER PRIMARY KEY AUTOINCREMENT,

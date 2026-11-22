@@ -1,8 +1,8 @@
 [package]
-name = "spendview"
+name = "tilik"
 version = "0.1.0"
 edition = "2021"
-description = "SpendView - dashboard spend, harga komoditas & performa vendor"
+description = "Tilik - dashboard spend, harga komoditas & performa vendor"
 
 [dependencies]
 axum = { version = "0.8", features = ["multipart", "macros"] }

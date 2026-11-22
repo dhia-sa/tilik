@@ -92,7 +92,7 @@ pub fn route(question: &str, today: NaiveDate) -> ToolChoice {
     let outside = ["emas", "saham", "cuaca", "kurs", "dolar", "dollar", "bitcoin", "crypto", "presiden", "bola"];
     let words: Vec<&str> = q.split(|c: char| !c.is_alphanumeric()).filter(|w| !w.is_empty()).collect();
     if outside.iter().any(|o| words.contains(o)) {
-        return choose("none", ToolParams::default(), "pertanyaan di luar data SpendView");
+        return choose("none", ToolParams::default(), "pertanyaan di luar data Tilik");
     }
     if q.contains("alert") || q.contains("peringatan") {
         p.kind = Some(

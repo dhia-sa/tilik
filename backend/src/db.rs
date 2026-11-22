@@ -58,9 +58,9 @@ struct MasterItem {
 }
 
 pub const DEMO_USERS: [(&str, &str, &str, &str); 3] = [
-    ("viewer@spendview.local", "Vira Viewer", "viewer", "viewer123"),
-    ("dataadmin@spendview.local", "Dani Data Admin", "data_admin", "dataadmin123"),
-    ("admin@spendview.local", "Adi Admin IT", "admin", "admin123"),
+    ("viewer@tilik.local", "Vira Viewer", "viewer", "viewer123"),
+    ("dataadmin@tilik.local", "Dani Data Admin", "data_admin", "dataadmin123"),
+    ("admin@tilik.local", "Adi Admin IT", "admin", "admin123"),
 ];
 
 pub async fn seed(pool: &SqlitePool, cfg: &Config) -> AppResult<()> {

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generator data dummy SpendView (deterministik, seed=42, tanpa dependency).
+Generator data dummy Tilik (deterministik, seed=42, tanpa dependency).
 
 Menghasilkan di folder seed/:
   - master.json                 : kategori, komoditas, item, konversi satuan

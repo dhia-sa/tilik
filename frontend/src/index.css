@@ -2,55 +2,79 @@
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
+/* Tilik: corporate modern, putih/slate/merah. Kartu dibedakan dengan border 1px, bukan bayangan. */
 :root {
   color-scheme: light;
-  --bg: #f4f4f2;
-  --surface: #fcfcfb;
-  --surface-2: #f0efec;
-  --border: #e2e1dc;
-  --text: #0b0b0b;
-  --text-2: #52514e;
-  --muted: #7a7974;
-  --grid: #e8e7e3;
-  --series-1: #2a78d6;
-  --series-2: #eb6834;
-  --series-3: #1baf7a;
-  --series-4: #eda100;
-  --series-5: #e87ba4;
-  --seq-light: #b7d3f6;
-  --good: #0ca30c;
-  --good-text: #006300;
-  --warning: #fab219;
-  --warning-text: #8a5a00;
-  --critical: #d03b3b;
-  --critical-text: #b42323;
-  --accent: #2a78d6;
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-2: #f1f5f9;
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --text: #0f172a;
+  --text-2: #64748b;
+  --muted: #94a3b8;
+  --grid: #eef2f6;
+  --series-1: #ef4444;
+  --series-2: #3b82f6;
+  --series-3: #22c55e;
+  --series-4: #f59e0b;
+  --series-5: #8b5cf6;
+  --seq-light: #fecaca;
+  --good: #22c55e;
+  --good-text: #15803d;
+  --good-bg: #f0fdf4;
+  --good-line: #dcfce7;
+  --warning: #f59e0b;
+  --warning-text: #b45309;
+  --warning-bg: #fffbeb;
+  --critical: #ef4444;
+  --critical-text: #b91c1c;
+  --critical-bg: #fef2f2;
+  --info-text: #1d4ed8;
+  --info-bg: #eff6ff;
+  --accent: #ef4444;
+  --accent-hover: #dc2626;
   --accent-text: #ffffff;
+  --strong: #0f172a;
+  --strong-hover: #1e293b;
+  --strong-text: #ffffff;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 [data-theme="dark"] {
   color-scheme: dark;
-  --bg: #121211;
-  --surface: #1a1a19;
-  --surface-2: #242422;
-  --border: #33332f;
-  --text: #f0efec;
-  --text-2: #c3c2b7;
-  --muted: #8f8e86;
-  --grid: #2c2c29;
-  --series-1: #3987e5;
-  --series-2: #d95926;
-  --series-3: #199e70;
-  --series-4: #c98500;
-  --series-5: #d55181;
-  --seq-light: #184f95;
-  --good: #0ca30c;
-  --good-text: #4cc94c;
-  --warning: #fab219;
-  --warning-text: #fab219;
-  --critical: #d03b3b;
-  --critical-text: #f07c7c;
-  --accent: #3987e5;
+  --bg: #0b1120;
+  --surface: #0f172a;
+  --surface-2: #1e293b;
+  --border: #1e293b;
+  --border-strong: #334155;
+  --text: #f1f5f9;
+  --text-2: #94a3b8;
+  --muted: #64748b;
+  --grid: #1e293b;
+  --series-1: #f87171;
+  --series-2: #60a5fa;
+  --series-3: #4ade80;
+  --series-4: #fbbf24;
+  --series-5: #a78bfa;
+  --seq-light: #7f1d1d;
+  --good: #22c55e;
+  --good-text: #4ade80;
+  --good-bg: rgba(34, 197, 94, 0.12);
+  --good-line: rgba(34, 197, 94, 0.25);
+  --warning: #f59e0b;
+  --warning-text: #fbbf24;
+  --warning-bg: rgba(245, 158, 11, 0.12);
+  --critical: #ef4444;
+  --critical-text: #f87171;
+  --critical-bg: rgba(239, 68, 68, 0.12);
+  --info-text: #60a5fa;
+  --info-bg: rgba(59, 130, 246, 0.12);
+  --accent: #ef4444;
+  --accent-hover: #f87171;
   --accent-text: #ffffff;
+  --strong: #f1f5f9;
+  --strong-hover: #ffffff;
+  --strong-text: #0f172a;
 }
 
 @theme {
@@ -58,21 +82,49 @@
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
   --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
   --color-ink: var(--text);
   --color-ink-2: var(--text-2);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-strong: var(--strong);
+  --color-strong-hover: var(--strong-hover);
+  --color-on-strong: var(--strong-text);
   --color-good: var(--good-text);
+  --color-good-bg: var(--good-bg);
+  --color-good-line: var(--good-line);
   --color-warn: var(--warning-text);
+  --color-warn-bg: var(--warning-bg);
   --color-crit: var(--critical-text);
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --color-crit-bg: var(--critical-bg);
+  --color-info: var(--info-text);
+  --color-info-bg: var(--info-bg);
+  --font-sans: "Satoshi", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "General Sans", "Satoshi", ui-sans-serif, system-ui, sans-serif;
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
   background: var(--bg);
   color: var(--text);
   font-feature-settings: "tnum" 1;
+  -webkit-font-smoothing: antialiased;
 }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.01em; }
+
+/* semua elemen interaktif memakai easing yang sama */
+a, button, select, input, textarea, [role="button"] {
+  transition-property: color, background-color, border-color, opacity, transform;
+  transition-timing-function: var(--ease);
+  transition-duration: 200ms;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 10px; }
+* { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+
 .recharts-cartesian-axis-tick-value { fill: var(--muted); font-size: 11px; }
 .recharts-text { fill: var(--muted); }
 .recharts-tooltip-cursor { fill: var(--surface-2); }

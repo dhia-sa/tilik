@@ -100,7 +100,7 @@ pub async fn export(
             {
                 let ws = wb.add_worksheet().set_name("Spend per kategori").map_err(xe)?;
                 let mut s = Sheet { ws, row: 0, money: money.clone(), pct: pct.clone(), num: num.clone(), bold: bold.clone() };
-                s.title("SpendView - Spend per kategori")?;
+                s.title("Tilik - Spend per kategori")?;
                 s.title(&filter_text)?;
                 s.header(&["Kategori", "Spend (Rp)", "Spend periode sebelumnya (Rp)", "Perubahan", "Porsi"])?;
                 for c in &cats {
@@ -136,7 +136,7 @@ pub async fn export(
             {
                 let ws = wb.add_worksheet().set_name("Harga mingguan").map_err(xe)?;
                 let mut s = Sheet { ws, row: 0, money: money.clone(), pct: pct.clone(), num: num.clone(), bold: bold.clone() };
-                s.title(&format!("SpendView - Harga komoditas minggu {}", rows.first().map(|r| r.this_week.clone()).unwrap_or_default()))?;
+                s.title(&format!("Tilik - Harga komoditas minggu {}", rows.first().map(|r| r.this_week.clone()).unwrap_or_default()))?;
                 s.header(&["Komoditas", "Satuan", "Harga minggu ini (Rp)", "Harga minggu lalu (Rp)", "Perubahan", "Alert"])?;
                 for r in &rows {
                     s.cells(vec![
@@ -206,7 +206,7 @@ pub async fn export(
             {
                 let ws = wb.add_worksheet().set_name("Scorecard vendor").map_err(xe)?;
                 let mut s = Sheet { ws, row: 0, money: money.clone(), pct: pct.clone(), num: num.clone(), bold: bold.clone() };
-                s.title("SpendView - Scorecard vendor")?;
+                s.title("Tilik - Scorecard vendor")?;
                 s.title(&format!("{filter_text}. Bobot: ketepatan {}%, kualitas {}%, harga {}%", w.on_time, w.quality, w.price))?;
                 s.header(&[
                     "Vendor",
@@ -267,7 +267,7 @@ pub async fn export(
         _ => return Err(AppError::NotFound("Export tersedia untuk spend, commodities, vendors".into())),
     }
     let bytes = wb.save_to_buffer().map_err(xe)?;
-    let name = format!("spendview-{view}-{}-{}.xlsx", f.from, f.to);
+    let name = format!("tilik-{view}-{}-{}.xlsx", f.from, f.to);
     Ok((
         [
             (header::CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet".to_string()),

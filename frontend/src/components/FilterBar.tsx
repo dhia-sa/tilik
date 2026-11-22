@@ -27,15 +27,15 @@ export function FilterBar({ showVendor = true, showCategory = true }: { showVend
   const dirty = draft.from !== filter.from || draft.to !== filter.to
   const activePreset = presets.find((p) => p.from === filter.from && p.to === filter.to)?.label
   return (
-    <div className="mb-4 flex flex-wrap items-end gap-3 rounded-xl border border-line bg-surface px-3 py-2.5">
-      <div className="flex flex-col gap-1 text-xs text-ink-2">
+    <div className="mb-6 flex flex-wrap items-end gap-4 rounded-2xl border border-line bg-surface p-4">
+      <div className="flex flex-col gap-1.5 text-xs font-medium text-ink-2">
         Periode
-        <div className="inline-flex flex-wrap rounded-lg border border-line bg-surface-2 p-0.5">
+        <div className="inline-flex flex-wrap items-center gap-0.5 rounded-xl border border-line bg-surface-2 p-1">
           {presets.map((p) => (
             <button
               key={p.label}
               onClick={() => setFilter({ ...filter, from: p.from, to: p.to })}
-              className={`rounded-md px-2 py-1 text-xs font-medium ${activePreset === p.label ? 'bg-surface text-ink shadow-sm' : 'text-ink-2 hover:text-ink'}`}
+              className={`h-8 rounded-lg px-3 text-xs font-medium ${activePreset === p.label ? 'bg-surface text-accent ring-1 ring-line' : 'text-ink-2 hover:text-ink'}`}
             >
               {p.label}
             </button>
@@ -74,11 +74,7 @@ export function FilterBar({ showVendor = true, showCategory = true }: { showVend
           Reset filter
         </Button>
       )}
-      <div className="ml-auto text-right text-[11px] leading-tight text-muted">
-        Data s/d {meta.data_to ?? '–'}
-        <br />
-        Dibandingkan periode sebelumnya dengan panjang sama
-      </div>
+      <div className="ml-auto max-w-56 text-right text-xs leading-snug text-muted">Dibandingkan dengan periode sebelumnya yang panjangnya sama</div>
     </div>
   )
 }

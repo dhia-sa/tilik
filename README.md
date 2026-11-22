@@ -1,8 +1,10 @@
-# SpendView
+# Tilik
 
-Dashboard web untuk **spend per kategori**, **harga komoditas mingguan + alert**, **scorecard vendor**, dan **Tanya Data** (AI yang menjawab pertanyaan dengan angka dari database).
+*Tilik* (dari "menilik": melihat dengan teliti) adalah dashboard web untuk **spend per kategori**, **harga komoditas mingguan + alert**, **scorecard vendor**, dan **Tanya Data** (AI yang menjawab pertanyaan dengan angka dari database).
 
 Penugasan Rust + React · Batch 1 PT Agrinesia Raya · Kode tugas **RR-B1-03** · Dhia Salsabila Azhar
+
+Aplikasi ini sebelumnya bernama **SpendView**; fungsinya sama, dengan nama baru dan tampilan baru (lihat [Tampilan](#tampilan)).
 
 > Semua data di repo ini adalah **data dummy** buatan generator (`seed/generate.py`). Tidak ada data asli perusahaan.
 
@@ -18,7 +20,7 @@ npm --prefix frontend run build
 cargo run --release --manifest-path backend/Cargo.toml
 ```
 
-Buka **http://127.0.0.1:8080**. Saat pertama kali jalan, aplikasi otomatis membuat database `data/spendview.db`, menjalankan migrasi, membuat akun demo, dan mengimpor data dummy 12 bulan (± 1 detik).
+Buka **http://127.0.0.1:8080**. Saat pertama kali jalan, aplikasi otomatis membuat database `data/tilik.db`, menjalankan migrasi, membuat akun demo, dan mengimpor data dummy 12 bulan (± 1 detik).
 
 Alternatif satu perintah: `./run.sh` (macOS/Linux) atau `.\run.ps1` (Windows PowerShell).
 
@@ -28,9 +30,9 @@ File `.env` **opsional** — semua variabel punya nilai default (lihat `.env.exa
 
 | Role | Email | Password | Akses |
 |---|---|---|---|
-| Viewer | `viewer@spendview.local` | `viewer123` | Semua dashboard, Tanya Data, export |
-| Data Admin | `dataadmin@spendview.local` | `dataadmin123` | + Import, validasi & rollback, master data, threshold & bobot |
-| Admin IT | `admin@spendview.local` | `admin123` | + Kelola user & role (Admin juga boleh semua fitur Data Admin) |
+| Viewer | `viewer@tilik.local` | `viewer123` | Semua dashboard, Tanya Data, export |
+| Data Admin | `dataadmin@tilik.local` | `dataadmin123` | + Import, validasi & rollback, master data, threshold & bobot |
+| Admin IT | `admin@tilik.local` | `admin123` | + Kelola user & role (Admin juga boleh semua fitur Data Admin) |
 
 Halaman login juga punya tombol "Masuk sebagai …" untuk ketiga akun.
 
@@ -50,6 +52,16 @@ Aplikasi **tidak memanggil API LLM langsung dan tidak butuh API key**. Backend m
 
 ---
 
+
+## Tampilan
+
+Gaya "corporate modern": latar slate terang (#F8FAFC), sidebar putih 256px, aksen merah **#EF4444** untuk aksi utama dan brand, teks slate-900. Kartu dibedakan dengan border 1px #E2E8F0 (tanpa bayangan berat), sudut 16px untuk kartu dan 12px untuk tombol/input, transisi `cubic-bezier(0.4, 0, 0.2, 1)`, ikon garis Lucide 20px, scrollbar tipis 6px.
+
+- Font: **General Sans** (judul, tebal) dan **Satoshi** (isi), dimuat dari Fontshare (gratis untuk penggunaan komersial). Tanpa internet, tampilan memakai font sistem.
+- Header tiap halaman: status data dengan titik berdenyut, lonceng alert 2 minggu terakhir, dan tombol **Pusat bantuan**.
+- Ringkasan: 4 kartu statistik, alert terbaru dengan tombol Tinjau, grafik batang spend per bulan (CSS, gradien merah), spend per kategori, serta kartu vendor terbaik, kartu gelap kemungkinan split PO, dan status data.
+- Mode terang adalah default; pilihan mode gelap diingat di browser. Di layar sempit sidebar menjadi menu geser.
+
 ## Fitur
 
 | Fitur | Status | Halaman |
@@ -63,7 +75,7 @@ Aplikasi **tidak memanggil API LLM langsung dan tidak butuh API key**. Backend m
 | F7 Tanya Data: 7 tool + `none`, JSON ber-schema, query terparameter, verifikasi angka di backend, riwayat & contoh pertanyaan | Selesai | Tanya Data |
 | F8 Export Excel (.xlsx) Spend, Komoditas, Vendor sesuai filter aktif | Selesai | tombol "Export Excel" |
 | Pengaturan: kategori, komoditas, mapping item, konversi satuan, threshold, bobot, user | Selesai | Pengaturan |
-| Bonus: mode gelap | Selesai | tombol di sidebar |
+| Bonus: mode gelap | Selesai | tombol di kartu profil, sidebar |
 | Bonus: proyeksi harga komoditas 4 minggu (regresi linear) + pita ketidakpastian 95% | Selesai | Komoditas → detail |
 | Bonus: deteksi kemungkinan split PO (banyak PO kecil, vendor & hari sama, total di atas batas approval) | Selesai | Vendor, detail vendor |
 | Bonus: ringkasan mingguan otomatis | Tidak dikerjakan | – |
@@ -94,7 +106,7 @@ Aplikasi **tidak memanggil API LLM langsung dan tidak butuh API key**. Backend m
 ## Arsitektur
 
 ```
-spendview/
+tilik/
 ├── backend/                 Rust 2021, axum 0.8 + tokio, sqlx (SQLite)
 │   ├── migrations/          skema SQL, dijalankan otomatis saat start
 │   └── src/
@@ -163,7 +175,7 @@ Satu binary menyajikan API di `/api/*` dan file hasil build frontend (SPA fallba
 
 **Lainnya**
 - Tidak ada `unwrap()` di jalur request: semua error diubah ke JSON `{ "error": "..." }` dengan status yang sesuai.
-- Library: axum, tokio, sqlx, tower-http, argon2, csv, chrono, rust_xlsxwriter, tracing; frontend React 19, react-router, Recharts, Tailwind v4 (sesuai saran brief; polars tidak dipakai karena agregasi cukup dengan SQL).
+- Library: axum, tokio, sqlx, tower-http, argon2, csv, chrono, rust_xlsxwriter, tracing; frontend React 19, react-router, Recharts, Tailwind v4, lucide-react (sesuai saran brief; polars tidak dipakai karena agregasi cukup dengan SQL).
 
 ## Data dummy
 

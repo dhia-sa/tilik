@@ -67,21 +67,21 @@ function Detail({ d }: { d: Data }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
-        <div className="rounded-xl border border-line bg-surface p-4">
+        <div className="rounded-2xl border border-line bg-surface p-6">
           <div className="text-xs text-ink-2">Harga minggu terakhir</div>
-          <div className="mt-1 text-2xl font-semibold text-ink">{rp(last)}<span className="text-sm font-normal text-muted">/{unit}</span></div>
+          <div className="mt-1 font-display text-2xl font-bold text-ink">{rp(last)}<span className="text-sm font-normal text-muted">/{unit}</span></div>
         </div>
-        <div className="rounded-xl border border-line bg-surface p-4">
+        <div className="rounded-2xl border border-line bg-surface p-6">
           <div className="text-xs text-ink-2">Perubahan 52 minggu</div>
-          <div className="mt-1 text-2xl font-semibold text-ink">{first && last ? pct((last / first - 1) * 100, 1, true) : '–'}</div>
+          <div className="mt-1 font-display text-2xl font-bold text-ink">{first && last ? pct((last / first - 1) * 100, 1, true) : '–'}</div>
         </div>
-        <div className="rounded-xl border border-line bg-surface p-4">
+        <div className="rounded-2xl border border-line bg-surface p-6">
           <div className="text-xs text-ink-2">Minggu dengan alert</div>
-          <div className="mt-1 text-2xl font-semibold text-ink">{num(detail.weeks.filter((w) => w.alert).length)}</div>
+          <div className="mt-1 font-display text-2xl font-bold text-ink">{num(detail.weeks.filter((w) => w.alert).length)}</div>
         </div>
-        <div className="rounded-xl border border-line bg-surface p-4">
+        <div className="rounded-2xl border border-line bg-surface p-6">
           <div className="text-xs text-ink-2">Vendor pemasok</div>
-          <div className="mt-1 text-2xl font-semibold text-ink">{num(detail.vendors.length)}</div>
+          <div className="mt-1 font-display text-2xl font-bold text-ink">{num(detail.vendors.length)}</div>
         </div>
       </div>
       <Card
@@ -153,7 +153,7 @@ function Detail({ d }: { d: Data }) {
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
             <div className="flex flex-col gap-1 text-sm">
               <div className="text-xs text-ink-2">Tren per minggu</div>
-              <div className="text-2xl font-semibold text-ink">
+              <div className="font-display text-2xl font-bold text-ink">
                 {fc.slope_per_week >= 0 ? '+' : '−'}
                 {rp(Math.abs(fc.slope_per_week))}
                 <span className="text-sm font-normal text-muted">/{unit}</span>

@@ -28,7 +28,7 @@ impl Config {
         // Default path relatif terhadap folder backend/ (saat compile), sehingga
         // `cargo run` bisa dijalankan dari folder mana pun.
         let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("..");
-        let default_db = root.join("data").join("spendview.db");
+        let default_db = root.join("data").join("tilik.db");
         let default_db_url = format!("sqlite://{}?mode=rwc", default_db.to_string_lossy().replace('\\', "/"));
         Config {
             bind_addr: env_or("BIND_ADDR", "127.0.0.1:8080"),

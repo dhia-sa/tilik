@@ -8,8 +8,8 @@ export const GRID = { stroke: 'var(--grid)', vertical: false } as const
 /** Tooltip gaya kartu, teks memakai warna teks (bukan warna seri). */
 export function TooltipBox(props: { title: ReactNode; rows: { label: string; value: string; color?: string }[] }) {
   return (
-    <div className="min-w-[160px] rounded-lg border border-line bg-surface px-3 py-2 text-xs shadow-lg">
-      <div className="mb-1 font-semibold text-ink">{props.title}</div>
+    <div className="min-w-[160px] rounded-xl border border-line bg-surface px-3 py-2.5 text-xs shadow-[0_4px_12px_rgba(15,23,42,0.06)]">
+      <div className="mb-1 font-display font-bold text-ink">{props.title}</div>
       {props.rows.map((r) => (
         <div key={r.label} className="flex items-center justify-between gap-4">
           <span className="flex items-center gap-1.5 text-ink-2">

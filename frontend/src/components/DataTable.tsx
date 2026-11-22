@@ -45,7 +45,7 @@ export function DataTable<T>(props: {
             {props.columns.map((c) => (
               <th
                 key={c.key}
-                className={`whitespace-nowrap px-2 py-2 text-xs font-medium text-ink-2 ${c.align === 'right' ? 'text-right' : 'text-left'} ${c.sort ? 'cursor-pointer select-none hover:text-ink' : ''}`}
+                className={`whitespace-nowrap px-3 py-2.5 text-xs font-medium text-ink-2 ${c.align === 'right' ? 'text-right' : 'text-left'} ${c.sort ? 'cursor-pointer select-none hover:text-ink' : ''}`}
                 onClick={() => c.sort && setSort((s) => ({ key: c.key, desc: s?.key === c.key ? !s.desc : true }))}
               >
                 {c.header}
@@ -59,10 +59,10 @@ export function DataTable<T>(props: {
             <tr
               key={props.rowKey(r, i)}
               onClick={() => props.onRowClick?.(r)}
-              className={`border-b border-line/60 ${props.onRowClick ? 'cursor-pointer hover:bg-surface-2' : ''} ${props.rowClass?.(r) ?? ''}`}
+              className={`border-b border-line/70 transition-colors duration-200 last:border-0 hover:bg-bg ${props.onRowClick ? 'cursor-pointer' : ''} ${props.rowClass?.(r) ?? ''}`}
             >
               {props.columns.map((c) => (
-                <td key={c.key} className={`px-2 py-1.5 ${c.align === 'right' ? 'text-right tabular-nums' : ''} ${c.className ?? ''}`}>
+                <td key={c.key} className={`px-3 py-2.5 ${c.align === 'right' ? 'text-right tabular-nums' : ''} ${c.className ?? ''}`}>
                   {c.render(r)}
                 </td>
               ))}

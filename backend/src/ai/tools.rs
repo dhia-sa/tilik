@@ -129,7 +129,7 @@ pub fn select_prompt(question: &str, ctx: &ToolContext, feedback: Option<&str>) 
     let ms = month_start(ctx.reference);
     let fb = feedback.map(|f| format!("\nPERCOBAAN SEBELUMNYA DITOLAK: {f}\nPerbaiki pilihan tool/parameter.\n")).unwrap_or_default();
     format!(
-        r#"Kamu adalah asisten data procurement aplikasi SpendView (data dummy PT Agrinesia Raya).
+        r#"Kamu adalah asisten data procurement aplikasi Tilik (data dummy PT Agrinesia Raya).
 Tugasmu HANYA memilih SATU tool beserta parameternya untuk menjawab pertanyaan user. Jangan menulis SQL, jangan menjawab pertanyaannya.
 
 Tanggal acuan (hari ini) = {today}. "Minggu ini" = {week} ({ws} s/d {today}). "Bulan ini" = {ms} s/d {today}. Data tersedia s/d {today}.
@@ -146,7 +146,7 @@ Tool yang tersedia (parameter yang tidak dipakai isi null):
 5. top_items: category, date_from, date_to, limit -> item dengan spend terbesar. Contoh: "10 item kemasan dengan spend terbesar tahun ini?"
 6. alerts: kind (price|vendor|all), date_from, date_to? -> daftar alert. Contoh: "Ada alert harga apa saja minggu ini?"
 7. kpi_summary: date_from, date_to -> total spend, jumlah PO, vendor aktif, on-time vs periode sebelumnya.
-8. none: pertanyaan di luar data SpendView (mis. harga emas, cuaca, saham, kurs) atau tidak bisa dijawab dengan tool di atas.
+8. none: pertanyaan di luar data Tilik (mis. harga emas, cuaca, saham, kurs) atau tidak bisa dijawab dengan tool di atas.
 
 Aturan: tanggal format YYYY-MM-DD. Gunakan nama kategori/komoditas dari daftar di atas. Isi "reason" dengan alasan singkat.
 {fb}
@@ -460,7 +460,7 @@ pub async fn execute(db: &SqlitePool, ctx: &ToolContext, v: &Validated, tool: &s
     let mut r = ToolResult { tool: tool.to_string(), params: Value::Null, title: String::new(), columns: vec![], rows: vec![], note: None };
     match v {
         Validated::None => {
-            r.title = "Di luar cakupan data SpendView".into();
+            r.title = "Di luar cakupan data Tilik".into();
         }
         Validated::SpendBy { group, from, to, scope, cat_name, vendor_name, limit } => {
             r.params =
@@ -694,7 +694,7 @@ fn s(v: &Value) -> String {
 /// ringkasan AI memuat angka yang tidak bisa diverifikasi).
 pub fn template_summary(r: &ToolResult) -> String {
     if r.tool == "none" {
-        return "Maaf, data untuk pertanyaan itu tidak tersedia di SpendView. SpendView hanya berisi data PO, harga komoditas internal, penilaian vendor, dan alert.".into();
+        return "Maaf, data untuk pertanyaan itu tidak tersedia di Tilik. Tilik hanya berisi data PO, harga komoditas internal, penilaian vendor, dan alert.".into();
     }
     if r.rows.is_empty() {
         return format!("Tidak ada data untuk {}.", r.title.to_lowercase());

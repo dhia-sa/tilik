@@ -71,7 +71,7 @@ function Answer({ q, r }: { q: string; r: AskResponse }) {
         {r.table && r.table.rows.length > 0 && (
           <div className="mt-3">
             <div className="mb-1 text-xs font-medium text-ink-2">{r.table.title}</div>
-            <div className="max-h-72 overflow-auto rounded-lg border border-line">
+            <div className="max-h-72 overflow-auto rounded-xl border border-line">
               <table className="w-full text-xs">
                 <thead className="sticky top-0 bg-surface-2">
                   <tr>
@@ -190,7 +190,7 @@ export default function AskPage() {
               onChange={(e) => setQuestion(e.target.value)}
               maxLength={500}
               placeholder="mis. Vendor kemasan mana yang paling banyak reject?"
-              className="flex-1 rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink outline-none focus:border-accent"
+              className="h-11 flex-1 rounded-xl border border-line bg-surface px-4 text-sm text-ink outline-none hover:border-line-strong focus:border-accent focus:ring-2 focus:ring-accent/15"
             />
             <Button type="submit" variant="primary" disabled={busy || !question.trim()}>
               {busy ? 'Memproses…' : 'Tanya'}

@@ -102,7 +102,7 @@ function ExplainBox({ categoryId }: { categoryId: number }) {
     }
   }
   return (
-    <div className="rounded-lg border border-line bg-surface-2 p-3">
+    <div className="rounded-xl border border-line bg-surface-2 p-3">
       <div className="flex items-center justify-between gap-3">
         <div className="text-sm font-medium text-ink">Jelaskan dengan AI</div>
         <Button variant="primary" onClick={run} disabled={state.loading}>
@@ -239,7 +239,7 @@ export default function SpendPage() {
                     className={`rounded-lg border p-3 text-left transition ${selected === c.id ? 'border-accent bg-surface-2' : 'border-line hover:bg-surface-2'}`}
                   >
                     <div className="text-xs font-medium text-ink-2">{c.name}</div>
-                    <div className="mt-1 text-lg font-semibold tabular-nums text-ink">{rpShort(c.spend)}</div>
+                    <div className="mt-1 font-display text-lg font-bold tabular-nums text-ink">{rpShort(c.spend)}</div>
                     <div className="mt-1 h-1.5 rounded bg-surface-2">
                       <div className="h-1.5 rounded" style={{ width: `${c.share_pct}%`, background: 'var(--series-1)' }} />
                     </div>
