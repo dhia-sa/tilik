@@ -4,7 +4,6 @@
 
 **Demo langsung: https://dhia-sa.github.io/tilik/** (hanya-baca, data dummy, tanpa login; lihat [Demo GitHub Pages](#demo-github-pages)).
 
-Aplikasi ini sebelumnya bernama **SpendView**; fungsinya sama, dengan nama baru dan tampilan baru (lihat [Tampilan](#tampilan)).
 
 > Semua data di repo ini adalah **data dummy** buatan generator (`seed/generate.py`). Tidak ada data asli perusahaan.
 
