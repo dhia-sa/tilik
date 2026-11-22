@@ -4,6 +4,8 @@
 
 Penugasan Rust + React · Batch 1 PT Agrinesia Raya · Kode tugas **RR-B1-03** · Dhia Salsabila Azhar
 
+**Demo langsung: https://dhia-sa.github.io/tilik/** (hanya-baca, data dummy, tanpa login; lihat [Demo GitHub Pages](#demo-github-pages)).
+
 Aplikasi ini sebelumnya bernama **SpendView**; fungsinya sama, dengan nama baru dan tampilan baru (lihat [Tampilan](#tampilan)).
 
 > Semua data di repo ini adalah **data dummy** buatan generator (`seed/generate.py`). Tidak ada data asli perusahaan.
@@ -61,6 +63,25 @@ Gaya "corporate modern": latar slate terang (#F8FAFC), sidebar putih 256px, akse
 - Header tiap halaman: status data dengan titik berdenyut, lonceng alert 2 minggu terakhir, dan tombol **Pusat bantuan**.
 - Ringkasan: 4 kartu statistik, alert terbaru dengan tombol Tinjau, grafik batang spend per bulan (CSS, gradien merah), spend per kategori, serta kartu vendor terbaik, kartu gelap kemungkinan split PO, dan status data.
 - Mode terang adalah default; pilihan mode gelap diingat di browser. Di layar sempit sidebar menjadi menu geser.
+
+
+## Demo GitHub Pages
+
+Demo di https://dhia-sa.github.io/tilik/ adalah frontend yang sama, di-build dalam **mode demo** (`VITE_DEMO=1`): tidak ada backend, setiap request GET dibaca dari snapshot JSON yang diambil dari server lokal.
+
+- Berfungsi: semua halaman baca (Ringkasan, Spend + drill-down, Komoditas + proyeksi, Vendor + split PO, detail vendor), 5 preset periode, lonceng alert, mode gelap, dan 7 contoh pertanyaan Tanya Data (jawaban asli dari Claude saat snapshot dibuat).
+- Tidak berfungsi di demo: filter kategori/vendor, tanggal bebas, import, mengubah pengaturan, export Excel, dan pertanyaan bebas. Aplikasi menampilkan pesan dan tautan ke repo.
+
+Cara memperbarui demo (server lokal harus berjalan):
+
+```bash
+cd frontend
+MSYS_NO_PATHCONV=1 DEMO_BASE=/tilik/ VITE_DEMO=1 npx vite build --outDir dist-demo
+python ../scripts/snapshot_demo.py dist-demo/demo
+cp dist-demo/index.html dist-demo/404.html && touch dist-demo/.nojekyll
+```
+
+Lalu isi folder `frontend/dist-demo` di-push ke branch `gh-pages` (GitHub Pages: Deploy from branch `gh-pages`, folder `/`). `MSYS_NO_PATHCONV=1` hanya perlu di Git Bash Windows.
 
 ## Fitur
 

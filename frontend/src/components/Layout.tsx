@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { LayoutDashboard, LogOut, Menu, Moon, X, ScanEye, Settings, Sparkles, Store, Sun, Upload, Wallet, Wheat, type LucideIcon } from 'lucide-react'
 import { useApp } from '../context'
+import { DEMO } from '../demo'
 import type { Role } from '../types'
 
 const NAV: { group: string; items: { to: string; label: string; icon: LucideIcon; roles?: Role[] }[] }[] = [
@@ -121,7 +122,18 @@ export function Layout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </aside>
-      <main className="min-w-0 flex-1 px-4 pb-12 pt-20 sm:px-6 lg:px-10 lg:pt-8">{children}</main>
+      <main className="min-w-0 flex-1 px-4 pb-12 pt-20 sm:px-6 lg:px-10 lg:pt-8">
+        {DEMO && (
+          <div className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border border-line bg-surface px-4 py-3 text-[13px] text-ink-2">
+            <span className="rounded-full bg-crit-bg px-2 py-0.5 text-xs font-medium text-crit">Demo</span>
+            <span>Versi hanya-baca dengan data dummy. Filter periode preset berfungsi; import, pengaturan, dan export butuh backend lokal.</span>
+            <a href="https://github.com/dhia-sa/tilik#readme" target="_blank" rel="noreferrer" className="font-medium text-accent hover:text-accent-hover">
+              Lihat kode di GitHub
+            </a>
+          </div>
+        )}
+        {children}
+      </main>
     </div>
   )
 }
