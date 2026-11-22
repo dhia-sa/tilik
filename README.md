@@ -2,8 +2,6 @@
 
 *Tilik* (dari "menilik": melihat dengan teliti) adalah dashboard web untuk **spend per kategori**, **harga komoditas mingguan + alert**, **scorecard vendor**, dan **Tanya Data** (AI yang menjawab pertanyaan dengan angka dari database).
 
-Penugasan Rust + React · Batch 1 PT Agrinesia Raya · Kode tugas **RR-B1-03** · Dhia Salsabila Azhar
-
 **Demo langsung: https://dhia-sa.github.io/tilik/** (hanya-baca, data dummy, tanpa login; lihat [Demo GitHub Pages](#demo-github-pages)).
 
 Aplikasi ini sebelumnya bernama **SpendView**; fungsinya sama, dengan nama baru dan tampilan baru (lihat [Tampilan](#tampilan)).
